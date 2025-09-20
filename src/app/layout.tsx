@@ -1,4 +1,3 @@
-
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
@@ -11,8 +10,10 @@ import LgpdBanner from '@/components/layout/LgpdBanner';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
 const siteTitle = 'Tagis Medicina e Diagnóstico - São José - SC | Consultas e Exames';
-const siteDescription = 'Consultas e Exames em um Só Lugar! +30 Especialidades | +50 Tipos de Exames | +20 Convênios. Agende fácil pelo WhatsApp. Fones: (48) 3035-3377 / (48) 99193-6045.';
-const siteKeywords = "clínica médica, são josé sc, exames, consultas, ortopedia, cardiologia, ginecologia, diagnóstico por imagem, tagis";
+const siteDescription =
+  'Consultas e Exames em um Só Lugar! +30 Especialidades | +50 Tipos de Exames | +20 Convênios. Agende fácil pelo WhatsApp. Fones: (48) 3035-3377 / (48) 99193-6045.';
+const siteKeywords =
+  "clínica médica, são josé sc, exames, consultas, ortopedia, cardiologia, ginecologia, diagnóstico por imagem, tagis";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -59,6 +60,23 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   manifest: '/site.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },          // principal
+      { url: '/logokennedy.ico' },      // fallback
+      { url: '/logokennedy.svg' },      // fallback extra
+    ],
+    shortcut: [
+      { url: '/favicon.ico' },
+      { url: '/logokennedy.ico' },
+      { url: '/logokennedy.svg' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+      { url: '/logokennedy.ico' },
+      { url: '/logokennedy.svg' },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
@@ -66,28 +84,25 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
       <head>
-        {/* Favicon principal, priorizando o .ico */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        {/* Ícone SVG como alternativa de alta qualidade */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        {/* Ícone para dispositivos Apple */}
+        {/* Fallback manual para navegadores antigos/Google */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logokennedy.ico" />
+        <link rel="icon" href="/logokennedy.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/logokennedy.ico" />
+        <link rel="apple-touch-icon" href="/logokennedy.svg" />
       </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
         <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
         <FloatingWhatsAppButton phoneNumber="5548991936045" />
         <LgpdBanner />
