@@ -61,17 +61,9 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' }, // padrão moderno
-      { url: '/favicon.ico', type: 'image/x-icon' },  // fallback
-    ],
-    shortcut: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', type: 'image/x-icon' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png' }, // para iOS
-    ],
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -87,12 +79,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
-      <head>
-        {/* Fallback manual para navegadores antigos ou compatibilidade extra */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-      </head>
+      {/* A tag <head> é removida daqui pois o Next.js a gerencia automaticamente */}
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
         <Header />
         <main className="flex-grow">{children}</main>
