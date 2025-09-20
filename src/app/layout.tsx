@@ -1,3 +1,4 @@
+
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
@@ -58,12 +59,6 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   manifest: '/site.webmanifest',
-  icons: {
-    icon: '/favicon.ico', // Ícone principal para navegadores
-    shortcut: '/favicon.ico', // Para compatibilidade
-    apple: '/apple-touch-icon.png', // Para dispositivos Apple
-    // O Next.js também pode pegar /icon.svg automaticamente se presente
-  },
 };
 
 export const viewport: Viewport = {
@@ -81,7 +76,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
       <head>
-        {/* As tags de ícone foram removidas daqui e movidas para o objeto `metadata` acima */}
+        {/* Favicon principal, priorizando o .ico */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Ícone SVG como alternativa de alta qualidade */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        {/* Ícone para dispositivos Apple */}
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
         <Header />
