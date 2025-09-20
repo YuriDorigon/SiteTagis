@@ -62,19 +62,15 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.ico' },          // principal
-      { url: '/logokennedy.ico' },      // fallback
-      { url: '/logokennedy.svg' },      // fallback extra
+      { url: '/favicon.svg', type: 'image/svg+xml' }, // padrão moderno
+      { url: '/favicon.ico', type: 'image/x-icon' },  // fallback
     ],
     shortcut: [
-      { url: '/favicon.ico' },
-      { url: '/logokennedy.ico' },
-      { url: '/logokennedy.svg' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png' },
-      { url: '/logokennedy.ico' },
-      { url: '/logokennedy.svg' },
+      { url: '/favicon.png' }, // iOS / Apple exige PNG
     ],
   },
 };
@@ -92,13 +88,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
       <head>
-        {/* Fallback manual para navegadores antigos/Google */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="icon" href="/logokennedy.ico" />
-        <link rel="icon" href="/logokennedy.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" href="/logokennedy.ico" />
-        <link rel="apple-touch-icon" href="/logokennedy.svg" />
+        {/* Fallback manual para navegadores antigos ou compatibilidade extra */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
         <Header />
