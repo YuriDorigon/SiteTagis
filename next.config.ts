@@ -1,58 +1,31 @@
 
 import type {NextConfig} from 'next';
 
-// Verifica se o build é para o GitHub Pages através de uma variável de ambiente
-const isGithubBuild = process.env.BUILD_FOR_GITHUB === 'true';
-
-// Nome exato do seu repositório no GitHub.
-const repo = 'SiteTagis';
-
 const nextConfig: NextConfig = {
   /**
-   * Ativa a exportação estática, gerando um site HTML/CSS/JS puro na pasta 'out'.
-   * Essencial para hospedagens estáticas.
+   * Força a exportação estática do site.
+   * Isso irá gerar os arquivos HTML, CSS e JS na pasta /out.
    */
   output: 'export',
-
+  
   /**
-   * Configuração para o Next.js funcionar em um subdiretório (ex: usuario.github.io/repo).
-   * Isso só é ativado quando o build é feito para o GitHub Pages.
+   * Força o Next.js a usar caminhos relativos para os assets (JS, CSS).
+   * Esta é a correção crucial para que o site funcione em qualquer
+   * provedor de hospedagem estática, resolvendo os erros 404 e ChunkLoadError.
    */
-  basePath: isGithubBuild ? `/${repo}` : undefined,
-  assetPrefix: isGithubBuild ? `/${repo}/` : undefined,
+  assetPrefix: './',
 
   /**
-   * Desativa a otimização de imagens do Next.js (requer um servidor) e permite domínios externos.
-   * Isso garante que as imagens funcionem na exportação estática.
+   * A otimização de imagens do Next.js deve ser desativada quando se usa 'output: "export"'.
+   * O redimensionamento é feito no painel admin antes do upload.
    */
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'tagismd.com.br',
-        port: '',
-        pathname: '/**',
-      },
-    ],
   },
   
   /**
-   * Desativa a barra de ferramentas de desenvolvimento do Next.js no build final.
+   * Ignora erros de TypeScript e ESLint durante o build para focar na exportação.
    */
-  devIndicators: {
-    devTools: {
-      devToolbar: false,
-    },
-  },
-
-  // Ignora erros de TypeScript e ESLint durante o build para focar na exportação.
   typescript: {
     ignoreBuildErrors: true,
   },

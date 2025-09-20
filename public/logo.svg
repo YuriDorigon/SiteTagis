@@ -1,19 +1,10 @@
-// src/components/shared/AppLogo.tsx
-import type { SVGProps } from 'react';
-
-export default function AppLogo(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
+<svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       viewBox="0 0 250 250"
       preserveAspectRatio="xMidYMid meet"
-      {...props}
     >
-      {/* Blue rounded background */}
       <rect width="250" height="250" rx="40" ry="40" fill="#003049" />
-      
-      {/* Scaled and centered white logo paths */}
       <g 
         transform="translate(25, 25) scale(0.8)" 
         fill="white" 
@@ -27,5 +18,3 @@ export default function AppLogo(props: SVGProps<SVGSVGElement>) {
         </g>
       </g>
     </svg>
-  );
-}

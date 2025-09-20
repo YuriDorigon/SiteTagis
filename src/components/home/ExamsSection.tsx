@@ -10,7 +10,7 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import ExamResultsButton from '@/components/exames/ExamResultsButton';
 import { db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'; // Import getDocs instead of onSnapshot
 import type { Exam } from '@/lib/types';
 
 export default function ExamsSection() {
@@ -18,20 +18,22 @@ export default function ExamsSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const examsCol = collection(db, 'exams');
-    const q = query(examsCol, orderBy('name'), limit(3));
+    const fetchExams = async () => {
+      setLoading(true);
+      try {
+        const examsCol = collection(db, 'exams');
+        const q = query(examsCol, orderBy('name'), limit(3));
+        const snapshot = await getDocs(q);
+        const fetchedExams = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Exam));
+        setExams(fetchedExams);
+      } catch (error) {
+        console.error("Error fetching homepage exams:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    const unsubscribe: Unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedExams = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Exam));
-      setExams(fetchedExams);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching homepage exams with onSnapshot:", error);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    fetchExams();
   }, []);
 
   return (

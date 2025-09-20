@@ -10,7 +10,8 @@ import { collection, query, orderBy, onSnapshot, Unsubscribe } from 'firebase/fi
 import type { Testimonial } from '@/lib/types';
 import { Loader2, Quote as QuoteIcon } from 'lucide-react';
 
-export default function TestimonialsCarousel() {
+// Renomeado para uma função nomeada e exportado como padrão no final.
+function TestimonialsCarouselComponent() {
   const [testimonialsData, setTestimonialsData] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -72,7 +73,6 @@ export default function TestimonialsCarousel() {
   const itemsPerViewLg = 3; 
   const shouldLoop = testimonialsData.length > itemsPerViewLg;
 
-
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -117,3 +117,6 @@ export default function TestimonialsCarousel() {
     </section>
   );
 }
+
+// Exportação padrão explícita
+export default TestimonialsCarouselComponent;

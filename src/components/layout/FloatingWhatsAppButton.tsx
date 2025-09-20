@@ -14,11 +14,10 @@ export default function FloatingWhatsAppButton({ phoneNumber, message = "Olá! V
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" passHref>
+    <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" passHref aria-label="Contatar pelo WhatsApp">
       <Button
         size="icon"
         className="fixed bottom-6 right-6 h-16 w-16 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg z-50 flex items-center justify-center"
-        aria-label="Contatar pelo WhatsApp"
       >
         <MessageSquare className="h-8 w-8" />
       </Button>

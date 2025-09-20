@@ -16,10 +16,10 @@ import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from
 import 'react-image-crop/dist/ReactCrop.css';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
-import type { Doctor, Specialty } from '@/lib/types';
+import type { Doctor, Specialty, Exam } from '@/lib/types';
 import { getCroppedImg } from '@/lib/imageUtils';
 
-type DoctorFormData = Omit<Doctor, 'id' | 'specialtyNames'>;
+type DoctorFormData = Omit<Doctor, 'id' | 'specialtyNames' | 'examNames'>;
 
 const DOCTOR_CROP_ASPECT = 1 / 1;
 const DOCTOR_OUTPUT_WIDTH = 300;
@@ -28,8 +28,9 @@ const DOCTOR_OUTPUT_HEIGHT = 300;
 export default function ManageDoctors() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [allSpecialties, setAllSpecialties] = useState<Specialty[]>([]);
+  const [allExams, setAllExams] = useState<Exam[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentDoctor, setCurrentDoctor] = useState<Partial<DoctorFormData & { id?: string }>>({ name: '', crm: '', bio: '', imageUrl: '', specialtyIds: [] });
+  const [currentDoctor, setCurrentDoctor] = useState<Partial<DoctorFormData & { id?: string }>>({ name: '', crm: '', bio: '', imageUrl: '', specialtyIds: [], examIds: [] });
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -41,38 +42,51 @@ export default function ManageDoctors() {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
 
-  const fetchDoctorsAndSpecialties = async () => {
+  const fetchData = async () => {
     setIsLoading(true);
     try {
+      // Fetch Doctors
       const doctorsCol = collection(db, 'doctors');
       const doctorsQuery = query(doctorsCol, orderBy('name'));
       const doctorsSnapshot = await getDocs(doctorsQuery);
       const doctorsList = doctorsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Doctor));
       
+      // Fetch Specialties
       const specialtiesCol = collection(db, 'specialties');
       const specialtiesQuery = query(specialtiesCol, orderBy('name'));
       const specialtiesSnapshot = await getDocs(specialtiesQuery);
       const specialtiesList = specialtiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
       
-      setAllSpecialties(specialtiesList);
+      // Fetch Exams
+      const examsCol = collection(db, 'exams');
+      const examsQuery = query(examsCol, orderBy('name'));
+      const examsSnapshot = await getDocs(examsQuery);
+      const examsList = examsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Exam));
 
+      setAllSpecialties(specialtiesList);
+      setAllExams(examsList);
+
+      // Augment doctors with names for display
       const specialtiesMap = new Map(specialtiesList.map(s => [s.id, s.name]));
+      const examsMap = new Map(examsList.map(e => [e.id, e.name]));
+
       const augmentedDoctors = doctorsList.map(d => ({
         ...d,
-        specialtyNames: (d.specialtyIds || []).map(id => specialtiesMap.get(id) || 'N/A'),
+        specialtyNames: (d.specialtyIds || []).map(id => specialtiesMap.get(id) || 'N/A').sort(),
+        examNames: (d.examIds || []).map(id => examsMap.get(id) || 'N/A').sort(),
       }));
       setDoctors(augmentedDoctors);
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast({ title: 'Erro ao Carregar Dados', description: 'Não foi possível buscar os dados do corpo clínico ou especialidades.', variant: 'destructive' });
+      toast({ title: 'Erro ao Carregar Dados', description: 'Não foi possível buscar os dados necessários.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDoctorsAndSpecialties();
+    fetchData();
   }, []);
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
@@ -117,7 +131,7 @@ export default function ManageDoctors() {
     setImgSrc(null);
     setCrop(undefined);
     setCompletedCrop(null);
-    setCurrentDoctor({ name: '', crm: '', bio: '', imageUrl: '', specialtyIds: [] });
+    setCurrentDoctor({ name: '', crm: '', bio: '', imageUrl: '', specialtyIds: [], examIds: [] });
     if(imgRef.current) imgRef.current = null;
     if(fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -130,8 +144,8 @@ export default function ManageDoctors() {
 
   const openDialogForEdit = (doctor: Doctor) => {
     resetDialogState();
-    const { specialtyNames, ...editableDoctor } = doctor;
-    setCurrentDoctor({ ...editableDoctor, specialtyIds: editableDoctor.specialtyIds || [] });
+    const { specialtyNames, examNames, ...editableDoctor } = doctor;
+    setCurrentDoctor({ ...editableDoctor, specialtyIds: editableDoctor.specialtyIds || [], examIds: editableDoctor.examIds || [] });
     setIsEditing(true);
     setIsDialogOpen(true);
   };
@@ -142,7 +156,7 @@ export default function ManageDoctors() {
       try {
         await deleteDoc(doc(db, 'doctors', id));
         toast({ title: 'Membro Excluído', description: 'O membro do corpo clínico foi removido com sucesso.' });
-        fetchDoctorsAndSpecialties();
+        fetchData();
       } catch (error) {
         console.error("Error deleting member:", error);
         toast({ title: 'Erro ao Excluir', variant: 'destructive' });
@@ -153,8 +167,8 @@ export default function ManageDoctors() {
   };
 
   const handleSave = async () => {
-    if (!currentDoctor || !currentDoctor.name || !(currentDoctor.specialtyIds && currentDoctor.specialtyIds.length > 0) || !currentDoctor.crm) {
-      toast({ title: 'Erro de Validação', description: 'Nome, CRM e ao menos uma Especialidade são obrigatórios.', variant: 'destructive' });
+    if (!currentDoctor || !currentDoctor.name || !currentDoctor.crm) {
+      toast({ title: 'Erro de Validação', description: 'Nome e CRM são obrigatórios.', variant: 'destructive' });
       return;
     }
     
@@ -168,6 +182,7 @@ export default function ManageDoctors() {
     const dataToSave: DoctorFormData = {
       name: currentDoctor.name,
       specialtyIds: currentDoctor.specialtyIds || [],
+      examIds: currentDoctor.examIds || [],
       crm: currentDoctor.crm,
       bio: currentDoctor.bio || '',
       imageUrl: currentDoctor.imageUrl || '',
@@ -184,7 +199,7 @@ export default function ManageDoctors() {
       }
       setIsDialogOpen(false);
       resetDialogState();
-      fetchDoctorsAndSpecialties();
+      fetchData();
     } catch (error) {
       console.error("Error saving member:", error);
       toast({ title: 'Erro ao Salvar', variant: 'destructive' });
@@ -205,7 +220,7 @@ export default function ManageDoctors() {
   };
   
   if (isLoading) {
-    return <div className="flex justify-center items-center h-32"><Loader2 className="h-8 w-8 animate-spin text-primary" /> <span className="ml-2">Carregando corpo clínico...</span></div>;
+    return <div className="flex justify-center items-center h-32"><Loader2 className="h-8 w-8 animate-spin text-primary" /> <span className="ml-2">Carregando dados...</span></div>;
   }
 
   return (
@@ -222,7 +237,7 @@ export default function ManageDoctors() {
           <TableRow>
             <TableHead className="w-[80px]">Foto</TableHead>
             <TableHead>Nome</TableHead>
-            <TableHead>Especialidades</TableHead>
+            <TableHead>Atuação (Especialidades / Exames)</TableHead>
             <TableHead>CRM</TableHead>
             <TableHead className="text-right w-[200px]">Ações</TableHead>
           </TableRow>
@@ -243,7 +258,10 @@ export default function ManageDoctors() {
               <TableCell>
                 <div className="flex flex-wrap gap-1">
                   {(doctor.specialtyNames || []).map(name => (
-                    <Badge key={name} variant="outline">{name}</Badge>
+                    <Badge key={name} variant="secondary">{name}</Badge>
+                  ))}
+                   {(doctor.examNames || []).map(name => (
+                    <Badge key={name} variant="outline" className="border-primary/50 text-primary">{name}</Badge>
                   ))}
                 </div>
               </TableCell>
@@ -266,11 +284,11 @@ export default function ManageDoctors() {
       </Table>
 
       <Dialog open={isDialogOpen} onOpenChange={(isOpen) => { if (!isSaving) { setIsDialogOpen(isOpen); if(!isOpen) resetDialogState(); } }}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-headline">{isEditing ? 'Editar Membro' : 'Adicionar Novo Membro'}</DialogTitle>
             <DialogDescription>
-              Preencha os dados do membro do corpo clínico. Para a foto, envie a imagem e ajuste o recorte. A foto final terá {DOCTOR_OUTPUT_WIDTH}x{DOCTOR_OUTPUT_HEIGHT} pixels.
+              Preencha os dados do membro do corpo clínico, incluindo especialidades e/ou exames que realiza.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-2">
@@ -287,8 +305,9 @@ export default function ManageDoctors() {
               <Textarea id="docBio" value={currentDoctor?.bio || ''} onChange={(e) => setCurrentDoctor(prev => ({ ...prev, bio: e.target.value }))} className="col-span-3 text-lg min-h-[100px]" disabled={isSaving} />
             </div>
 
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label className="text-right text-lg col-span-1 mt-2">Especialidades*</Label>
+            {/* Specialties Section */}
+            <div className="grid grid-cols-4 items-start gap-4 border-t pt-4">
+              <Label className="text-right text-lg col-span-1 mt-2">Especialidades</Label>
               <div className="col-span-3 space-y-4">
                   <div>
                       <p className="font-medium mb-2 text-muted-foreground">Especialidades Atuais:</p>
@@ -299,19 +318,7 @@ export default function ManageDoctors() {
                                   return (
                                       <Badge key={specId} variant="default" className="text-base py-1 pl-3 pr-2">
                                           {spec?.name}
-                                          <button
-                                              type="button"
-                                              className="ml-2 rounded-full hover:bg-black/20 p-0.5"
-                                              onClick={() => {
-                                                  setCurrentDoctor(prev => ({
-                                                      ...prev,
-                                                      specialtyIds: (prev?.specialtyIds || []).filter(id => id !== specId)
-                                                  }));
-                                              }}
-                                              disabled={isSaving}
-                                          >
-                                              <X className="h-3 w-3" />
-                                          </button>
+                                          <button type="button" className="ml-2 rounded-full hover:bg-black/20 p-0.5" onClick={() => setCurrentDoctor(prev => ({...prev, specialtyIds: (prev?.specialtyIds || []).filter(id => id !== specId)}))} disabled={isSaving}><X className="h-3 w-3" /></button>
                                       </Badge>
                                   );
                               })}
@@ -321,42 +328,49 @@ export default function ManageDoctors() {
                   <div>
                       <p className="font-medium mb-2 text-muted-foreground">Adicionar Especialidade:</p>
                       <div className="flex flex-wrap gap-2">
-                          {allSpecialties
-                              .filter(spec => !(currentDoctor.specialtyIds || []).includes(spec.id))
-                              .map(spec => (
-                                  <Button
-                                      key={spec.id}
-                                      type="button"
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => {
-                                          setCurrentDoctor(prev => ({
-                                              ...prev,
-                                              specialtyIds: [...(prev?.specialtyIds || []), spec.id]
-                                          }));
-                                      }}
-                                      disabled={isSaving}
-                                  >
-                                      <PlusCircle className="mr-2 h-4 w-4" />
-                                      {spec.name}
-                                  </Button>
-                              ))}
+                          {allSpecialties.filter(spec => !(currentDoctor.specialtyIds || []).includes(spec.id)).map(spec => (
+                              <Button key={spec.id} type="button" variant="outline" size="sm" onClick={() => setCurrentDoctor(prev => ({...prev, specialtyIds: [...(prev?.specialtyIds || []), spec.id]}))} disabled={isSaving}><PlusCircle className="mr-2 h-4 w-4" />{spec.name}</Button>
+                          ))}
                       </div>
                   </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
+             {/* Exams Section */}
+            <div className="grid grid-cols-4 items-start gap-4 border-t pt-4">
+              <Label className="text-right text-lg col-span-1 mt-2">Exames</Label>
+              <div className="col-span-3 space-y-4">
+                  <div>
+                      <p className="font-medium mb-2 text-muted-foreground">Exames Realizados Atuais:</p>
+                      {(currentDoctor.examIds || []).length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                              {(currentDoctor.examIds || []).map(examId => {
+                                  const exam = allExams.find(e => e.id === examId);
+                                  return (
+                                      <Badge key={examId} variant="default" className="text-base py-1 pl-3 pr-2 bg-blue-600 hover:bg-blue-700">
+                                          {exam?.name}
+                                          <button type="button" className="ml-2 rounded-full hover:bg-black/20 p-0.5" onClick={() => setCurrentDoctor(prev => ({...prev, examIds: (prev?.examIds || []).filter(id => id !== examId)}))} disabled={isSaving}><X className="h-3 w-3" /></button>
+                                      </Badge>
+                                  );
+                              })}
+                          </div>
+                      ) : <p className="text-sm text-muted-foreground">Nenhum exame selecionado.</p>}
+                  </div>
+                  <div>
+                      <p className="font-medium mb-2 text-muted-foreground">Adicionar Exame:</p>
+                      <div className="flex flex-wrap gap-2">
+                          {allExams.filter(exam => !(currentDoctor.examIds || []).includes(exam.id)).map(exam => (
+                              <Button key={exam.id} type="button" variant="outline" size="sm" onClick={() => setCurrentDoctor(prev => ({...prev, examIds: [...(prev?.examIds || []), exam.id]}))} disabled={isSaving}><PlusCircle className="mr-2 h-4 w-4" />{exam.name}</Button>
+                          ))}
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
+            <div className="grid grid-cols-4 items-center gap-4 border-t pt-4">
               <Label htmlFor="docImageFile" className="text-right text-lg col-span-1">Foto</Label>
-              <Input
-                id="docImageFile"
-                ref={fileInputRef}
-                type="file"
-                accept="image/png, image/jpeg, image/webp"
-                onChange={handleFileChange}
-                className="col-span-3 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 h-11 text-lg"
-                disabled={isSaving}
-              />
+              <Input id="docImageFile" ref={fileInputRef} type="file" accept="image/png, image/jpeg, image/webp" onChange={handleFileChange} className="col-span-3 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 h-11 text-lg" disabled={isSaving} />
             </div>
 
             {imgSrc && (
@@ -364,20 +378,8 @@ export default function ManageDoctors() {
                  <Label className="text-right text-lg col-span-1 mt-2">Recortar</Label>
                  <div className="col-span-3 space-y-2">
                     <div className='w-full flex justify-center items-center p-2 border rounded-md bg-slate-50 max-h-[250px] overflow-auto relative'>
-                      <ReactCrop
-                        crop={crop}
-                        onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                        aspect={DOCTOR_CROP_ASPECT}
-                        minWidth={50}
-                      >
-                        <img
-                          ref={imgRef}
-                          alt="Recorte aqui"
-                          src={imgSrc}
-                          onLoad={onImageLoad}
-                          style={{ maxHeight: '220px' }}
-                        />
+                      <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={(c) => setCompletedCrop(c)} aspect={DOCTOR_CROP_ASPECT} minWidth={50}>
+                        <img ref={imgRef} alt="Recorte aqui" src={imgSrc} onLoad={onImageLoad} style={{ maxHeight: '220px' }} />
                       </ReactCrop>
                     </div>
                     <Button onClick={handleApplyCrop} variant="outline" size="sm" disabled={isSaving || !completedCrop}>
@@ -392,26 +394,13 @@ export default function ManageDoctors() {
                 <div className="col-span-3 flex items-center gap-4">
                     <div className="w-[100px] h-[100px] rounded-full border-2 border-primary/20 bg-muted flex items-center justify-center overflow-hidden">
                         {currentDoctor.imageUrl ? (
-                            <Image 
-                                src={currentDoctor.imageUrl} 
-                                alt="Preview da foto" 
-                                width={100} 
-                                height={100} 
-                                className="object-cover"
-                                data-ai-hint="doctor portrait professional"
-                            />
+                            <Image src={currentDoctor.imageUrl} alt="Preview da foto" width={100} height={100} className="object-cover" data-ai-hint="doctor portrait professional" />
                         ) : (
                             <User className="h-12 w-12 text-muted-foreground" />
                         )}
                     </div>
                     {currentDoctor.imageUrl && (
-                         <Button
-                            type="button"
-                            variant="destructive"
-                            size="sm"
-                            onClick={handleRemoveImage}
-                            disabled={isSaving}
-                         >
+                         <Button type="button" variant="destructive" size="sm" onClick={handleRemoveImage} disabled={isSaving}>
                             <Trash2 className="mr-2 h-4 w-4" /> Remover Foto
                          </Button>
                     )}

@@ -34,7 +34,7 @@ export default function ExamResultsModal({ isOpen, onClose }: ExamResultsModalPr
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="block w-full p-4 border border-border rounded-md hover:bg-accent hover:border-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="block w-full p-4 border border-border rounded-md hover:bg-primary/10 hover:border-primary/30 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             <div className="flex items-center space-x-3">
               <ImageIcon className="h-7 w-7 text-primary" />
@@ -48,7 +48,7 @@ export default function ExamResultsModal({ isOpen, onClose }: ExamResultsModalPr
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="block w-full p-4 border border-border rounded-md hover:bg-accent hover:border-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="block w-full p-4 border border-border rounded-md hover:bg-primary/10 hover:border-primary/30 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             <div className="flex items-center space-x-3">
               <FileText className="h-7 w-7 text-primary" />

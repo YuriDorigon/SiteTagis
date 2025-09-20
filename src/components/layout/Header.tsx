@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, MessageSquare } from 'lucide-react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -16,8 +16,7 @@ const navLinks = [
   { href: '/especialidades', label: 'Especialidades' },
   { href: '/exames', label: 'Exames' },
   { href: '/convenios', label: 'Convênios' },
-  { href: '/doutores', label: 'Corpo Clínico' },
-  // { href: '/chatbot', label: 'Chatbot' }, // Chatbot link removed
+  { href: '/corpo-clinico', label: 'Corpo Clínico' },
   { href: '/contato', label: 'Contato' },
 ];
 
@@ -30,7 +29,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-primary text-primary-foreground shadow-sm">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center space-x-3 group" aria-label="Página inicial da Tagis Medicina e Diagnóstico">
+        <Link href="/" className="flex items-center space-x-3 group" aria-label="Página inicial da Clinica Tagis">
           <AppLogo className="h-10 w-auto transition-transform group-hover:scale-105" />
           <div className="flex flex-col items-start">
             <span className="font-headline font-bold text-xl leading-tight">TAGIS</span>
@@ -74,8 +73,11 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs p-6 bg-primary text-primary-foreground">
-              <div className="flex flex-col space-y-6">
-                <Link href="/" className="flex items-center space-x-2 mb-4" onClick={closeMobileMenu} aria-label="Página inicial da Tagis Medicina e Diagnóstico">
+               <SheetHeader>
+                  <SheetTitle className="sr-only">Menu Principal</SheetTitle>
+               </SheetHeader>
+              <div className="flex flex-col space-y-6 mt-4">
+                <Link href="/" className="flex items-center space-x-2 mb-4" onClick={closeMobileMenu} aria-label="Página inicial da Clinica Tagis">
                   <AppLogo className="h-9 w-auto" />
                   <div className="flex flex-col items-start">
                     <span className="font-headline font-bold text-lg leading-tight">TAGIS</span>

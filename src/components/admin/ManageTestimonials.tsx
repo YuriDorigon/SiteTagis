@@ -12,9 +12,7 @@ import { PlusCircle, Edit3, Trash2, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
-import type { Testimonial } from '@/lib/types';
-
-type TestimonialFormData = Omit<Testimonial, 'id'>;
+import type { Testimonial, TestimonialFormData } from '@/lib/types';
 
 export default function ManageTestimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);

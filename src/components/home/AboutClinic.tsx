@@ -18,10 +18,11 @@ export default function AboutClinic() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative h-80 md:h-[450px] rounded-lg overflow-hidden shadow-lg group">
             <Image
-              src="/sobre.webp"
-              alt="Interior da Clínica Tagis"
+              src="/sobre.avif"
+              alt="Interior da Clinica Tagis"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
+              data-ai-hint="clinic interior"
             />
           </div>
           <div>

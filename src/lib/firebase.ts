@@ -1,5 +1,5 @@
 // src/lib/firebase.ts
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics, isSupported } from "firebase/analytics";
 // import { getAuth } from 'firebase/auth'; // Removido
@@ -16,7 +16,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app;
+let app: FirebaseApp;
 if (!getApps().length) {
   app = initializeApp(firebaseConfig);
 } else {

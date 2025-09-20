@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
   const dashboardCards = [
     { title: "Total de Convênios", count: stats.conveniosCount, icon: ShieldCheck, link: "/adm/dashboard/convenios", description: "Convênios ativos cadastrados" },
-    { title: "Total do Corpo Clínico", count: stats.doctorsCount, icon: Users, link: "/adm/dashboard/doutores", description: "Membros cadastrados" },
+    { title: "Total do Corpo Clínico", count: stats.doctorsCount, icon: Users, link: "/adm/dashboard/corpo-clinico", description: "Membros cadastrados" },
     { title: "Total de Especialidades", count: stats.specialtiesCount, icon: Briefcase, link: "/adm/dashboard/especialidades", description: "Especialidades oferecidas" },
     { title: "Total de Exames", count: stats.examsCount, icon: ClipboardList, link: "/adm/dashboard/exames", description: "Tipos de exames realizados" },
     { title: "Total de Depoimentos", count: stats.testimonialsCount, icon: QuoteIcon, link: "/adm/dashboard/depoimentos", description: "Depoimentos de pacientes" },
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 
   const managementButtons = [
     { label: "Gerenciar Convênios", href: "/adm/dashboard/convenios" },
-    { label: "Gerenciar Corpo Clínico", href: "/adm/dashboard/doutores" },
+    { label: "Gerenciar Corpo Clínico", href: "/adm/dashboard/corpo-clinico" },
     { label: "Gerenciar Especialidades", href: "/adm/dashboard/especialidades" },
     { label: "Gerenciar Exames", href: "/adm/dashboard/exames" },
     { label: "Gerenciar Depoimentos", href: "/adm/dashboard/depoimentos" },

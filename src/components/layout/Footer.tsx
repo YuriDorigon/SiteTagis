@@ -1,6 +1,6 @@
 // src/components/layout/Footer.tsx
 import Link from 'next/link';
-import { Facebook, Instagram } from 'lucide-react'; // LinkedIn removido
+import { Facebook, Instagram } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -25,7 +25,7 @@ export default function Footer() {
               <li><Link href="/especialidades" className="hover:text-primary">Especialidades</Link></li>
               <li><Link href="/exames" className="hover:text-primary">Exames</Link></li>
               <li><Link href="/convenios" className="hover:text-primary">Convênios</Link></li>
-              <li><Link href="/doutores" className="hover:text-primary">Doutores</Link></li>
+              <li><Link href="/corpo-clinico" className="hover:text-primary">Corpo Clínico</Link></li>
               <li><Link href="/contato" className="hover:text-primary">Contato</Link></li>
             </ul>
           </div>
@@ -38,18 +38,11 @@ export default function Footer() {
               <Link href="https://www.instagram.com/tagismd/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-secondary-foreground hover:text-primary">
                 <Instagram className="h-6 w-6" />
               </Link>
-              {/* LinkedIn removido */}
-            </div>
-            <div className="mt-6 text-sm">
-              <Link href="/politica-de-privacidade" className="hover:text-primary">Política de Privacidade</Link>
-              <span className="mx-2">|</span>
-              <Link href="/termos-de-uso" className="hover:text-primary">Termos de Uso</Link>
             </div>
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm">
           <p>&copy; {new Date().getFullYear()} Clinica Tagis. Todos os direitos reservados.</p>
-          <p className="mt-1">Feito com ❤️ pela Equipe Tagis.</p>
         </div>
       </div>
     </footer>

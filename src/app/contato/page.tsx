@@ -1,7 +1,7 @@
 // src/app/contato/page.tsx
 import SectionTitle from '@/components/shared/SectionTitle';
 import MapEmbed from '@/components/contact/MapEmbed';
-import { Phone, MessageSquare, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 // Card related imports removed as the card itself is removed
 // import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -9,8 +9,9 @@ import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 export default function ContatoPage() {
   const clinicAddress = "Av. Ver. Walter Borges, 157 - Campinas, São José - SC, 88101-030";
+  // O link do Google Maps para "Ver no mapa" continua dinâmico
   const encodedAddress = encodeURIComponent(clinicAddress);
-  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+  const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.7975871311696!2d-48.61270462453663!3d-27.5998043762444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273625a2bae6b3%3A0xb22213c1823da2ba!2sTagis!5e0!3m2!1spt-BR!2sbr!4v1753309024664!5m2!1spt-BR!2sbr";
   const googleMapsLink = `https://maps.google.com/?q=${encodedAddress}`;
 
   return (
@@ -40,24 +41,17 @@ export default function ContatoPage() {
               </div>
             </div>
             <div className="flex items-center">
-              <Phone className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
-              <div>
-                <strong className="block">Telefone Fixo:</strong>
-                <a href="tel:+554830353377" className="hover:text-primary">(48) 3035-3377</a>
-              </div>
-            </div>
-            <div className="flex items-center">
               <MessageSquare className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
               <div>
-                <strong className="block">WhatsApp:</strong>
+                <strong className="block">WhatsApp (Agendamentos):</strong>
                 <a href={`https://wa.me/5548991936045?text=${encodeURIComponent('Olá! Vim através do site e gostaria de mais informações.')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary">(48) 99193-6045</a>
               </div>
             </div>
             <div className="flex items-center">
-              <Mail className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
+              <Phone className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
               <div>
-                <strong className="block">E-mail:</strong>
-                <a href="mailto:contato@tagisclinic.com.br" className="hover:text-primary">contato@tagisclinic.com.br</a>
+                <strong className="block">Telefone Fixo:</strong>
+                <a href="tel:+554830353377" className="hover:text-primary">(48) 3035-3377</a>
               </div>
             </div>
              <div className="flex items-start">

@@ -19,14 +19,14 @@ export default function ContactHome() {
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="flex flex-col items-center">
-            <Phone className="h-12 w-12 mb-3 text-accent" />
-            <h3 className="text-xl font-semibold mb-1 font-headline">Telefone Fixo</h3>
-            <a href="tel:+554830353377" className="text-lg hover:underline">(48) 3035-3377</a>
-          </div>
-          <div className="flex flex-col items-center">
             <MessageSquare className="h-12 w-12 mb-3 text-accent" />
             <h3 className="text-xl font-semibold mb-1 font-headline">WhatsApp</h3>
             <a href={`https://wa.me/5548991936045?text=${encodeURIComponent('Olá! Vim através do site e gostaria de mais informações.')}`} target="_blank" rel="noopener noreferrer" className="text-lg hover:underline">(48) 99193-6045</a>
+          </div>
+           <div className="flex flex-col items-center">
+            <Phone className="h-12 w-12 mb-3 text-accent" />
+            <h3 className="text-xl font-semibold mb-1 font-headline">Telefone Fixo</h3>
+            <a href="tel:+554830353377" className="text-lg hover:underline">(48) 3035-3377</a>
           </div>
           <div className="flex flex-col items-center">
             <MapPin className="h-12 w-12 mb-3 text-accent" />

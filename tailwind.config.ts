@@ -1,4 +1,6 @@
+
 import type {Config} from 'tailwindcss';
+import {fontFamily} from 'tailwindcss/defaultTheme';
 
 export default {
   darkMode: ['class'],
@@ -17,9 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Roboto', 'sans-serif'],
-        headline: ['Roboto', 'sans-serif'],
-        code: ['monospace'],
+        sans: ['Roboto', ...fontFamily.sans],
+        headline: ['Roboto', ...fontFamily.sans],
       },
       colors: {
         background: 'hsl(var(--background))',

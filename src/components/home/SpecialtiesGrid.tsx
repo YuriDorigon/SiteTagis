@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import { db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'; // Import getDocs instead of onSnapshot
 import type { Specialty } from '@/lib/types';
 
 export default function SpecialtiesGrid() {
@@ -17,20 +17,22 @@ export default function SpecialtiesGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const specialtiesCol = collection(db, 'specialties');
-    const q = query(specialtiesCol, orderBy('name'), limit(3));
+    const fetchSpecialties = async () => {
+      setLoading(true);
+      try {
+        const specialtiesCol = collection(db, 'specialties');
+        const q = query(specialtiesCol, orderBy('name'), limit(3));
+        const snapshot = await getDocs(q);
+        const fetchedSpecialties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
+        setSpecialties(fetchedSpecialties);
+      } catch (error) {
+        console.error("Error fetching homepage specialties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    const unsubscribe: Unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedSpecialties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
-      setSpecialties(fetchedSpecialties);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching homepage specialties with onSnapshot:", error);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    fetchSpecialties();
   }, []);
 
   return (

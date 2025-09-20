@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/adm/dashboard", label: "Painel Principal", icon: Home },
   { href: "/adm/dashboard/convenios", label: "Gerenciar Convênios", icon: ShieldCheck },
-  { href: "/adm/dashboard/doutores", label: "Gerenciar Corpo Clínico", icon: Users },
+  { href: "/adm/dashboard/corpo-clinico", label: "Gerenciar Corpo Clínico", icon: Users },
   { href: "/adm/dashboard/especialidades", label: "Gerenciar Especialidades", icon: Briefcase },
   { href: "/adm/dashboard/exames", label: "Gerenciar Exames", icon: ClipboardList },
   { href: "/adm/dashboard/depoimentos", label: "Gerenciar Depoimentos", icon: QuoteIcon },
@@ -47,7 +47,7 @@ export default function AdminSidebar() {
       <div>
         {/* Botão de Logout removido */}
         <p className="text-xs text-slate-400 mt-4 text-center">
-          Tagis Clinic Hub &copy; {new Date().getFullYear()}
+          Clinica Tagis &copy; {new Date().getFullYear()}
         </p>
       </div>
     </aside>

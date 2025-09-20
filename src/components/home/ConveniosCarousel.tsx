@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, Unsubscribe } from 'firebase/firestore'; // Import onSnapshot
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'; // Import getDocs instead of onSnapshot
 import type { Convenio } from '@/lib/types';
 
 export default function ConveniosCarousel() {
@@ -22,27 +22,29 @@ export default function ConveniosCarousel() {
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setLoading(true);
-    setError(null);
-    const conveniosCol = collection(db, 'convenios');
-    const q = query(conveniosCol, orderBy('name'), limit(10));
+    const fetchConvenios = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const conveniosCol = collection(db, 'convenios');
+        const q = query(conveniosCol, orderBy('name'), limit(10));
+        const snapshot = await getDocs(q);
 
-    // Use onSnapshot for real-time updates
-    const unsubscribe: Unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedConvenios = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Convenio));
-      setConvenios(fetchedConvenios);
-      setLoading(false);
-      if (fetchedConvenios.length === 0) {
-        console.log("Nenhum convênio encontrado para o carrossel da página inicial. Verifique as regras do Firestore para leitura pública da coleção 'convenios'.");
+        const fetchedConvenios = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Convenio));
+        setConvenios(fetchedConvenios);
+
+        if (fetchedConvenios.length === 0) {
+          console.log("Nenhum convênio encontrado para o carrossel da página inicial. Verifique as regras do Firestore para leitura pública da coleção 'convenios'.");
+        }
+      } catch (err: any) {
+        console.error("Error fetching convenios for carousel:", err);
+        setError(`Não foi possível carregar os convênios (Erro: ${err.message}). Por favor, verifique suas regras de segurança do Firestore para leitura pública da coleção 'convenios'.`);
+      } finally {
+        setLoading(false);
       }
-    }, (err: any) => {
-      console.error("Error fetching convenios for carousel with onSnapshot:", err);
-      setError(`Não foi possível carregar os convênios em tempo real (Erro: ${err.message}). Por favor, verifique suas regras de segurança do Firestore para leitura pública da coleção 'convenios'.`);
-      setLoading(false);
-    });
-
-    // Cleanup listener on component unmount
-    return () => unsubscribe();
+    };
+    
+    fetchConvenios();
   }, []);
 
   if (loading) {

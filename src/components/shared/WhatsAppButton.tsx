@@ -14,7 +14,7 @@ export default function WhatsAppButton({ phoneNumber, message = "Olá! Vim atrav
 
   return (
     <Button asChild {...props}>
-      <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+      <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Abrir conversa no WhatsApp">
         {children}
       </Link>
     </Button>

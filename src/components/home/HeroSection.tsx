@@ -13,9 +13,9 @@ export default function HeroSection() {
   return (
     <>
       <section
-        className="relative py-24 md:py-32 min-h-[60vh] lg:min-h-[70vh] flex flex-col justify-center items-center text-center text-primary-foreground bg-no-repeat"
+        className="relative py-24 md:py-32 min-h-[60vh] lg:min-h-[70vh] flex flex-col justify-center items-center text-center text-primary-foreground"
         style={{
-          backgroundImage: "url('/BGSITE.webp')",
+          backgroundImage: "url('/BGSITE.avif')",
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
         }}
