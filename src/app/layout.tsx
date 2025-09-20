@@ -1,3 +1,4 @@
+
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
@@ -10,10 +11,8 @@ import LgpdBanner from '@/components/layout/LgpdBanner';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
 const siteTitle = 'Tagis Medicina e Diagnóstico - São José - SC | Consultas e Exames';
-const siteDescription =
-  'Consultas e Exames em um Só Lugar! +30 Especialidades | +50 Tipos de Exames | +20 Convênios. Agende fácil pelo WhatsApp. Fones: (48) 3035-3377 / (48) 99193-6045.';
-const siteKeywords =
-  "clínica médica, são josé sc, exames, consultas, ortopedia, cardiologia, ginecologia, diagnóstico por imagem, tagis";
+const siteDescription = 'Consultas e Exames em um Só Lugar! +30 Especialidades | +50 Tipos de Exames | +20 Convênios. Agende fácil pelo WhatsApp. Fones: (48) 3035-3377 / (48) 99193-6045.';
+const siteKeywords = "clínica médica, são josé sc, exames, consultas, ortopedia, cardiologia, ginecologia, diagnóstico por imagem, tagis";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -60,19 +59,6 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   manifest: '/site.webmanifest',
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' }, // padrão moderno
-      { url: '/favicon.ico', type: 'image/x-icon' },  // fallback
-    ],
-    shortcut: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', type: 'image/x-icon' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png' }, // para iOS
-    ],
-  },
 };
 
 export const viewport: Viewport = {
@@ -80,22 +66,28 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
       <head>
-        {/* Fallback manual para navegadores antigos ou compatibilidade extra */}
+        {/* Favicon principal, priorizando o .ico */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Ícone SVG como alternativa de alta qualidade */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        {/* Ícone para dispositivos Apple */}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
         <Header />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow">
+          {children}
+        </main>
         <Footer />
         <FloatingWhatsAppButton phoneNumber="5548991936045" />
         <LgpdBanner />
