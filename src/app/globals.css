@@ -44,13 +44,13 @@
     --radius: 0.5rem; /* Modern, slightly sharper radius */
 
     /* Admin Sidebar Specific Theme Variables - Light Mode */
-    --sidebar-background: hsl(207 30% 97%); 
-    --sidebar-foreground: hsl(207 40% 25%); 
+    --sidebar-background: hsl(210 20% 12%); /* Darker slate/navy for sidebar */
+    --sidebar-foreground: hsl(210 20% 95%); /* Light text for sidebar */
     --sidebar-primary: hsl(207 100% 15%);    
     --sidebar-primary-foreground: hsl(0 0% 98%); 
-    --sidebar-accent: hsl(207 30% 92%);     
-    --sidebar-accent-foreground: hsl(207 100% 15%); 
-    --sidebar-border: hsl(207 20% 85%);     
+    --sidebar-accent: hsl(210 20% 22%);     /* Active/hover background */
+    --sidebar-accent-foreground: hsl(0 0% 100%); /* Active/hover text */
+    --sidebar-border: hsl(210 20% 25%);     
     --sidebar-ring: hsl(0 72% 51%);       
   }
 
@@ -90,13 +90,13 @@
     --chart-5: 207 50% 45%;
 
     /* Admin Sidebar Specific Theme Variables - Dark Mode */
-    --sidebar-background: hsl(207 25% 14%); 
-    --sidebar-foreground: hsl(210 30% 85%); 
+    --sidebar-background: hsl(210 20% 12%); 
+    --sidebar-foreground: hsl(210 20% 95%); 
     --sidebar-primary: hsl(207 80% 55%);    
     --sidebar-primary-foreground: hsl(207 100% 10%); 
-    --sidebar-accent: hsl(207 25% 20%);     
-    --sidebar-accent-foreground: hsl(207 80% 60%); 
-    --sidebar-border: hsl(207 20% 28%);     
+    --sidebar-accent: hsl(210 20% 22%);     
+    --sidebar-accent-foreground: hsl(0 0% 100%); 
+    --sidebar-border: hsl(210 20% 25%);     
     --sidebar-ring: hsl(0 72% 60%);       
   }
 }

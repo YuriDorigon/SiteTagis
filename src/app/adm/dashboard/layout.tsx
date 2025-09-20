@@ -15,7 +15,7 @@ export default function AdminDashboardLayout({
   return (
     <div className="flex min-h-screen">
       <AdminSidebar />
-      <main className="flex-1 p-8 ml-64"> {/* ml-64 for sidebar width */}
+      <main className="flex-1 p-8 md:ml-64"> {/* ml-64 for sidebar width */}
         {children}
       </main>
     </div>

@@ -76,8 +76,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={cn('scroll-smooth')}>
       <head>
+        {/* Favicon principal, priorizando o .ico */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Ícone SVG como alternativa de alta qualidade */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        {/* Ícone para dispositivos Apple */}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
