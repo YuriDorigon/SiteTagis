@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Regra Global: Por padrão, nega todas as leituras e escritas.
+    // As regras mais específicas abaixo irão sobrepor-se a esta.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // O site público precisa de ler documentos individuais para exibir detalhes
+    // (ex: página de um médico, lista de especialidades, etc.)
+    // Estas regras permitem a leitura de QUALQUER documento individualmente.
+    match /specialties/{docId} {
+      allow get: if true;
+      allow list, write: if true; // Permissão para o painel de administração
+    }
+
+    match /exams/{docId} {
+      allow get: if true;
+      allow list, write: if true; // Permissão para o painel de administração
+    }
+
+    match /doctors/{docId} {
+      allow get: if true;
+      allow list, write: if true; // Permissão para o painel de administração
+    }
+
+    match /convenios/{docId} {
+      allow get: if true;
+      allow list, write: if true; // Permissão para o painel de administração
+    }
+
+    match /testimonials/{docId} {
+      allow get: if true;
+      allow list, write: if true; // Permissão para o painel de administração
+    }
+  }
+}

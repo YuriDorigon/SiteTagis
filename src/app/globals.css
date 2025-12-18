@@ -7,41 +7,45 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* White */
-    --foreground: 207 40% 15%; /* Darker Navy for text on light backgrounds */
-    
+    /* Paleta Minimalista e Clínica */
+    --background: 0 0% 100%; /* Branco puro */
+    --foreground: 207 30% 25%; /* Cinza-azulado escuro para texto, mais suave que preto */
+
     --card: 0 0% 100%;
-    --card-foreground: 207 40% 15%; /* Darker Navy for text on cards */
+    --card-foreground: 207 30% 25%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 207 40% 15%; /* Darker Navy for text on popovers */
+    --popover-foreground: 207 30% 25%;
     
-    --primary: 207 100% 15%; /* Navy Blue (#003049) */
-    --primary-foreground: 0 0% 98%; /* Almost white for text on primary */
+    /* Azul escuro principal, usado em botões primários, cabeçalho e rodapé */
+    --primary: 207 100% 15%; /* Azul: #003049 */
+    --primary-foreground: 0 0% 98%; /* Texto branco sobre o azul */
+
+    /* Fundo secundário, um cinza muito claro para contraste suave */
+    --secondary: 210 40% 98%; /* Cinza claríssimo, quase branco */
+    --secondary-foreground: 207 30% 25%;
+
+    --muted: 210 40% 94%; /* Cinza um pouco mais escuro para elementos desativados */
+    --muted-foreground: 210 40% 55%; /* Texto para elementos muted */
     
-    --secondary: 210 40% 96.1%; /* Very Light Gray */
-    --secondary-foreground: 207 40% 15%; /* Darker Navy for text on secondary */
+    /* Cor de destaque (Accent) - O Vermelho, usado pontualmente para CTAs */
+    --accent: 0 72% 51%; /* Vermelho: #D62828 */
+    --accent-foreground: 0 0% 98%; /* Texto branco sobre o vermelho */
     
-    --muted: 210 40% 90%; /* Light Gray for muted backgrounds */
-    --muted-foreground: 210 40% 45%; /* Muted text color */
-    
-    --accent: 0 72% 51%; /* Soft Red (#D62828) */
-    --accent-foreground: 0 0% 98%; /* Almost white for text on accent */
-    
-    --destructive: 0 62.8% 30.6%; /* Darker Red for destructive elements */
+    --destructive: 0 63% 40%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 210 40% 89.8%; /* Light Gray Border */
-    --input: 210 40% 89.8%; /* Input border matching general border */
-    --ring: 0 72% 61%; /* Red for focus rings, matching accent */
+    --border: 210 40% 92%; /* Borda cinza claro */
+    --input: 210 40% 92%;
+    --ring: 207 80% 55%; /* Um azul mais vivo para anéis de foco (focus) */
 
-    --chart-1: 207 90% 55%; /* Variations of Primary and Accent */
+    --chart-1: 207 90% 55%;
     --chart-2: 0 70% 60%;
     --chart-3: 207 70% 45%;
     --chart-4: 0 60% 50%;
     --chart-5: 207 50% 35%;
     
-    --radius: 0.5rem; /* Modern, slightly sharper radius */
+    --radius: 0.5rem;
 
     /* Admin Sidebar Specific Theme Variables - Light Mode */
     --sidebar-background: hsl(210 20% 12%); /* Darker slate/navy for sidebar */
@@ -55,33 +59,33 @@
   }
 
   .dark {
-    --background: 207 30% 12%; /* Dark Navy Blue */
-    --foreground: 0 0% 85%; /* Light Gray for text */
+    --background: 207 30% 12%; 
+    --foreground: 0 0% 85%;
     
-    --card: 207 30% 15%; /* Slightly lighter Dark Navy for cards */
-    --card-foreground: 0 0% 85%; /* Light Gray for text on cards */
+    --card: 207 30% 15%;
+    --card-foreground: 0 0% 85%;
     
     --popover: 207 30% 15%;
     --popover-foreground: 0 0% 85%;
     
-    --primary: 207 80% 55%; /* Lighter/Brighter Navy Blue for dark mode */
-    --primary-foreground: 207 100% 10%; /* Dark Navy text on Lighter Navy buttons */
+    --primary: 207 80% 55%; /* Azul mais claro para modo escuro */
+    --primary-foreground: 207 100% 10%;
     
-    --secondary: 207 30% 17%; /* Darker shade of Dark Navy for secondary elements */
-    --secondary-foreground: 0 0% 80%; /* Light Gray text on secondary */
+    --secondary: 207 30% 17%;
+    --secondary-foreground: 0 0% 80%;
     
-    --muted: 207 30% 22%; /* Muted Dark Navy */
-    --muted-foreground: 0 0% 65%; /* Muted light text */
+    --muted: 207 30% 22%;
+    --muted-foreground: 0 0% 65%;
     
-    --accent: 0 72% 60%; /* Slightly Brighter Soft Red for dark mode */
-    --accent-foreground: 0 0% 98%; /* Light text on accent */
+    --accent: 0 72% 60%; /* Vermelho mais claro para modo escuro */
+    --accent-foreground: 0 0% 98%;
     
     --destructive: 0 60% 50%; 
     --destructive-foreground: 0 0% 98%;
     
-    --border: 207 30% 25%; /* Darker border */
+    --border: 207 30% 25%;
     --input: 207 30% 25%;
-    --ring: 0 72% 70%; /* Brighter Red for focus rings in dark mode */
+    --ring: 0 72% 70%;
 
     --chart-1: 207 70% 65%;
     --chart-2: 0 70% 70%;
@@ -104,6 +108,8 @@
 @layer base {
   html {
     font-size: 90%;
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
   }
   * {
     @apply border-border;
@@ -128,5 +134,25 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-primary; 
+  }
+
+  section {
+    scroll-snap-align: start;
+    scroll-margin-top: 80px; /* Altura do Header */
+  }
+
+  /* Animações e Interações */
+  .btn-hover-scale {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+  .btn-hover-scale:hover {
+    @apply scale-105;
+  }
+
+  .card-hover-lift {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  .card-hover-lift:hover {
+    @apply -translate-y-2 shadow-xl;
   }
 }

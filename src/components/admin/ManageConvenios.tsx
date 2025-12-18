@@ -1,4 +1,4 @@
-// src/components/admin/ManageConvenios.tsx
+
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { db } from '@/lib/firebase';
+import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import type { Convenio } from '@/lib/types';
 import { getCroppedImg } from '@/lib/imageUtils'; // Import the utility function
@@ -24,6 +24,7 @@ const OUTPUT_WIDTH = 300;
 const OUTPUT_HEIGHT = 150;
 
 export default function ManageConvenios() {
+  const firestore = useFirestore();
   const [convenios, setConvenios] = useState<Convenio[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentConvenio, setCurrentConvenio] = useState<Partial<ConvenioFormData & { id?: string }>>({ name: '', logoUrl: '' });
@@ -39,16 +40,18 @@ export default function ManageConvenios() {
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchConvenios = async () => {
+    if (!firestore) return;
     setIsLoading(true);
     try {
-      const conveniosCol = collection(db, 'convenios');
+      const conveniosCol = collection(firestore, 'convenios');
       const q = query(conveniosCol, orderBy('name'));
       const convenioSnapshot = await getDocs(q);
       const conveniosList = convenioSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Convenio));
       setConvenios(conveniosList);
-    } catch (error) {
-      console.error("Error fetching convenios:", error);
-      toast({ title: 'Erro ao Carregar', description: 'Não foi possível buscar os convênios.', variant: 'destructive' });
+    } catch (error: any) {
+        const contextualError = new FirestorePermissionError({ operation: 'list', path: 'convenios' });
+        errorEmitter.emit('permission-error', contextualError);
+        toast({ title: 'Erro ao Carregar', description: 'Você não tem permissão para listar os convênios.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +59,7 @@ export default function ManageConvenios() {
 
   useEffect(() => {
     fetchConvenios();
-  }, []);
+  }, [firestore]);
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     imgRef.current = e.currentTarget;
@@ -122,22 +125,28 @@ export default function ManageConvenios() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!firestore) return;
     if (confirm('Tem certeza que deseja excluir este convênio?')) {
       setIsSaving(true);
-      try {
-        await deleteDoc(doc(db, 'convenios', id));
-        toast({ title: 'Convênio Excluído', description: 'O convênio foi removido com sucesso.' });
-        fetchConvenios();
-      } catch (error) {
-        console.error("Error deleting convenio:", error);
-        toast({ title: 'Erro ao Excluir', description: 'Não foi possível remover o convênio.', variant: 'destructive' });
-      } finally {
-        setIsSaving(false);
-      }
+      const convenioDocRef = doc(firestore, 'convenios', id);
+      deleteDoc(convenioDocRef)
+        .then(() => {
+          toast({ title: 'Convênio Excluído', description: 'O convênio foi removido com sucesso.' });
+          fetchConvenios();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'delete', path: convenioDocRef.path });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Excluir', description: 'Você não tem permissão para excluir este convênio.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 
   const handleSave = async () => {
+    if (!firestore) return;
     if (!currentConvenio || !currentConvenio.name) {
       toast({ title: 'Erro', description: 'Nome do convênio é obrigatório.', variant: 'destructive' });
       return;
@@ -160,23 +169,40 @@ export default function ManageConvenios() {
       logoUrl: currentConvenio.logoUrl || '',
     };
 
-    try {
-      if (isEditing && currentConvenio.id) {
-        const convenioDocRef = doc(db, 'convenios', currentConvenio.id);
-        await updateDoc(convenioDocRef, dataToSave);
-        toast({ title: 'Convênio Atualizado', description: `${currentConvenio.name} foi atualizado com sucesso.` });
-      } else {
-        await addDoc(collection(db, 'convenios'), dataToSave);
-        toast({ title: 'Convênio Adicionado', description: `${currentConvenio.name} foi adicionado com sucesso.` });
-      }
-      setIsDialogOpen(false);
-      resetDialogState();
-      fetchConvenios();
-    } catch (error) {
-      console.error("Error saving convenio:", error);
-      toast({ title: 'Erro ao Salvar', description: 'Não foi possível salvar o convênio.', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
+    if (isEditing && currentConvenio.id) {
+      const convenioDocRef = doc(firestore, 'convenios', currentConvenio.id);
+      updateDoc(convenioDocRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Convênio Atualizado', description: `${currentConvenio.name} foi atualizado com sucesso.` });
+          setIsDialogOpen(false);
+          resetDialogState();
+          fetchConvenios();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'update', path: convenioDocRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Salvar', description: 'Você não tem permissão para atualizar este convênio.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
+    } else {
+      const conveniosColRef = collection(firestore, 'convenios');
+      addDoc(conveniosColRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Convênio Adicionado', description: `${currentConvenio.name} foi adicionado com sucesso.` });
+          setIsDialogOpen(false);
+          resetDialogState();
+          fetchConvenios();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'create', path: conveniosColRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Adicionar', description: 'Você não tem permissão para adicionar um novo convênio.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 

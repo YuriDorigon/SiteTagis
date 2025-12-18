@@ -18,6 +18,7 @@ const navLinks = [
   { href: '/convenios', label: 'Convênios' },
   { href: '/corpo-clinico', label: 'Corpo Clínico' },
   { href: '/contato', label: 'Contato' },
+  { href: '/trabalhe-conosco', label: 'Trabalhe Conosco' },
 ];
 
 export default function Header() {

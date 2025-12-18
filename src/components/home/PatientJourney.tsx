@@ -10,6 +10,7 @@ import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import { staticPatientJourneySteps } from '@/lib/types';
 import type { PatientJourneyStep } from '@/lib/types';
 import ExamResultsModal from '@/components/shared/ExamResultsModal';
+import { cn } from '@/lib/utils';
 
 export default function PatientJourney() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,10 +44,16 @@ export default function PatientJourney() {
           <SectionTitle
             title="Central do Paciente: Sua Jornada Conosco"
             subtitle="Acompanhe cada passo do seu atendimento de forma clara e simples."
+            data-aos="fade-up"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {staticPatientJourneySteps.map((step) => (
-              <Card key={step.id} className="flex flex-col text-center items-center shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
+            {staticPatientJourneySteps.map((step, index) => (
+              <Card 
+                key={step.id} 
+                className={cn("flex flex-col text-center items-center shadow-md card-hover-lift")}
+                data-aos="fade-up"
+                data-aos-delay={100 * index}
+              >
                 <CardHeader className="items-center">
                   <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <LucideIconRenderer name={step.iconName} className="h-10 w-10 text-primary" />
@@ -60,8 +67,8 @@ export default function PatientJourney() {
                   {step.buttonText && step.buttonLink && (
                     <Button
                       size="lg"
-                      variant={step.buttonVariant || 'default'}
-                      className="w-full"
+                      variant={step.id === 'agendamento' ? 'default' : 'outline'}
+                      className="w-full btn-hover-scale"
                       onClick={() => {
                         if (step.id === 'resultados' && step.buttonLink === '#') {
                           handleStepButtonClick(step);

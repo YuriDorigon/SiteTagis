@@ -1,5 +1,6 @@
 // src/app/adm/dashboard/layout.tsx
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import { FirebaseClientProvider } from '@/firebase';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,11 +14,13 @@ export default function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <main className="flex-1 p-8 md:ml-64"> {/* ml-64 for sidebar width */}
-        {children}
-      </main>
-    </div>
+    <FirebaseClientProvider>
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <main className="flex-1 p-8 md:ml-64"> {/* ml-64 for sidebar width */}
+          {children}
+        </main>
+      </div>
+    </FirebaseClientProvider>
   );
 }

@@ -1,4 +1,4 @@
-// src/components/admin/ManageTestimonials.tsx
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -10,11 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { PlusCircle, Edit3, Trash2, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { db } from '@/lib/firebase';
+import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import type { Testimonial, TestimonialFormData } from '@/lib/types';
 
 export default function ManageTestimonials() {
+  const firestore = useFirestore();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState<Partial<TestimonialFormData & { id?: string }>>({ name: '', quote: '' });
@@ -25,16 +26,18 @@ export default function ManageTestimonials() {
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchTestimonials = async () => {
+    if (!firestore) return;
     setIsLoading(true);
     try {
-      const testimonialsCol = collection(db, 'testimonials');
+      const testimonialsCol = collection(firestore, 'testimonials');
       const q = query(testimonialsCol, orderBy('name'));
       const testimonialSnapshot = await getDocs(q);
       const testimonialsList = testimonialSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Testimonial));
       setTestimonials(testimonialsList);
-    } catch (error) {
-      console.error("Error fetching testimonials:", error);
-      toast({ title: 'Erro ao Carregar', description: 'Não foi possível buscar os depoimentos.', variant: 'destructive' });
+    } catch (error: any) {
+      const contextualError = new FirestorePermissionError({ operation: 'list', path: 'testimonials' });
+      errorEmitter.emit('permission-error', contextualError);
+      toast({ title: 'Erro ao Carregar', description: 'Você não tem permissão para listar os depoimentos.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +45,7 @@ export default function ManageTestimonials() {
 
   useEffect(() => {
     fetchTestimonials();
-  }, []);
+  }, [firestore]);
 
   const resetForm = () => {
     setCurrentTestimonial({ name: '', quote: '' });
@@ -61,22 +64,28 @@ export default function ManageTestimonials() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!firestore) return;
     if (confirm('Tem certeza que deseja excluir este depoimento?')) {
       setIsSaving(true);
-      try {
-        await deleteDoc(doc(db, 'testimonials', id));
-        toast({ title: 'Depoimento Excluído', description: 'O depoimento foi removido com sucesso.' });
-        fetchTestimonials();
-      } catch (error) {
-        console.error("Error deleting testimonial:", error);
-        toast({ title: 'Erro ao Excluir', description: 'Não foi possível remover o depoimento.', variant: 'destructive' });
-      } finally {
-        setIsSaving(false);
-      }
+      const testimonialDocRef = doc(firestore, 'testimonials', id);
+      deleteDoc(testimonialDocRef)
+        .then(() => {
+          toast({ title: 'Depoimento Excluído', description: 'O depoimento foi removido com sucesso.' });
+          fetchTestimonials();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'delete', path: testimonialDocRef.path });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Excluir', description: 'Você não tem permissão para excluir este depoimento.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 
   const handleSave = async () => {
+    if (!firestore) return;
     if (!currentTestimonial || !currentTestimonial.name || !currentTestimonial.quote) {
       toast({ title: 'Erro de Validação', description: 'Nome e Depoimento são obrigatórios.', variant: 'destructive' });
       return;
@@ -88,23 +97,40 @@ export default function ManageTestimonials() {
       quote: currentTestimonial.quote,
     };
 
-    try {
-      if (isEditing && currentTestimonial.id) {
-        const testimonialDocRef = doc(db, 'testimonials', currentTestimonial.id);
-        await updateDoc(testimonialDocRef, dataToSave);
-        toast({ title: 'Depoimento Atualizado', description: `O depoimento de ${currentTestimonial.name} foi atualizado.` });
-      } else {
-        await addDoc(collection(db, 'testimonials'), dataToSave);
-        toast({ title: 'Depoimento Adicionado', description: `O depoimento de ${currentTestimonial.name} foi adicionado.` });
-      }
-      setIsDialogOpen(false);
-      resetForm();
-      fetchTestimonials();
-    } catch (error) {
-      console.error("Error saving testimonial:", error);
-      toast({ title: 'Erro ao Salvar', description: 'Não foi possível salvar o depoimento.', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
+    if (isEditing && currentTestimonial.id) {
+      const testimonialDocRef = doc(firestore, 'testimonials', currentTestimonial.id);
+      updateDoc(testimonialDocRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Depoimento Atualizado', description: `O depoimento de ${currentTestimonial.name} foi atualizado.` });
+          setIsDialogOpen(false);
+          resetForm();
+          fetchTestimonials();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'update', path: testimonialDocRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Salvar', description: 'Você não tem permissão para atualizar este depoimento.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
+    } else {
+      const testimonialsColRef = collection(firestore, 'testimonials');
+      addDoc(testimonialsColRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Depoimento Adicionado', description: `O depoimento de ${currentTestimonial.name} foi adicionado.` });
+          setIsDialogOpen(false);
+          resetForm();
+          fetchTestimonials();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'create', path: testimonialsColRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Adicionar', description: 'Você não tem permissão para adicionar um depoimento.', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 

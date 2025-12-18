@@ -2,34 +2,24 @@
 import SectionTitle from '@/components/shared/SectionTitle';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import type { Specialty } from '@/lib/types';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-// Fetch data on the server
-async function getSpecialtiesFromFirestore(): Promise<Specialty[]> {
+// Fetch data from the local JSON file
+async function getSpecialtiesData(): Promise<Specialty[]> {
   try {
-    const specialtiesCol = collection(db, 'specialties');
-    const q = query(specialtiesCol, orderBy('name'));
-    const specialtySnapshot = await getDocs(q);
-    const specialtyList = specialtySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        name: data.name || 'Nome Indisponível',
-        iconName: data.iconName || 'HelpCircle',
-        description: data.description || 'Descrição indisponível.',
-      } as Specialty;
-    });
-    return specialtyList;
+    const filePath = path.join(process.cwd(), 'src', 'lib', 'data', 'specialties.json');
+    const jsonData = await fs.readFile(filePath, 'utf8');
+    return JSON.parse(jsonData);
   } catch (error) {
-    console.error("Error fetching specialties from Firestore:", error);
+    console.error("Error reading specialties.json:", error);
     return []; // Return empty array on error
   }
 }
 
 export default async function EspecialidadesPage() {
-  const specialties = await getSpecialtiesFromFirestore();
+  const specialties = await getSpecialtiesData();
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">

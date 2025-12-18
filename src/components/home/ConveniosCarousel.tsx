@@ -9,85 +9,28 @@ import ConvenioCard from '@/components/convenios/ConvenioCard';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'; // Import getDocs instead of onSnapshot
 import type { Convenio } from '@/lib/types';
 
-export default function ConveniosCarousel() {
+interface ConveniosCarouselProps {
+  initialConvenios: Convenio[];
+}
+
+export default function ConveniosCarousel({ initialConvenios }: ConveniosCarouselProps) {
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
-  const [convenios, setConvenios] = React.useState<Convenio[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    const fetchConvenios = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const conveniosCol = collection(db, 'convenios');
-        const q = query(conveniosCol, orderBy('name'), limit(10));
-        const snapshot = await getDocs(q);
-
-        const fetchedConvenios = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Convenio));
-        setConvenios(fetchedConvenios);
-
-        if (fetchedConvenios.length === 0) {
-          console.log("Nenhum convênio encontrado para o carrossel da página inicial. Verifique as regras do Firestore para leitura pública da coleção 'convenios'.");
-        }
-      } catch (err: any) {
-        console.error("Error fetching convenios for carousel:", err);
-        setError(`Não foi possível carregar os convênios (Erro: ${err.message}). Por favor, verifique suas regras de segurança do Firestore para leitura pública da coleção 'convenios'.`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchConvenios();
-  }, []);
-
-  if (loading) {
+  if (!initialConvenios || initialConvenios.length === 0) {
     return (
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <SectionTitle
             title="Convênios Atendidos"
             subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
+            data-aos="fade-up"
           />
-          <div className="flex justify-center items-center h-20">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="ml-2 text-lg text-muted-foreground">Carregando convênios...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <SectionTitle
-            title="Convênios Atendidos"
-            subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
-          />
-          <p className="text-lg text-destructive bg-destructive/10 p-4 rounded-md">{error}</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (!convenios || convenios.length === 0) {
-    return (
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <SectionTitle
-            title="Convênios Atendidos"
-            subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
-          />
-          <p className="text-lg text-muted-foreground">Nenhum convênio para exibir no momento. Verifique os logs para mais detalhes.</p>
-           <div className="mt-12 text-center">
+          <p className="text-lg text-muted-foreground">Nenhum convênio para exibir no momento.</p>
+           <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="100">
             <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
               <Link href="/convenios">
                 Ver Todos os Convênios <ArrowRight className="ml-2 h-5 w-5" />
@@ -100,8 +43,8 @@ export default function ConveniosCarousel() {
   }
 
   const itemsPerViewLg = 4; 
-  const shouldShowNavButtons = convenios.length > itemsPerViewLg;
-  const shouldLoop = convenios.length > itemsPerViewLg; 
+  const shouldShowNavButtons = initialConvenios.length > itemsPerViewLg;
+  const shouldLoop = initialConvenios.length > itemsPerViewLg; 
 
   return (
     <section className="py-16 md:py-24 bg-secondary">
@@ -109,6 +52,7 @@ export default function ConveniosCarousel() {
         <SectionTitle
           title="Convênios Atendidos"
           subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
+          data-aos="fade-up"
         />
         <Carousel
           opts={{
@@ -119,9 +63,11 @@ export default function ConveniosCarousel() {
           className="w-full max-w-5xl mx-auto"
           onMouseEnter={plugin.current.stop}
           onMouseLeave={plugin.current.reset}
+          data-aos="fade-up"
+          data-aos-delay="200"
         >
           <CarouselContent className="-ml-4">
-            {convenios.map((convenio) => (
+            {initialConvenios.map((convenio) => (
               <CarouselItem key={convenio.id} className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                 <div className="p-1 h-full">
                   <ConvenioCard convenio={convenio} />
@@ -136,7 +82,7 @@ export default function ConveniosCarousel() {
             </>
           )}
         </Carousel>
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="300">
           <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
             <Link href="/convenios">
               Ver Todos os Convênios <ArrowRight className="ml-2 h-5 w-5" />

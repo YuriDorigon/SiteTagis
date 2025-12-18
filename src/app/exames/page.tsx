@@ -3,34 +3,25 @@ import SectionTitle from '@/components/shared/SectionTitle';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import ExamResultsButton from '@/components/exames/ExamResultsButton';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import type { Exam } from '@/lib/types';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-// Fetch data on the server
-async function getExamsFromFirestore(): Promise<Exam[]> {
+
+// Fetch data from the local JSON file
+async function getExamsData(): Promise<Exam[]> {
   try {
-    const examsCol = collection(db, 'exams');
-    const q = query(examsCol, orderBy('name'));
-    const examSnapshot = await getDocs(q);
-    const examList = examSnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        name: data.name || 'Nome Indisponível',
-        iconName: data.iconName || 'ClipboardList',
-        description: data.description || 'Descrição indisponível.',
-      } as Exam;
-    });
-    return examList;
+    const filePath = path.join(process.cwd(), 'src', 'lib', 'data', 'exams.json');
+    const jsonData = await fs.readFile(filePath, 'utf8');
+    return JSON.parse(jsonData);
   } catch (error) {
-    console.error("Error fetching exams from Firestore:", error);
+    console.error("Error reading exams.json:", error);
     return []; // Return empty array on error
   }
 }
 
 export default async function ExamesPage() {
-  const exams = await getExamsFromFirestore();
+  const exams = await getExamsData();
 
   return (
     <>

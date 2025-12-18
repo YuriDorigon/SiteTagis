@@ -1,4 +1,3 @@
-
 // src/components/home/AboutClinic.tsx
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
@@ -16,16 +15,20 @@ export default function AboutClinic() {
     <section className="py-16 md:py-24 bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative h-80 md:h-[450px] rounded-lg overflow-hidden shadow-lg group">
+          <div
+            className="relative h-80 md:h-[450px] rounded-lg overflow-hidden shadow-lg group"
+            data-aos="fade-right"
+            data-aos-duration="800"
+          >
             <Image
-              src="/sobre.avif"
+              src="/sobre.avif?v=2"
               alt="Interior da Clinica Tagis"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               data-ai-hint="clinic interior"
             />
           </div>
-          <div>
+          <div data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
             <SectionTitle
               title="Sobre a Clinica Tagis"
               subtitle="Cuidando da sua saúde com dedicação e tecnologia."
@@ -41,7 +44,13 @@ export default function AboutClinic() {
             </p>
             <ul className="space-y-3">
               {highlights.map((highlight, index) => (
-                <li key={index} className="flex items-center text-lg text-foreground">
+                <li 
+                  key={index} 
+                  className="flex items-center text-lg text-foreground"
+                  data-aos="fade-left"
+                  data-aos-duration="800"
+                  data-aos-delay={300 + index * 100}
+                >
                   <CheckCircle className="h-6 w-6 text-primary mr-3 flex-shrink-0" />
                   {highlight}
                 </li>

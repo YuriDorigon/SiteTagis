@@ -1,4 +1,4 @@
-// src/components/admin/ManageSpecialties.tsx
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -11,14 +11,15 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { PlusCircle, Edit3, Trash2, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import type { Specialty } from '@/lib/types';
 
 // Define a type for the form data, excluding 'id' for new entries
 type SpecialtyFormData = Omit<Specialty, 'id'>;
 
 export default function ManageSpecialties() {
+  const firestore = useFirestore();
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentSpecialty, setCurrentSpecialty] = useState<Partial<SpecialtyFormData & { id?: string }>>({ name: '', iconName: 'HelpCircle', description: '' });
@@ -28,16 +29,18 @@ export default function ManageSpecialties() {
   const { toast } = useToast();
 
   const fetchSpecialties = async () => {
+    if (!firestore) return;
     setIsLoading(true);
     try {
-      const specialtiesCol = collection(db, 'specialties');
+      const specialtiesCol = collection(firestore, 'specialties');
       const q = query(specialtiesCol, orderBy('name'));
       const specialtySnapshot = await getDocs(q);
       const specialtiesList = specialtySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
       setSpecialties(specialtiesList);
-    } catch (error) {
-      console.error("Error fetching specialties:", error);
-      toast({ title: 'Erro ao Carregar', description: 'Não foi possível buscar as especialidades.', variant: 'destructive' });
+    } catch (error: any) {
+      const contextualError = new FirestorePermissionError({ operation: 'list', path: 'specialties' });
+      errorEmitter.emit('permission-error', contextualError);
+      toast({ title: 'Erro ao Carregar', description: 'Você não tem permissão para listar as especialidades.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +48,7 @@ export default function ManageSpecialties() {
 
   useEffect(() => {
     fetchSpecialties();
-  }, []);
+  }, [firestore]);
 
   const openDialogForNew = () => {
     setCurrentSpecialty({ name: '', iconName: 'HelpCircle', description: '' });
@@ -60,19 +63,26 @@ export default function ManageSpecialties() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!firestore) return;
     if (confirm('Tem certeza que deseja excluir esta especialidade? Esta ação não pode ser desfeita.')) {
-      try {
-        await deleteDoc(doc(db, 'specialties', id));
-        toast({ title: 'Especialidade Excluída', description: 'A especialidade foi removida com sucesso.' });
-        fetchSpecialties(); // Refresh list
-      } catch (error) {
-        console.error("Error deleting specialty:", error);
-        toast({ title: 'Erro ao Excluir', description: 'Não foi possível remover a especialidade.', variant: 'destructive' });
-      }
+      setIsSaving(true);
+      const specialtyDocRef = doc(firestore, 'specialties', id);
+      deleteDoc(specialtyDocRef)
+        .then(() => {
+          toast({ title: 'Especialidade Excluída', description: 'A especialidade foi removida com sucesso.' });
+          fetchSpecialties(); // Refresh list
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'delete', path: specialtyDocRef.path });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Excluir', description: 'Você não tem permissão para excluir esta especialidade.', variant: 'destructive' });
+        })
+        .finally(() => setIsSaving(false));
     }
   };
 
   const handleSave = async () => {
+    if (!firestore) return;
     if (!currentSpecialty || !currentSpecialty.name || !currentSpecialty.iconName || !currentSpecialty.description) {
       toast({ title: 'Erro de Validação', description: 'Nome, Nome do Ícone e Descrição são obrigatórios.', variant: 'destructive' });
       return;
@@ -83,27 +93,38 @@ export default function ManageSpecialties() {
       name: currentSpecialty.name,
       iconName: currentSpecialty.iconName,
       description: currentSpecialty.description,
-      // Add timestamp for creation/update if needed
-      // lastUpdated: serverTimestamp(),
     };
 
-    try {
-      if (isEditing && currentSpecialty.id) {
-        const specialtyDocRef = doc(db, 'specialties', currentSpecialty.id);
-        await updateDoc(specialtyDocRef, dataToSave);
-        toast({ title: 'Especialidade Atualizada', description: `${currentSpecialty.name} foi atualizada com sucesso.` });
-      } else {
-        await addDoc(collection(db, 'specialties'), dataToSave);
-        toast({ title: 'Especialidade Adicionada', description: `${currentSpecialty.name} foi adicionada com sucesso.` });
-      }
-      setIsDialogOpen(false);
-      setCurrentSpecialty({ name: '', iconName: 'HelpCircle', description: '' });
-      fetchSpecialties(); // Refresh list
-    } catch (error) {
-      console.error("Error saving specialty:", error);
-      toast({ title: 'Erro ao Salvar', description: 'Não foi possível salvar a especialidade.', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
+    if (isEditing && currentSpecialty.id) {
+      const specialtyDocRef = doc(firestore, 'specialties', currentSpecialty.id);
+      updateDoc(specialtyDocRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Especialidade Atualizada', description: `${currentSpecialty.name} foi atualizada com sucesso.` });
+          setIsDialogOpen(false);
+          setCurrentSpecialty({ name: '', iconName: 'HelpCircle', description: '' });
+          fetchSpecialties();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'update', path: specialtyDocRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Salvar', description: 'Você não tem permissão para atualizar esta especialidade.', variant: 'destructive' });
+        })
+        .finally(() => setIsSaving(false));
+    } else {
+      const specialtiesColRef = collection(firestore, 'specialties');
+      addDoc(specialtiesColRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Especialidade Adicionada', description: `${currentSpecialty.name} foi adicionada com sucesso.` });
+          setIsDialogOpen(false);
+          setCurrentSpecialty({ name: '', iconName: 'HelpCircle', description: '' });
+          fetchSpecialties();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'create', path: specialtiesColRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Adicionar', description: 'Você não tem permissão para adicionar uma especialidade.', variant: 'destructive' });
+        })
+        .finally(() => setIsSaving(false));
     }
   };
   

@@ -1,59 +1,41 @@
 // src/components/home/SpecialtiesGrid.tsx
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
-import { db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'; // Import getDocs instead of onSnapshot
 import type { Specialty } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
-export default function SpecialtiesGrid() {
-  const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [loading, setLoading] = useState(true);
+interface SpecialtiesGridProps {
+  initialSpecialties: Specialty[];
+}
 
-  useEffect(() => {
-    const fetchSpecialties = async () => {
-      setLoading(true);
-      try {
-        const specialtiesCol = collection(db, 'specialties');
-        const q = query(specialtiesCol, orderBy('name'), limit(3));
-        const snapshot = await getDocs(q);
-        const fetchedSpecialties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
-        setSpecialties(fetchedSpecialties);
-      } catch (error) {
-        console.error("Error fetching homepage specialties:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchSpecialties();
-  }, []);
-
+export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridProps) {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <SectionTitle
           title="Nossas Especialidades"
           subtitle="Ampla gama de especialidades médicas para cuidar de você e sua família."
+          data-aos="fade-up"
         />
-        {loading ? (
-          <div className="flex justify-center items-center h-48">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="ml-2 text-lg text-muted-foreground">Carregando especialidades...</p>
-          </div>
-        ) : specialties.length > 0 ? (
+        {initialSpecialties.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {specialties.map((specialty) => (
-              <Card key={specialty.id} className="flex flex-col text-center items-center shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
+            {initialSpecialties.map((specialty, index) => (
+              <Card
+                key={specialty.id}
+                className={cn("flex flex-col text-center items-center shadow-md bg-background card-hover-lift h-full")}
+                data-aos="fade-up"
+                data-aos-delay={100 * index}
+              >
                 <CardHeader className="items-center">
-                  <div className="p-4 bg-accent/10 rounded-full mb-4">
-                    <LucideIconRenderer name={specialty.iconName} className="h-10 w-10 text-accent" />
+                  <div className="p-4 bg-primary/10 rounded-full mb-4">
+                    <LucideIconRenderer name={specialty.iconName} className="h-10 w-10 text-primary" />
                   </div>
                   <CardTitle className="text-xl font-semibold font-headline">{specialty.name}</CardTitle>
                 </CardHeader>
@@ -68,8 +50,8 @@ export default function SpecialtiesGrid() {
         ) : (
           <p className="text-center text-lg text-muted-foreground">Nenhuma especialidade encontrada.</p>
         )}
-        <div className="mt-12 text-center">
-          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
+        <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="300">
+          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 btn-hover-scale">
             <Link href="/especialidades">
               Ver Todas Especialidades <ArrowRight className="ml-2 h-5 w-5" />
             </Link>

@@ -1,4 +1,4 @@
-// src/components/admin/ManageDoctors.tsx
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { db } from '@/lib/firebase';
+import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import type { Doctor, Specialty, Exam } from '@/lib/types';
 import { getCroppedImg } from '@/lib/imageUtils';
@@ -26,6 +26,7 @@ const DOCTOR_OUTPUT_WIDTH = 300;
 const DOCTOR_OUTPUT_HEIGHT = 300;
 
 export default function ManageDoctors() {
+  const firestore = useFirestore();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [allSpecialties, setAllSpecialties] = useState<Specialty[]>([]);
   const [allExams, setAllExams] = useState<Exam[]>([]);
@@ -43,22 +44,20 @@ export default function ManageDoctors() {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
 
   const fetchData = async () => {
+    if (!firestore) return;
     setIsLoading(true);
     try {
-      // Fetch Doctors
-      const doctorsCol = collection(db, 'doctors');
+      const doctorsCol = collection(firestore, 'doctors');
       const doctorsQuery = query(doctorsCol, orderBy('name'));
       const doctorsSnapshot = await getDocs(doctorsQuery);
       const doctorsList = doctorsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Doctor));
       
-      // Fetch Specialties
-      const specialtiesCol = collection(db, 'specialties');
+      const specialtiesCol = collection(firestore, 'specialties');
       const specialtiesQuery = query(specialtiesCol, orderBy('name'));
       const specialtiesSnapshot = await getDocs(specialtiesQuery);
       const specialtiesList = specialtiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
       
-      // Fetch Exams
-      const examsCol = collection(db, 'exams');
+      const examsCol = collection(firestore, 'exams');
       const examsQuery = query(examsCol, orderBy('name'));
       const examsSnapshot = await getDocs(examsQuery);
       const examsList = examsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Exam));
@@ -66,7 +65,6 @@ export default function ManageDoctors() {
       setAllSpecialties(specialtiesList);
       setAllExams(examsList);
 
-      // Augment doctors with names for display
       const specialtiesMap = new Map(specialtiesList.map(s => [s.id, s.name]));
       const examsMap = new Map(examsList.map(e => [e.id, e.name]));
 
@@ -77,9 +75,10 @@ export default function ManageDoctors() {
       }));
       setDoctors(augmentedDoctors);
 
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      toast({ title: 'Erro ao Carregar Dados', description: 'Não foi possível buscar os dados necessários.', variant: 'destructive' });
+    } catch (error: any) {
+      const contextualError = new FirestorePermissionError({ operation: 'list', path: 'doctors' });
+      errorEmitter.emit('permission-error', contextualError);
+      toast({ title: 'Erro ao Carregar Dados', description: 'Você não tem permissão para listar os dados.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +86,7 @@ export default function ManageDoctors() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [firestore]);
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     imgRef.current = e.currentTarget;
@@ -151,22 +150,28 @@ export default function ManageDoctors() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!firestore) return;
     if (confirm('Tem certeza que deseja excluir este membro do corpo clínico?')) {
       setIsSaving(true);
-      try {
-        await deleteDoc(doc(db, 'doctors', id));
-        toast({ title: 'Membro Excluído', description: 'O membro do corpo clínico foi removido com sucesso.' });
-        fetchData();
-      } catch (error) {
-        console.error("Error deleting member:", error);
-        toast({ title: 'Erro ao Excluir', variant: 'destructive' });
-      } finally {
-        setIsSaving(false);
-      }
+      const doctorDocRef = doc(firestore, 'doctors', id);
+      deleteDoc(doctorDocRef)
+        .then(() => {
+          toast({ title: 'Membro Excluído', description: 'O membro do corpo clínico foi removido com sucesso.' });
+          fetchData();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'delete', path: doctorDocRef.path });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Excluir', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 
   const handleSave = async () => {
+    if (!firestore) return;
     if (!currentDoctor || !currentDoctor.name || !currentDoctor.crm) {
       toast({ title: 'Erro de Validação', description: 'Nome e CRM são obrigatórios.', variant: 'destructive' });
       return;
@@ -188,23 +193,40 @@ export default function ManageDoctors() {
       imageUrl: currentDoctor.imageUrl || '',
     };
 
-    try {
-      if (isEditing && currentDoctor.id) {
-        const doctorDocRef = doc(db, 'doctors', currentDoctor.id);
-        await updateDoc(doctorDocRef, dataToSave);
-        toast({ title: 'Membro Atualizado', description: `${currentDoctor.name} foi atualizado com sucesso.` });
-      } else {
-        await addDoc(collection(db, 'doctors'), dataToSave);
-        toast({ title: 'Membro Adicionado', description: `${currentDoctor.name} foi adicionado com sucesso.` });
-      }
-      setIsDialogOpen(false);
-      resetDialogState();
-      fetchData();
-    } catch (error) {
-      console.error("Error saving member:", error);
-      toast({ title: 'Erro ao Salvar', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
+    if (isEditing && currentDoctor.id) {
+      const doctorDocRef = doc(firestore, 'doctors', currentDoctor.id);
+      updateDoc(doctorDocRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Membro Atualizado', description: `${currentDoctor.name} foi atualizado com sucesso.` });
+          setIsDialogOpen(false);
+          resetDialogState();
+          fetchData();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'update', path: doctorDocRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Salvar', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
+    } else {
+      const doctorsColRef = collection(firestore, 'doctors');
+      addDoc(doctorsColRef, dataToSave)
+        .then(() => {
+          toast({ title: 'Membro Adicionado', description: `${currentDoctor.name} foi adicionado com sucesso.` });
+          setIsDialogOpen(false);
+          resetDialogState();
+          fetchData();
+        })
+        .catch((error) => {
+          const contextualError = new FirestorePermissionError({ operation: 'create', path: doctorsColRef.path, requestResourceData: dataToSave });
+          errorEmitter.emit('permission-error', contextualError);
+          toast({ title: 'Erro ao Adicionar', variant: 'destructive' });
+        })
+        .finally(() => {
+          setIsSaving(false);
+        });
     }
   };
 

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Users, PlusCircle, Briefcase, ClipboardList, Loader2, Quote as QuoteIcon } from "lucide-react";
 import Link from "next/link";
-import { db } from '@/lib/firebase';
+import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { collection, getCountFromServer } from 'firebase/firestore';
 
 interface Stats {
@@ -18,6 +18,7 @@ interface Stats {
 }
 
 export default function AdminDashboard() {
+  const firestore = useFirestore();
   const [stats, setStats] = useState<Stats>({
     conveniosCount: 0,
     doctorsCount: 0,
@@ -28,39 +29,48 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!firestore) return;
+
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        const conveniosCol = collection(db, 'convenios');
-        const doctorsCol = collection(db, 'doctors');
-        const specialtiesCol = collection(db, 'specialties');
-        const examsCol = collection(db, 'exams');
-        const testimonialsCol = collection(db, 'testimonials');
-
-        const [conveniosSnap, doctorsSnap, specialtiesSnap, examsSnap, testimonialsSnap] = await Promise.all([
-          getCountFromServer(conveniosCol),
-          getCountFromServer(doctorsCol),
-          getCountFromServer(specialtiesCol),
-          getCountFromServer(examsCol),
-          getCountFromServer(testimonialsCol),
-        ]);
+        const collectionsToCount = [
+            { name: 'convenios' as const, stateKey: 'conveniosCount' as const },
+            { name: 'doctors' as const, stateKey: 'doctorsCount' as const },
+            { name: 'specialties' as const, stateKey: 'specialtiesCount' as const },
+            { name: 'exams' as const, stateKey: 'examsCount' as const },
+            { name: 'testimonials' as const, stateKey: 'testimonialsCount' as const },
+        ];
         
-        setStats({
-          conveniosCount: conveniosSnap.data().count,
-          doctorsCount: doctorsSnap.data().count,
-          specialtiesCount: specialtiesSnap.data().count,
-          examsCount: examsSnap.data().count,
-          testimonialsCount: testimonialsSnap.data().count,
-        });
+        const counts = await Promise.all(collectionsToCount.map(c => 
+            getCountFromServer(collection(firestore, c.name)).catch(error => {
+                const contextualError = new FirestorePermissionError({ operation: 'list', path: c.name });
+                errorEmitter.emit('permission-error', contextualError);
+                return null; // Return null on error to not break Promise.all
+            })
+        ));
+
+        const newStats = counts.reduce((acc, snapshot, index) => {
+            const { stateKey } = collectionsToCount[index];
+            if (snapshot) {
+                acc[stateKey] = snapshot.data().count;
+            }
+            return acc;
+        }, { ...stats });
+
+        setStats(newStats);
+
       } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
+        // This outer catch is a fallback, but individual errors are handled above.
+        const contextualError = new FirestorePermissionError({ operation: 'list', path: 'dashboard-collections' });
+        errorEmitter.emit('permission-error', contextualError);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchStats();
-  }, []);
+  }, [firestore]);
 
   const dashboardCards = [
     { title: "Total de Convênios", count: stats.conveniosCount, icon: ShieldCheck, link: "/adm/dashboard/convenios", description: "Convênios ativos cadastrados" },
@@ -78,21 +88,15 @@ export default function AdminDashboard() {
     { label: "Gerenciar Depoimentos", href: "/adm/dashboard/depoimentos" },
   ];
 
-  return (
-    <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-primary font-headline">Painel Administrativo</h1>
-
-      <div className="flex flex-wrap gap-4">
-        {managementButtons.map(btn => (
-          <Button asChild size="lg" key={btn.href}>
-            <Link href={btn.href}>
-              <PlusCircle className="mr-2 h-5 w-5" /> {btn.label}
-            </Link>
-          </Button>
-        ))}
-      </div>
-      
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <h1 className="text-4xl font-bold text-primary font-headline">Painel Administrativo</h1>
+        <div className="flex flex-wrap gap-4">
+            {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-12 bg-gray-200 rounded-md w-48 animate-pulse"></div>
+            ))}
+        </div>
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {[...Array(5)].map((_, i) => (
                 <Card key={i} className="shadow-md">
@@ -108,25 +112,41 @@ export default function AdminDashboard() {
                 </Card>
             ))}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {dashboardCards.map(card => (
-            <Card className="shadow-md" key={card.title}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg font-medium">{card.title}</CardTitle>
-                <card.icon className="h-6 w-6 text-primary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{card.count}</div>
-                <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
-                <Button asChild size="sm" className="mt-4">
-                  <Link href={card.link}>Ver Todos & Gerenciar</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      <h1 className="text-4xl font-bold text-primary font-headline">Painel Administrativo</h1>
+
+      <div className="flex flex-wrap gap-4">
+        {managementButtons.map(btn => (
+          <Button asChild size="lg" key={btn.href}>
+            <Link href={btn.href}>
+              <PlusCircle className="mr-2 h-5 w-5" /> {btn.label}
+            </Link>
+          </Button>
+        ))}
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {dashboardCards.map(card => (
+          <Card className="shadow-md" key={card.title}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">{card.title}</CardTitle>
+              <card.icon className="h-6 w-6 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{card.count}</div>
+              <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
+              <Button asChild size="sm" className="mt-4">
+                <Link href={card.link}>Ver Todos & Gerenciar</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
       
     </div>
   );

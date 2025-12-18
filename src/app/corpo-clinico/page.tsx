@@ -1,52 +1,33 @@
 // src/app/corpo-clinico/page.tsx
-"use client";
-
-import { useState, useEffect } from 'react';
 import DoctorsList from '@/components/doutores/DoctorsList';
 import SectionTitle from '@/components/shared/SectionTitle';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import type { Doctor, Specialty, Exam } from '@/lib/types';
-import { Loader2 } from 'lucide-react';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-export default function CorpoClinicoPage() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [exams, setExams] = useState<Exam[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+async function getCorpoClinicoData() {
+  try {
+    const dataDir = path.join(process.cwd(), 'src', 'lib', 'data');
+    const [doctorsData, specialtiesData, examsData] = await Promise.all([
+      fs.readFile(path.join(dataDir, 'doctors.json'), 'utf8'),
+      fs.readFile(path.join(dataDir, 'specialties.json'), 'utf8'),
+      fs.readFile(path.join(dataDir, 'exams.json'), 'utf8'),
+    ]);
+    
+    const doctors: Doctor[] = JSON.parse(doctorsData);
+    const specialties: Specialty[] = JSON.parse(specialtiesData);
+    const exams: Exam[] = JSON.parse(examsData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const doctorsCol = collection(db, 'doctors');
-        const doctorsQuery = query(doctorsCol, orderBy('name'));
-        const doctorSnapshot = await getDocs(doctorsQuery);
-        const doctorsList = doctorSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Doctor));
-        
-        const specialtiesCol = collection(db, 'specialties');
-        const specialtiesQuery = query(specialtiesCol, orderBy('name'));
-        const specialtySnapshot = await getDocs(specialtiesQuery);
-        const specialtiesList = specialtySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Specialty));
+    return { doctors, specialties, exams };
+  } catch (error) {
+    console.error("Error reading pre-build data for doctors page:", error);
+    return { doctors: [], specialties: [], exams: [] };
+  }
+}
 
-        const examsCol = collection(db, 'exams');
-        const examsQuery = query(examsCol, orderBy('name'));
-        const examSnapshot = await getDocs(examsQuery);
-        const examsList = examSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Exam));
-        
-        setDoctors(doctorsList);
-        setSpecialties(specialtiesList);
-        setExams(examsList);
 
-      } catch (error) {
-        console.error("Error fetching data for doctors page:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+export default async function CorpoClinicoPage() {
+  const { doctors, specialties, exams } = await getCorpoClinicoData();
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
@@ -54,10 +35,9 @@ export default function CorpoClinicoPage() {
         title="Corpo Clínico"
         subtitle="Conheça nossos profissionais especialistas, dedicados a oferecer o melhor atendimento para sua saúde."
       />
-      {isLoading ? (
+      {doctors.length === 0 && specialties.length === 0 && exams.length === 0 ? (
          <div className="flex justify-center items-center h-40">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <span className="ml-2">Carregando corpo clínico...</span>
+          <p className="text-center text-lg text-muted-foreground">Não foi possível carregar os dados do corpo clínico. Tente novamente mais tarde.</p>
         </div>
       ) : (
         <DoctorsList 

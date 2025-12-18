@@ -1,34 +1,24 @@
 // src/app/convenios/page.tsx
 import ConveniosList from '@/components/convenios/ConveniosList';
 import SectionTitle from '@/components/shared/SectionTitle';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import type { Convenio } from '@/lib/types';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-// Fetch data on the server
-async function getConveniosFromFirestore(): Promise<Convenio[]> {
+// Fetch data from the local JSON file
+async function getConveniosData(): Promise<Convenio[]> {
   try {
-    const conveniosCol = collection(db, 'convenios');
-    const q = query(conveniosCol, orderBy('name'));
-    const convenioSnapshot = await getDocs(q);
-    const convenioList = convenioSnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        name: data.name || 'Nome Indisponível',
-        logoUrl: data.logoUrl || 'https://placehold.co/150x80.png?text=Logo',
-      } as Convenio;
-    });
-    return convenioList;
+    const filePath = path.join(process.cwd(), 'src', 'lib', 'data', 'convenios.json');
+    const jsonData = await fs.readFile(filePath, 'utf8');
+    return JSON.parse(jsonData);
   } catch (error) {
-    console.error("Error fetching convenios from Firestore:", error);
-    // In a real app, you might want to log this to a monitoring service
+    console.error("Error reading convenios.json:", error);
     return []; // Return an empty array on error
   }
 }
 
 export default async function ConveniosPage() {
-  const convenios = await getConveniosFromFirestore();
+  const convenios = await getConveniosData();
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">

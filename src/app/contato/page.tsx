@@ -1,3 +1,4 @@
+
 // src/app/contato/page.tsx
 import SectionTitle from '@/components/shared/SectionTitle';
 import MapEmbed from '@/components/contact/MapEmbed';
@@ -11,7 +12,7 @@ export default function ContatoPage() {
   const clinicAddress = "Av. Ver. Walter Borges, 157 - Campinas, São José - SC, 88101-030";
   // O link do Google Maps para "Ver no mapa" continua dinâmico
   const encodedAddress = encodeURIComponent(clinicAddress);
-  const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.7975871311696!2d-48.61270462453663!3d-27.5998043762444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273625a2bae6b3%3A0xb22213c1823da2ba!2sTagis!5e0!3m2!1spt-BR!2sbr!4v1753309024664!5m2!1spt-BR!2sbr";
+  const mapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=-48.614910%2C-27.601550%2C-48.608750%2C-27.598050&layer=mapnik&marker=-27.599804,-48.612704`;
   const googleMapsLink = `https://maps.google.com/?q=${encodedAddress}`;
 
   return (
