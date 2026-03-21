@@ -21,7 +21,7 @@ export default function AboutClinic() {
             data-aos-duration="800"
           >
             <Image
-              src="/sobre.avif?v=2"
+              src="/sobre.avif"
               alt="Interior da Clinica Tagis"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
