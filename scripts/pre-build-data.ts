@@ -6,8 +6,9 @@ import { resolve } from 'path';
 import { promises as fs } from 'fs';
 import type { Specialty, Exam, Convenio, Testimonial, Doctor } from '@/lib/types';
 
-// Carrega as variáveis de ambiente do arquivo .env
-dotenv.config({ path: resolve(process.cwd(), '.env') });
+// Carrega as variáveis de ambiente do arquivo .env (sem sobrescrever vars do sistema/Vercel)
+dotenv.config({ path: resolve(process.cwd(), '.env.local'), override: false });
+dotenv.config({ path: resolve(process.cwd(), '.env'), override: false });
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
