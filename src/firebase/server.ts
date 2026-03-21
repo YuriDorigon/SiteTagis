@@ -5,9 +5,8 @@
 // NÃO adicione 'use client' aqui.
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, type Firestore } from 'firebase/firestore';
 
-// A configuração da Firebase está agora centralizada aqui.
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -15,23 +14,31 @@ export const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Validação das variáveis de ambiente
-if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-  throw new Error("As variáveis de ambiente do Firebase não estão configuradas. Verifique seu arquivo .env ou as configurações de ambiente do seu servidor.");
+// Não lançar erro no topo do módulo — isso quebra o pré-render do Next.js.
+// O erro acontece apenas quando getFirebaseApp() é chamado em runtime.
+function getFirebaseApp(): FirebaseApp {
+  if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+    throw new Error(
+      'As variáveis de ambiente do Firebase não estão configuradas. ' +
+      'Verifique seu arquivo .env ou as configurações de ambiente do servidor.'
+    );
+  }
+  if (!getApps().length) {
+    return initializeApp(firebaseConfig);
+  }
+  return getApp();
 }
 
-// Inicializa o Firebase de forma segura para o ambiente de servidor
-let app: FirebaseApp;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApp();
+function getDb(): Firestore {
+  return getFirestore(getFirebaseApp());
 }
 
-const db = getFirestore(app);
+// Exporta getters lazy para uso em componentes de servidor.
+export const app = { get instance() { return getFirebaseApp(); } };
+export const db = { get instance() { return getDb(); } };
 
-// Exporta a instância do Firestore para uso em componentes de servidor.
-export { app, db };
+// Exporta funções diretas para quem usa app/db diretamente
+export { getFirebaseApp, getDb };

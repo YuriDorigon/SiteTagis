@@ -3,6 +3,9 @@ import AdminSidebar from '@/components/admin/AdminSidebar';
 import { FirebaseClientProvider } from '@/firebase';
 import type { Metadata } from 'next';
 
+// Impede que o Next.js tente pré-renderizar estaticamente páginas que dependem do Firebase
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Dashboard Admin - Clinica Tagis',
   description: 'Painel de Controle Administrativo da Clinica Tagis',
