@@ -1,3 +1,28 @@
-// src/app/icon.tsx
-// Este ficheiro foi removido para melhorar a performance e estabilidade do servidor de desenvolvimento.
-// O Next.js irá procurar por um ficheiro estático /public/favicon.ico.
+import { ImageResponse } from 'next/og';
+
+export const size = { width: 32, height: 32 };
+export const contentType = 'image/png';
+
+export default function Icon() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#0a0a0a',
+          borderRadius: '50%',
+          color: '#c9a84c',
+          fontSize: 20,
+          fontWeight: 700,
+        }}
+      >
+        T
+      </div>
+    ),
+    { ...size }
+  );
+}
