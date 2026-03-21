@@ -24,6 +24,7 @@ export default function AboutClinic() {
               src="/sobre.avif"
               alt="Interior da Clinica Tagis"
               fill
+              unoptimized
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               data-ai-hint="clinic interior"
             />

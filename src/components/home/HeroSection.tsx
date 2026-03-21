@@ -25,6 +25,7 @@ export default function HeroSection() {
             fill
             priority // Important for LCP
             sizes="100vw"
+            unoptimized
             className="object-cover"
             style={{
                 objectPosition: 'right top', // Prioritizes the top right corner
