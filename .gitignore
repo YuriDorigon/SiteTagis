@@ -40,3 +40,4 @@ next-env.d.ts
 
 # generated data
 /src/lib/data
+*.reg
