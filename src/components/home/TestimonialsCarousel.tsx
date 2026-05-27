@@ -16,14 +16,13 @@ function TestimonialsCarouselComponent({ initialTestimonials }: TestimonialsCaro
   
   if (!initialTestimonials || initialTestimonials.length === 0) {
     return (
-       <section className="py-16 md:py-24 bg-background">
+       <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <SectionTitle
             title="O Que Nossos Pacientes Dizem"
-            subtitle="A satisfação de quem confia na Clinica Tagis."
-            data-aos="fade-up"
+            subtitle="Cuidamos de você com excelência."
           />
-          <p className="text-lg text-muted-foreground">Nenhum depoimento encontrado no momento.</p>
+          <p className="text-lg text-muted-foreground glass p-10 rounded-3xl">Nenhum depoimento encontrado.</p>
         </div>
       </section>
     )
@@ -33,47 +32,61 @@ function TestimonialsCarouselComponent({ initialTestimonials }: TestimonialsCaro
   const shouldLoop = initialTestimonials.length > itemsPerViewLg;
 
   return (
-    <section className="py-16 md:py-24 bg-background">
-      <div className="container mx-auto px-4 md:px-6">
-        <SectionTitle
-          title="O Que Nossos Pacientes Dizem"
-          subtitle="A satisfação de quem confia na Clinica Tagis."
-          data-aos="fade-up"
-        />
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-secondary/5 to-transparent -z-10"></div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="flex flex-col items-center mb-16" data-aos="fade-up">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20 mb-4 text-xs font-bold tracking-widest uppercase">
+            Satisfação do Paciente
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
+            Relatos de quem <span className="text-gradient">confia</span>
+          </h2>
+          <p className="text-foreground/60 text-center max-w-2xl text-lg font-medium">
+            Histórias reais de saúde e bem-estar proporcionadas pela equipe Clinica Tagis.
+          </p>
+        </div>
+
         <Carousel
           opts={{
             align: "start",
             loop: shouldLoop,
           }}
-          className="w-full max-w-4xl mx-auto"
+          className="w-full max-w-6xl mx-auto"
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          <CarouselContent>
+          <CarouselContent className="-ml-6">
             {initialTestimonials.map((testimonial) => (
-              <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-1 h-full">
-                  <Card className="h-full flex flex-col justify-between shadow-md p-6 bg-secondary/50">
-                    <CardContent className="flex flex-col items-center text-center p-0 flex-grow">
-                      <div className="text-accent mb-4">
-                        <QuoteIcon className="h-10 w-10" />
+              <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/3 pl-6">
+                <div className="h-full py-4">
+                  <Card className="group relative h-full flex flex-col justify-between border-none shadow-sm hover:shadow-2xl transition-all duration-500 rounded-[2.5rem] p-10 bg-white overflow-hidden hover:-translate-y-2">
+                    {/* Artistic Quote Background */}
+                    <QuoteIcon className="absolute -top-6 -left-6 h-32 w-32 text-primary/5 -rotate-12 transition-transform duration-500 group-hover:rotate-0 group-hover:text-secondary/5" />
+                    
+                    <CardContent className="flex flex-col items-center text-center p-0 flex-grow relative z-10">
+                      <div className="text-secondary mb-8 transition-transform duration-500 group-hover:scale-110">
+                        <QuoteIcon className="h-10 w-10 fill-secondary/20" />
                       </div>
-                      <blockquote className="text-lg italic text-foreground/90 mb-4 flex-grow">
+                      <blockquote className="text-lg font-medium text-foreground/70 mb-8 flex-grow leading-relaxed italic">
                         "{testimonial.quote}"
                       </blockquote>
-                      <p className="font-semibold text-primary font-headline mt-auto">{testimonial.name}</p>
+                      <div className="mt-auto pt-6 border-t border-primary/5 w-full">
+                        <p className="text-xl font-bold text-primary mb-1">{testimonial.name}</p>
+                        <p className="text-sm font-bold text-secondary/60 uppercase tracking-widest">Paciente</p>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          {shouldLoop && ( 
-            <>
-              <CarouselPrevious className="absolute left-[-20px] md:left-[-50px] top-1/2 -translate-y-1/2 hidden sm:inline-flex" />
-              <CarouselNext className="absolute right-[-20px] md:right-[-50px] top-1/2 -translate-y-1/2 hidden sm:inline-flex" />
-            </>
-          )}
+          <div className="flex justify-center gap-4 mt-12">
+            <CarouselPrevious className="relative translate-y-0 left-0 hover:bg-primary hover:text-white border-2 border-primary/10 transition-all duration-300" />
+            <CarouselNext className="relative translate-y-0 right-0 hover:bg-primary hover:text-white border-2 border-primary/10 transition-all duration-300" />
+          </div>
         </Carousel>
       </div>
     </section>

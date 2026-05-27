@@ -7,7 +7,7 @@ import { ShieldCheck, X } from 'lucide-react';
 
 const LGPD_COOKIE_KEY = 'lgpd_accepted';
 
-export default function LgpdBanner() {
+export default function LgpdBanner({ privacyEmail = 'privacidade@tagismd.com.br' }: { privacyEmail?: string }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -29,25 +29,30 @@ export default function LgpdBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full bg-secondary text-secondary-foreground p-4 shadow-lg z-50 border-t border-border">
-      <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center">
-            <ShieldCheck className="h-8 w-8 text-primary mr-3 flex-shrink-0" />
-            <p className="flex-grow text-sm text-foreground/80">
-            Requisições relacionadas à Lei Geral de Proteção de Dados (LGPD)? Entre em contato com o Encarregado de Dados da Tagis Medicina & Diagnóstico pelo e-mail: <a href="mailto:privacidade@tagismd.com.br" className="font-medium text-primary hover:underline">privacidade@tagismd.com.br</a> - veja nossa política ao{' '}
-            <a href="/lgpd.pdf" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">
-                clicar aqui!
+    <div className="fixed bottom-0 left-0 right-0 w-full bg-primary/95 text-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 border-t border-white/10 backdrop-blur-md overflow-hidden">
+      <div className="container mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-start min-w-0 w-full">
+          <ShieldCheck className="h-6 w-6 sm:h-8 sm:w-8 text-white/80 mr-3 flex-shrink-0 mt-0.5" />
+          <p className="text-xs sm:text-sm text-white/80 min-w-0">
+            Requisições relacionadas à Lei Geral de Proteção de Dados (LGPD)? Entre em contato com o Encarregado de Dados da Tagis pelo e-mail:{' '}
+            <a href={`mailto:${privacyEmail}`} className="font-bold text-white hover:underline break-all">
+              {privacyEmail}
+            </a>{' '}
+            — veja nossa{' '}
+            <a href="/lgpd.pdf" target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:underline">
+              política de privacidade
             </a>
-            </p>
+            .
+          </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-            <Button onClick={handleAccept} size="sm">
-                Estou ciente e aceito!
-            </Button>
-            <Button onClick={handleAccept} size="icon" variant="ghost">
-                <X className="h-5 w-5" />
-                <span className="sr-only">Fechar aviso de LGPD</span>
-            </Button>
+        <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end sm:justify-start">
+          <Button onClick={handleAccept} size="sm" className="bg-white text-primary hover:bg-white/90 font-bold border-none shadow-sm transition-all flex-1 sm:flex-none">
+            Estou ciente e aceito!
+          </Button>
+          <Button onClick={handleAccept} size="icon" variant="ghost" className="flex-shrink-0">
+            <X className="h-5 w-5" />
+            <span className="sr-only">Fechar aviso de LGPD</span>
+          </Button>
         </div>
       </div>
     </div>

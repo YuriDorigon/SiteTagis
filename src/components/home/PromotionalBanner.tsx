@@ -6,46 +6,44 @@ import { ArrowRight } from 'lucide-react';
 
 export default function PromotionalBanner() {
   return (
-    <section
-      className="relative py-16 md:py-20 bg-secondary"
-      data-aos="fade-up"
-    >
-      <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div className="max-w-3xl mx-auto">
-          <Badge
-            variant="destructive"
-            className="mb-4 text-base font-semibold py-1 px-4 shadow-lg"
+    <section className="relative py-24 bg-white overflow-hidden">
+      {/* Background Artistic Gradient */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="max-w-5xl mx-auto glass p-12 md:p-20 rounded-[3rem] border border-primary/5 text-center shadow-2xl">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20 mb-8 text-xs font-bold tracking-widest uppercase" data-aos="fade-up">
+            Oportunidade de Saúde
+          </div>
+          
+          <h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline mb-8 text-primary"
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            Preço Especial
-          </Badge>
-          <h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold font-headline mb-3 text-primary drop-shadow-md"
+            Sua saúde com valores que <span className="text-gradient">cabem no seu bolso</span>
+          </h2>
+          
+          <p 
+            className="text-xl md:text-2xl text-foreground/60 mb-12 max-w-3xl mx-auto font-medium leading-relaxed"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Consultas com valores que cabem no seu bolso
-          </h2>
-          <div 
-            className="text-lg md:text-xl text-foreground/80 mb-8 max-w-2xl mx-auto drop-shadow-sm"
-            data-aos="fade-up"
-            data-aos-delay="300"
-          >
-            Atendimento de alta qualidade, com a confiança e o cuidado que você merece, por um valor que você não espera.
-          </div>
+            Oferecemos atendimento de alta qualidade e tecnologia de ponta por um valor acessível. Porque cuidar de você não deve esperar.
+          </p>
+          
           <div
             data-aos="fade-up"
-            data-aos-delay="400"
+            data-aos-delay="300"
+            className="flex justify-center"
           >
             <WhatsAppButton
               phoneNumber="5548991936045"
               message="Olá! Vi a promoção no site e gostaria de agendar uma consulta."
-              variant="destructive"
-              size="lg"
-              className="text-base px-8 py-6 sm:text-lg sm:px-10 sm:py-7 shadow-xl transform hover:scale-105 transition-transform duration-300"
+              className="btn-premium-primary text-lg px-12 py-8"
             >
-              Agendar Consulta Agora <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6" />
+              Agendar Agora e Garantir Valor <ArrowRight className="ml-2 h-6 w-6" />
             </WhatsAppButton>
           </div>
         </div>

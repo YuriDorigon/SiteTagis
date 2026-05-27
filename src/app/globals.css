@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,152 +7,127 @@
 
 @layer base {
   :root {
-    /* Paleta Minimalista e Clínica */
-    --background: 0 0% 100%; /* Branco puro */
-    --foreground: 207 30% 25%; /* Cinza-azulado escuro para texto, mais suave que preto */
+    /* New Boutique Clinic Palette - Modern, Clean, Professional */
+    --background: 210 40% 99%; /* Very subtle off-white/blue */
+    --foreground: 222 47% 11%; /* Deep navy for text */
 
     --card: 0 0% 100%;
-    --card-foreground: 207 30% 25%;
+    --card-foreground: 222 47% 11%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 207 30% 25%;
+    --popover-foreground: 222 47% 11%;
     
-    /* Azul escuro principal, usado em botões primários, cabeçalho e rodapé */
-    --primary: 207 100% 15%; /* Azul: #003049 */
-    --primary-foreground: 0 0% 98%; /* Texto branco sobre o azul */
+    /* Primary: Sophisticated Deep Navy */
+    --primary: 222 47% 11%; /* #001B2E equivalent */
+    --primary-foreground: 180 20% 98%;
 
-    /* Fundo secundário, um cinza muito claro para contraste suave */
-    --secondary: 210 40% 98%; /* Cinza claríssimo, quase branco */
-    --secondary-foreground: 207 30% 25%;
+    /* Secondary: Soft Teal for a calming medical feel */
+    --secondary: 184 31% 23%; /* #006D77 base, adapted */
+    --secondary-foreground: 180 20% 98%;
 
-    --muted: 210 40% 94%; /* Cinza um pouco mais escuro para elementos desativados */
-    --muted-foreground: 210 40% 55%; /* Texto para elementos muted */
-    
-    /* Cor de destaque (Accent) - O Vermelho, usado pontualmente para CTAs */
-    --accent: 0 72% 51%; /* Vermelho: #D62828 */
-    --accent-foreground: 0 0% 98%; /* Texto branco sobre o vermelho */
-    
-    --destructive: 0 63% 40%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 210 40% 92%; /* Borda cinza claro */
-    --input: 210 40% 92%;
-    --ring: 207 80% 55%; /* Um azul mais vivo para anéis de foco (focus) */
+    /* Accent: Subtle Gold for a premium touch */
+    --accent: 46 65% 52%; /* #D4AF37 equivalent */
+    --accent-foreground: 222 47% 11%;
 
-    --chart-1: 207 90% 55%;
-    --chart-2: 0 70% 60%;
-    --chart-3: 207 70% 45%;
-    --chart-4: 0 60% 50%;
-    --chart-5: 207 50% 35%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
     
-    --radius: 0.5rem;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 184 31% 23%;
+    
+    --radius: 1rem;
 
-    /* Admin Sidebar Specific Theme Variables - Light Mode */
-    --sidebar-background: hsl(210 20% 12%); /* Darker slate/navy for sidebar */
-    --sidebar-foreground: hsl(210 20% 95%); /* Light text for sidebar */
-    --sidebar-primary: hsl(207 100% 15%);    
-    --sidebar-primary-foreground: hsl(0 0% 98%); 
-    --sidebar-accent: hsl(210 20% 22%);     /* Active/hover background */
-    --sidebar-accent-foreground: hsl(0 0% 100%); /* Active/hover text */
-    --sidebar-border: hsl(210 20% 25%);     
-    --sidebar-ring: hsl(0 72% 51%);       
+    /* Sidebar - Modern Slate */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 46 65% 52%;    
+    --sidebar-primary-foreground: 222 47% 11%; 
+    --sidebar-accent: 222 47% 18%;     
+    --sidebar-accent-foreground: 210 40% 98%; 
+    --sidebar-border: 222 47% 15%;     
+    --sidebar-ring: 46 65% 52%;       
   }
 
   .dark {
-    --background: 207 30% 12%; 
-    --foreground: 0 0% 85%;
+    --background: 222 47% 4%; 
+    --foreground: 210 40% 98%;
     
-    --card: 207 30% 15%;
-    --card-foreground: 0 0% 85%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
     
-    --popover: 207 30% 15%;
-    --popover-foreground: 0 0% 85%;
+    --popover: 222 47% 6%;
+    --popover-foreground: 210 40% 98%;
     
-    --primary: 207 80% 55%; /* Azul mais claro para modo escuro */
-    --primary-foreground: 207 100% 10%;
+    --primary: 184 31% 60%; 
+    --primary-foreground: 222 47% 4%;
     
-    --secondary: 207 30% 17%;
-    --secondary-foreground: 0 0% 80%;
+    --secondary: 222 47% 12%;
+    --secondary-foreground: 210 40% 98%;
     
-    --muted: 207 30% 22%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 222 47% 12%;
+    --muted-foreground: 215 20% 65%;
     
-    --accent: 0 72% 60%; /* Vermelho mais claro para modo escuro */
-    --accent-foreground: 0 0% 98%;
+    --accent: 46 65% 52%;
+    --accent-foreground: 222 47% 4%;
     
-    --destructive: 0 60% 50%; 
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 207 30% 25%;
-    --input: 207 30% 25%;
-    --ring: 0 72% 70%;
-
-    --chart-1: 207 70% 65%;
-    --chart-2: 0 70% 70%;
-    --chart-3: 207 60% 55%;
-    --chart-4: 0 60% 60%;
-    --chart-5: 207 50% 45%;
-
-    /* Admin Sidebar Specific Theme Variables - Dark Mode */
-    --sidebar-background: hsl(210 20% 12%); 
-    --sidebar-foreground: hsl(210 20% 95%); 
-    --sidebar-primary: hsl(207 80% 55%);    
-    --sidebar-primary-foreground: hsl(207 100% 10%); 
-    --sidebar-accent: hsl(210 20% 22%);     
-    --sidebar-accent-foreground: hsl(0 0% 100%); 
-    --sidebar-border: hsl(210 20% 25%);     
-    --sidebar-ring: hsl(0 72% 60%);       
+    --border: 222 47% 15%;
+    --input: 222 47% 15%;
+    --ring: 184 31% 60%;
   }
 }
 
 @layer base {
   html {
-    font-size: 90%;
-    scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
-  }
-  * {
-    @apply border-border;
+    @apply scroll-smooth;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
-  /* Custom scrollbar for a more modern look */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: 'Outfit', sans-serif;
+    @apply tracking-tight font-semibold;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-secondary/50; 
-    border-radius: 10px;
+}
+
+@layer components {
+  /* Premium Glassmorphism */
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-primary/70; 
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary; 
+  .dark .glass {
+    @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-xl;
   }
 
-  section {
-    scroll-snap-align: start;
-    scroll-margin-top: 80px; /* Altura do Header */
+  /* Sophisticated Gradients */
+  .bg-premium-gradient {
+    background: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(184 31% 23%) 100%);
   }
 
-  /* Animações e Interações */
-  .btn-hover-scale {
-    @apply transition-transform duration-300 ease-in-out;
-  }
-  .btn-hover-scale:hover {
-    @apply scale-105;
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
   }
 
-  .card-hover-lift {
-    @apply transition-all duration-300 ease-in-out;
+  /* Interaction effects */
+  .hover-glow {
+    @apply transition-all duration-500;
   }
-  .card-hover-lift:hover {
-    @apply -translate-y-2 shadow-xl;
+  .hover-glow:hover {
+    @apply shadow-[0_0_20px_rgba(0,109,119,0.3)] border-secondary/50;
+  }
+
+  .btn-premium {
+    @apply rounded-full px-8 py-4 transition-all duration-300 font-semibold flex items-center justify-center gap-2;
+  }
+  .btn-premium-primary {
+    @apply btn-premium bg-primary text-primary-foreground hover:bg-secondary hover:scale-105 active:scale-95 shadow-lg;
+  }
+  .btn-premium-outline {
+    @apply btn-premium border-2 border-primary text-primary hover:bg-primary/5 hover:scale-105 active:scale-95;
   }
 }

@@ -22,21 +22,13 @@ export default function ConveniosCarousel({ initialConvenios }: ConveniosCarouse
 
   if (!initialConvenios || initialConvenios.length === 0) {
     return (
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <SectionTitle
             title="Convênios Atendidos"
-            subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
-            data-aos="fade-up"
+            subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade."
           />
-          <p className="text-lg text-muted-foreground">Nenhum convênio para exibir no momento.</p>
-           <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="100">
-            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
-              <Link href="/convenios">
-                Ver Todos os Convênios <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
+          <p className="text-lg text-muted-foreground glass p-10 rounded-3xl">Nenhum convênio para exibir no momento.</p>
         </div>
       </section>
     );
@@ -47,45 +39,55 @@ export default function ConveniosCarousel({ initialConvenios }: ConveniosCarouse
   const shouldLoop = initialConvenios.length > itemsPerViewLg; 
 
   return (
-    <section className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4 md:px-6">
-        <SectionTitle
-          title="Convênios Atendidos"
-          subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade e bem-estar."
-          data-aos="fade-up"
-        />
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Subtle Side Accents */}
+      <div className="absolute top-1/2 left-0 w-32 h-64 bg-primary/5 rounded-full blur-3xl -translate-x-1/2"></div>
+      <div className="absolute top-1/2 right-0 w-32 h-64 bg-secondary/5 rounded-full blur-3xl translate-x-1/2"></div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="flex flex-col items-center mb-16" data-aos="fade-up">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4 text-xs font-bold tracking-widest uppercase">
+            Parceiros de Saúde
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
+            Convênios <span className="text-gradient">Atendidos</span>
+          </h2>
+          <p className="text-foreground/60 text-center max-w-2xl text-lg font-medium">
+            Trabalhamos com os principais planos de saúde para garantir o seu acesso ao melhor cuidado.
+          </p>
+        </div>
+
         <Carousel
           opts={{
             align: "start",
             loop: shouldLoop,
           }}
           plugins={[plugin.current]}
-          className="w-full max-w-5xl mx-auto"
+          className="w-full max-w-6xl mx-auto"
           onMouseEnter={plugin.current.stop}
           onMouseLeave={plugin.current.reset}
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          <CarouselContent className="-ml-4">
+          <CarouselContent className="-ml-6">
             {initialConvenios.map((convenio) => (
-              <CarouselItem key={convenio.id} className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                <div className="p-1 h-full">
+              <CarouselItem key={convenio.id} className="pl-6 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                <div className="p-2 h-full">
                   <ConvenioCard convenio={convenio} />
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          {shouldShowNavButtons && (
-            <>
-              <CarouselPrevious className="absolute left-[-20px] md:left-[-50px] top-1/2 -translate-y-1/2 hidden sm:inline-flex" />
-              <CarouselNext className="absolute right-[-20px] md:right-[-50px] top-1/2 -translate-y-1/2 hidden sm:inline-flex" />
-            </>
-          )}
+          <div className="hidden md:flex justify-center gap-4 mt-12">
+            <CarouselPrevious className="relative translate-y-0 left-0 hover:bg-primary hover:text-white border-2 border-primary/10" />
+            <CarouselNext className="relative translate-y-0 right-0 hover:bg-primary hover:text-white border-2 border-primary/10" />
+          </div>
         </Carousel>
-        <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="300">
-          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
+
+        <div className="mt-16 text-center" data-aos="fade-up" data-aos-delay="300">
+          <Button asChild className="btn-premium-outline">
             <Link href="/convenios">
-              Ver Todos os Convênios <ArrowRight className="ml-2 h-5 w-5" />
+              Consultar Todos <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
         </div>

@@ -1,4 +1,5 @@
 // src/components/shared/WhatsAppButton.tsx
+import React from 'react';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
@@ -7,6 +8,7 @@ interface WhatsAppButtonProps extends ButtonProps {
   phoneNumber: string;
   message?: string;
   children: React.ReactNode;
+  className?: string;
 }
 
 export default function WhatsAppButton({ phoneNumber, message = "Olá! Vim através do site e gostaria de agendar uma consulta.", children, ...props }: WhatsAppButtonProps) {
