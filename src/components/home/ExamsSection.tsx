@@ -51,9 +51,17 @@ export default function ExamsSection({ initialExams }: ExamsSectionProps) {
                     <h3 className="text-base font-medium text-primary mb-3 font-headline">
                       {exam.name}
                     </h3>
-                    <p className="text-foreground/50 text-sm font-light leading-relaxed">
+                    <p className="text-foreground/50 text-sm font-light leading-relaxed mb-4">
                       {exam.description}
                     </p>
+                    <a
+                      href={`https://wa.me/5548991936045?text=${encodeURIComponent(`Olá! Gostaria de agendar o exame de ${exam.name}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary/30 group-hover:text-accent transition-colors duration-500 uppercase tracking-wider"
+                    >
+                      Agendar <ArrowRight className="h-3 w-3" />
+                    </a>
                   </div>
                 </div>
               </div>

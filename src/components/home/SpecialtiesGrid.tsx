@@ -58,7 +58,14 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
                 </p>
 
                 <div className="mt-6">
-                  <ArrowRight className="h-4 w-4 text-primary/15 group-hover:text-accent transition-all duration-500 group-hover:translate-x-1" />
+                  <a
+                    href={`https://wa.me/5548991936045?text=${encodeURIComponent(`Olá! Gostaria de agendar uma consulta de ${specialty.name}.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary/30 group-hover:text-accent transition-colors duration-500 uppercase tracking-wider"
+                  >
+                    Agendar <ArrowRight className="h-3 w-3" />
+                  </a>
                 </div>
               </div>
             ))}

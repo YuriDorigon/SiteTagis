@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Facebook, Instagram, MapPin, Phone } from 'lucide-react';
+import { Clock, Facebook, Instagram, MapPin, Phone } from 'lucide-react';
 import AppLogo from '@/components/shared/AppLogo';
 import type { ClinicConfig } from '@/lib/types';
 
@@ -58,6 +58,15 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
                   <Phone className="h-5 w-5" />
                 </div>
                 <span className="text-white/60 text-sm font-medium">{cfg.phone1}</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="p-2 rounded-lg bg-white/5 text-white flex-shrink-0">
+                  <Clock className="h-5 w-5" />
+                </div>
+                <div className="text-white/60 text-sm font-medium">
+                  <p>Seg–Sex: 7h30–18h00</p>
+                  <p>Sábado: 7h30–12h00</p>
+                </div>
               </li>
             </ul>
           </div>
