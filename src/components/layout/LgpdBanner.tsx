@@ -23,6 +23,7 @@ export default function LgpdBanner() {
   const handleAccept = () => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(LGPD_CONSENT_KEY, 'true');
+      window.dispatchEvent(new Event('lgpd-accepted'));
     }
     setIsVisible(false);
   };

@@ -22,7 +22,7 @@ export default function AppLayout({ children, config }: AppLayoutProps) {
     <>
       <AOSInitializer />
       {!isAdminRoute && <Header />}
-      <main className="flex-grow">{children}</main>
+      <main className={`flex-grow${!isAdminRoute ? ' pt-20' : ''}`}>{children}</main>
       {!isAdminRoute && <Footer cfg={config} />}
       {!isAdminRoute && <FloatingWhatsAppButton phoneNumber={config.whatsapp} />}
       {!isAdminRoute && <LgpdBanner privacyEmail={config.privacyEmail} />}

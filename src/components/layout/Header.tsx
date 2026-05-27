@@ -31,7 +31,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-lg border-b border-primary/8">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/95 backdrop-blur-lg border-b border-primary/8">
       <div className="container mx-auto flex h-20 items-center justify-between px-6 md:px-10 lg:px-20">
 
         {/* Logo */}
