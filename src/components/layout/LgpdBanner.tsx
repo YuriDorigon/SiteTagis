@@ -49,7 +49,7 @@ export default function LgpdBanner({ privacyEmail }: { privacyEmail?: string }) 
                 privacidade@tagismd.com.br
               </a>
               {' '}— veja nossa{' '}
-              <Link href="/politica-de-privacidade" className="text-accent hover:text-accent/80 underline underline-offset-2 font-medium" onClick={() => setIsVisible(false)}>
+              <Link href="/privacidade" className="text-accent hover:text-accent/80 underline underline-offset-2 font-medium" onClick={() => setIsVisible(false)}>
                 política de privacidade
               </Link>
               .

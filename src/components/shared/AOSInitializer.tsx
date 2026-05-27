@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect } from 'react';
+import AOS from 'aos';
 
 export default function AOSInitializer() {
   useEffect(() => {
@@ -14,14 +15,11 @@ export default function AOSInitializer() {
       document.head.appendChild(link);
     }
 
-    // Importa e inicializa o AOS dinamicamente
-    import('aos').then((mod) => {
-      mod.default.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true,
-        mirror: false,
-      });
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false,
     });
   }, []);
 

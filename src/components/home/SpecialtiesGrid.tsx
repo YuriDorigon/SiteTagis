@@ -38,17 +38,24 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
         {initialSpecialties.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/8 border border-primary/8 rounded-3xl overflow-hidden">
             {initialSpecialties.slice(0, 8).map((specialty, index) => (
-              <Link
+              <div
                 key={specialty.id}
-                href={`/especialidades/${slugify(specialty.name)}`}
-                className="group bg-white hover:bg-[#fafbfc] p-7 lg:p-9 transition-colors duration-500"
+                className="group relative bg-white hover:bg-[#fafbfc] p-7 lg:p-9 transition-colors duration-500"
                 data-aos="fade-up"
                 data-aos-delay={50 * index}
               >
+                {/* Link cobre todo o card */}
+                <Link
+                  href={`/especialidades/${slugify(specialty.name)}`}
+                  className="absolute inset-0"
+                  aria-label={`Ver especialidade ${specialty.name}`}
+                />
+
                 <div className="mb-6 inline-flex">
                   <LucideIconRenderer
                     name={specialty.iconName}
                     className="h-7 w-7 text-primary/55 group-hover:text-accent transition-colors duration-500"
+                    aria-hidden="true"
                   />
                 </div>
 
@@ -59,17 +66,18 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
                   {specialty.description}
                 </p>
 
-                <div className="mt-6">
+                <div className="mt-6 relative z-10">
                   <a
                     href={`https://wa.me/5548991936045?text=${encodeURIComponent(`Olá! Gostaria de agendar uma consulta de ${specialty.name}.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Agendar consulta de ${specialty.name} pelo WhatsApp`}
                     className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary/30 group-hover:text-accent transition-colors duration-500 uppercase tracking-wider"
                   >
-                    Agendar <ArrowRight className="h-3 w-3" />
+                    Agendar <ArrowRight className="h-3 w-3" aria-hidden="true" />
                   </a>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
@@ -81,7 +89,7 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
             href="/especialidades"
             className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-widest uppercase hover:gap-3 transition-all duration-300 border-b border-primary/20 hover:border-primary/40 pb-1"
           >
-            Ver todas as especialidades <ArrowRight className="h-3.5 w-3.5" />
+            Ver todas as especialidades <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

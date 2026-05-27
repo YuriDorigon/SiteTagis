@@ -89,10 +89,6 @@ export default async function RootLayout({
   const cfg = await getClinicConfig();
   return (
     <html lang="pt-BR" className={cn('scroll-smooth overflow-x-hidden', outfit.variable, dmSans.variable)}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      </head>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background overflow-x-hidden")}>
         <AppLayout config={cfg}>{children}</AppLayout>
         <Toaster />

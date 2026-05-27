@@ -58,9 +58,10 @@ export default function ExamsSection({ initialExams }: ExamsSectionProps) {
                       href={`https://wa.me/5548991936045?text=${encodeURIComponent(`Olá! Gostaria de agendar o exame de ${exam.name}.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Agendar exame de ${exam.name} pelo WhatsApp`}
                       className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary/30 group-hover:text-accent transition-colors duration-500 uppercase tracking-wider"
                     >
-                      Agendar <ArrowRight className="h-3 w-3" />
+                      Agendar <ArrowRight className="h-3 w-3" aria-hidden="true" />
                     </a>
                   </div>
                 </div>
