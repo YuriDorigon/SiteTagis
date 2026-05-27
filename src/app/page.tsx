@@ -31,7 +31,7 @@ async function getData() {
   };
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://site-tagis.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
 const jsonLd = {
   '@context': 'https://schema.org',
