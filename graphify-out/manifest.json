@@ -1,0 +1,622 @@
+{
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\components.json": {
+    "mtime": 1774120488.4689705,
+    "ast_hash": "d64ed1dcdd64e8e058fff89877b36c37",
+    "semantic_hash": "d64ed1dcdd64e8e058fff89877b36c37"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\firebase.json": {
+    "mtime": 1774120488.4734986,
+    "ast_hash": "8f9ce4d696b91a48d830eb53432eee83",
+    "semantic_hash": "8f9ce4d696b91a48d830eb53432eee83"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\next.config.ts": {
+    "mtime": 1779544467.172392,
+    "ast_hash": "71af92a2706ac3775face994d3424356",
+    "semantic_hash": "71af92a2706ac3775face994d3424356"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\package.json": {
+    "mtime": 1774120488.493449,
+    "ast_hash": "f11a6d1de8c6b44486e9f9869ced126f",
+    "semantic_hash": "f11a6d1de8c6b44486e9f9869ced126f"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\postcss.config.mjs": {
+    "mtime": 1774120488.5015492,
+    "ast_hash": "b7941c02b947e17ae32f67ae7e664ec8",
+    "semantic_hash": "b7941c02b947e17ae32f67ae7e664ec8"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\studio.json": {
+    "mtime": 1774120487.4863408,
+    "ast_hash": "a9f2412862ec22447f10f3cd09545a0f",
+    "semantic_hash": "a9f2412862ec22447f10f3cd09545a0f"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\tailwind.config.ts": {
+    "mtime": 1774120488.5081308,
+    "ast_hash": "73ff626538d6abd3d8590478c69e79a9",
+    "semantic_hash": "73ff626538d6abd3d8590478c69e79a9"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\tsconfig.json": {
+    "mtime": 1774120488.5111535,
+    "ast_hash": "0cf97a81150d3b8904f285780896980d",
+    "semantic_hash": "0cf97a81150d3b8904f285780896980d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\scripts\\pre-build-data.ts": {
+    "mtime": 1779799444.2654784,
+    "ast_hash": "fb617122e9e69da8ba3c21466f76a181",
+    "semantic_hash": "fb617122e9e69da8ba3c21466f76a181"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\scripts\\seedDatabase.ts": {
+    "mtime": 1774120500.3378441,
+    "ast_hash": "327c4bb565a1a17e69320d9e71e313c7",
+    "semantic_hash": "327c4bb565a1a17e69320d9e71e313c7"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\icon.tsx": {
+    "mtime": 1779545448.5586479,
+    "ast_hash": "02ad9b0c2a1783b603a10d4a872e6b70",
+    "semantic_hash": "02ad9b0c2a1783b603a10d4a872e6b70"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\layout.tsx": {
+    "mtime": 1779545956.636595,
+    "ast_hash": "5fa2605c435d916e1db07441c2590d88",
+    "semantic_hash": "5fa2605c435d916e1db07441c2590d88"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\page.tsx": {
+    "mtime": 1779815538.729274,
+    "ast_hash": "fafe49e763418ca511c7ba6cbffee664",
+    "semantic_hash": "fafe49e763418ca511c7ba6cbffee664"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\sitemap.ts": {
+    "mtime": 1779545004.5185492,
+    "ast_hash": "30985fd6d0c6a634b62ee9c9a694d4f2",
+    "semantic_hash": "30985fd6d0c6a634b62ee9c9a694d4f2"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\layout.tsx": {
+    "mtime": 1774120500.358523,
+    "ast_hash": "e372ec85c54534885cb88c95a5b1d969",
+    "semantic_hash": "e372ec85c54534885cb88c95a5b1d969"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\page.tsx": {
+    "mtime": 1774120500.3625712,
+    "ast_hash": "7d574e5de52ad67d2a3a4e739e9cb87b",
+    "semantic_hash": "7d574e5de52ad67d2a3a4e739e9cb87b"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\layout.tsx": {
+    "mtime": 1779542018.0563734,
+    "ast_hash": "e172561a7476cc7293b9f86e2277004e",
+    "semantic_hash": "e172561a7476cc7293b9f86e2277004e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\page.tsx": {
+    "mtime": 1774120500.3707159,
+    "ast_hash": "1efb2a1b5985e95afe233f6a3025c547",
+    "semantic_hash": "1efb2a1b5985e95afe233f6a3025c547"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\configuracoes\\page.tsx": {
+    "mtime": 1779541604.823405,
+    "ast_hash": "6288001e0154c6d6dec83f337adfb47e",
+    "semantic_hash": "6288001e0154c6d6dec83f337adfb47e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\convenios\\page.tsx": {
+    "mtime": 1774120500.3742847,
+    "ast_hash": "5de5b1e2e75d4421394d489cac5da5b3",
+    "semantic_hash": "5de5b1e2e75d4421394d489cac5da5b3"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\corpo-clinico\\page.tsx": {
+    "mtime": 1774120500.3779233,
+    "ast_hash": "58cc0be343824122589c1e679ee93367",
+    "semantic_hash": "58cc0be343824122589c1e679ee93367"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\depoimentos\\page.tsx": {
+    "mtime": 1774120500.3811035,
+    "ast_hash": "c965e775010d6672c3f9f8025758d418",
+    "semantic_hash": "c965e775010d6672c3f9f8025758d418"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\especialidades\\page.tsx": {
+    "mtime": 1774120500.3851435,
+    "ast_hash": "d56eb73834083be852e83d99ee1591c1",
+    "semantic_hash": "d56eb73834083be852e83d99ee1591c1"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\dashboard\\exames\\page.tsx": {
+    "mtime": 1774120500.3897219,
+    "ast_hash": "93273bd2eaf75cc655ede2b8c8767008",
+    "semantic_hash": "93273bd2eaf75cc655ede2b8c8767008"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\adm\\login\\page.tsx": {
+    "mtime": 1779540530.456985,
+    "ast_hash": "2fbbc62616412d03f0afe05333767c15",
+    "semantic_hash": "2fbbc62616412d03f0afe05333767c15"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\api\\redeploy\\route.ts": {
+    "mtime": 1779542285.0064163,
+    "ast_hash": "a28f7b83c558a17e205c8c8e8dd8ca6d",
+    "semantic_hash": "a28f7b83c558a17e205c8c8e8dd8ca6d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\contato\\page.tsx": {
+    "mtime": 1779815544.890344,
+    "ast_hash": "6a49b3bd3df378bbcd3fed7b20998c80",
+    "semantic_hash": "6a49b3bd3df378bbcd3fed7b20998c80"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\convenios\\page.tsx": {
+    "mtime": 1779545020.780985,
+    "ast_hash": "db4c265177c5219fd9e87d6a15782686",
+    "semantic_hash": "db4c265177c5219fd9e87d6a15782686"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\corpo-clinico\\page.tsx": {
+    "mtime": 1779545025.3720548,
+    "ast_hash": "3216ecce43cf6ff7dd1183df23c25b34",
+    "semantic_hash": "3216ecce43cf6ff7dd1183df23c25b34"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\especialidades\\page.tsx": {
+    "mtime": 1779545010.4209526,
+    "ast_hash": "b4b87a20592dfbf79b29c6adb854c337",
+    "semantic_hash": "b4b87a20592dfbf79b29c6adb854c337"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\exames\\page.tsx": {
+    "mtime": 1779545015.3868463,
+    "ast_hash": "0ca853c87bc088374e2898a9ca7c51f0",
+    "semantic_hash": "0ca853c87bc088374e2898a9ca7c51f0"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\trabalhe-conosco\\page.tsx": {
+    "mtime": 1779802430.009309,
+    "ast_hash": "c4bb4e9f14bc17c5373f6f3c915d098d",
+    "semantic_hash": "c4bb4e9f14bc17c5373f6f3c915d098d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\FirebaseErrorListener.tsx": {
+    "mtime": 1774120500.4168754,
+    "ast_hash": "25e6391c0d1cfa51707ba42348e28960",
+    "semantic_hash": "25e6391c0d1cfa51707ba42348e28960"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\AdminDashboard.tsx": {
+    "mtime": 1779540581.7802632,
+    "ast_hash": "b42b62e2083caebe9b9a6ce21cf548ab",
+    "semantic_hash": "b42b62e2083caebe9b9a6ce21cf548ab"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\AdminSidebar.tsx": {
+    "mtime": 1779541613.8534977,
+    "ast_hash": "76b9e1e8cc515dde4d1d1afceb04d85d",
+    "semantic_hash": "76b9e1e8cc515dde4d1d1afceb04d85d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\AuthGuard.tsx": {
+    "mtime": 1779540536.5559342,
+    "ast_hash": "44b45fdea81b57edcaacc6fcf77e754d",
+    "semantic_hash": "44b45fdea81b57edcaacc6fcf77e754d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\InactivityGuard.tsx": {
+    "mtime": 1779542007.8794222,
+    "ast_hash": "090cadcb4d26e31c91c4f8ec275264ab",
+    "semantic_hash": "090cadcb4d26e31c91c4f8ec275264ab"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\LoginForm.tsx": {
+    "mtime": 1774120500.4305923,
+    "ast_hash": "4b28808537b0d6d86a85916211a91c1a",
+    "semantic_hash": "4b28808537b0d6d86a85916211a91c1a"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageConvenios.tsx": {
+    "mtime": 1774120500.4346895,
+    "ast_hash": "7fde6e7cc0b34f8d863ee072cae00e2e",
+    "semantic_hash": "7fde6e7cc0b34f8d863ee072cae00e2e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageDoctors.tsx": {
+    "mtime": 1779541063.4885643,
+    "ast_hash": "2ac37be184578a2e2345310f9bdc46ed",
+    "semantic_hash": "2ac37be184578a2e2345310f9bdc46ed"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageExams.tsx": {
+    "mtime": 1779541093.6952517,
+    "ast_hash": "745bf98cc62b53153fd0a06933e89911",
+    "semantic_hash": "745bf98cc62b53153fd0a06933e89911"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageSettings.tsx": {
+    "mtime": 1779542646.827421,
+    "ast_hash": "ebb7922f3e76aa05acc6c36bb21dd282",
+    "semantic_hash": "ebb7922f3e76aa05acc6c36bb21dd282"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageSpecialties.tsx": {
+    "mtime": 1774120500.4448085,
+    "ast_hash": "daffcb065d40ae16cc55772245a99642",
+    "semantic_hash": "daffcb065d40ae16cc55772245a99642"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\admin\\ManageTestimonials.tsx": {
+    "mtime": 1774120500.448908,
+    "ast_hash": "fb7beb35ce2f9635bd939a16ed552fce",
+    "semantic_hash": "fb7beb35ce2f9635bd939a16ed552fce"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\contact\\MapEmbed.tsx": {
+    "mtime": 1779541318.863218,
+    "ast_hash": "7fccd6dbf938d327fc12811907c406a9",
+    "semantic_hash": "7fccd6dbf938d327fc12811907c406a9"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\convenios\\ConvenioCard.tsx": {
+    "mtime": 1779406026.5650835,
+    "ast_hash": "05288e3a6113d2b0688e5a769de768cf",
+    "semantic_hash": "05288e3a6113d2b0688e5a769de768cf"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\convenios\\ConveniosList.tsx": {
+    "mtime": 1774120500.4581234,
+    "ast_hash": "ad71ea62fb9bca63f0b6dce7fc8f1a47",
+    "semantic_hash": "ad71ea62fb9bca63f0b6dce7fc8f1a47"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\doutores\\DoctorCard.tsx": {
+    "mtime": 1779801555.1298075,
+    "ast_hash": "4e576d9fb33b56d5f884611455053cd1",
+    "semantic_hash": "4e576d9fb33b56d5f884611455053cd1"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\doutores\\DoctorFilter.tsx": {
+    "mtime": 1774120500.465165,
+    "ast_hash": "a288c13b097dbaaa8d993459becc6107",
+    "semantic_hash": "a288c13b097dbaaa8d993459becc6107"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\doutores\\DoctorsList.tsx": {
+    "mtime": 1774120500.4687433,
+    "ast_hash": "7c0e4fcc98db8468cedab3572a0038a6",
+    "semantic_hash": "7c0e4fcc98db8468cedab3572a0038a6"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\exames\\ExamResultsButton.tsx": {
+    "mtime": 1779405921.7895198,
+    "ast_hash": "bbe297a7da10a96a1ccafc95ab7c7eff",
+    "semantic_hash": "bbe297a7da10a96a1ccafc95ab7c7eff"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\AboutClinic.tsx": {
+    "mtime": 1779405887.486972,
+    "ast_hash": "10c3cfec2ec269fa6661236dac146250",
+    "semantic_hash": "10c3cfec2ec269fa6661236dac146250"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\AppointmentCTA.tsx": {
+    "mtime": 1779540393.7960298,
+    "ast_hash": "2cf2615eec1bc4f6182194af3871db5e",
+    "semantic_hash": "2cf2615eec1bc4f6182194af3871db5e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\ContactHome.tsx": {
+    "mtime": 1779816835.1796174,
+    "ast_hash": "9c1c74d2f0645691ac6f4ec98dbb6704",
+    "semantic_hash": "9c1c74d2f0645691ac6f4ec98dbb6704"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\ConveniosCarousel.tsx": {
+    "mtime": 1779544865.159566,
+    "ast_hash": "53405b2f0e43c59bd1320e45338f3f67",
+    "semantic_hash": "53405b2f0e43c59bd1320e45338f3f67"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\ExamsSection.tsx": {
+    "mtime": 1779405915.2143624,
+    "ast_hash": "440dc085b1f4d88d041b72d97c15883e",
+    "semantic_hash": "440dc085b1f4d88d041b72d97c15883e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\FAQSection.tsx": {
+    "mtime": 1779815535.1097314,
+    "ast_hash": "fcdd9f16569d24475b9ba9817e217b47",
+    "semantic_hash": "fcdd9f16569d24475b9ba9817e217b47"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\HeroSection.tsx": {
+    "mtime": 1779800986.0722556,
+    "ast_hash": "89abb6321bd9ba479b5febea4106b351",
+    "semantic_hash": "89abb6321bd9ba479b5febea4106b351"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\PatientJourney.tsx": {
+    "mtime": 1779405873.292238,
+    "ast_hash": "1ac070b58673cb9417ed47fac075b37d",
+    "semantic_hash": "1ac070b58673cb9417ed47fac075b37d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\PromotionalBanner.tsx": {
+    "mtime": 1779405852.6475613,
+    "ast_hash": "130207b1f019a9e0d7812f778a8f671f",
+    "semantic_hash": "130207b1f019a9e0d7812f778a8f671f"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\QuickAccessCards.tsx": {
+    "mtime": 1779543115.3291745,
+    "ast_hash": "e71ef5e36150c1951c343ccbc26ffc69",
+    "semantic_hash": "e71ef5e36150c1951c343ccbc26ffc69"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\SpecialtiesGrid.tsx": {
+    "mtime": 1779405903.7614698,
+    "ast_hash": "abc07c3ee6c9712e84dc914600fda63d",
+    "semantic_hash": "abc07c3ee6c9712e84dc914600fda63d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\home\\TestimonialsCarousel.tsx": {
+    "mtime": 1779815507.0122726,
+    "ast_hash": "dd362e85a2045b4e88839929ed70a6d1",
+    "semantic_hash": "dd362e85a2045b4e88839929ed70a6d1"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\AppContent.tsx": {
+    "mtime": 1774120500.5082395,
+    "ast_hash": "ce3141ceaaf9674b71509f2a54e29e03",
+    "semantic_hash": "ce3141ceaaf9674b71509f2a54e29e03"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\AppLayout.tsx": {
+    "mtime": 1779543384.127678,
+    "ast_hash": "28095acd1e34a6a2b92af7ac1f2d4cac",
+    "semantic_hash": "28095acd1e34a6a2b92af7ac1f2d4cac"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\AppProvider.tsx": {
+    "mtime": 1774120500.5153947,
+    "ast_hash": "da473837302b1d63bb5155154a224b69",
+    "semantic_hash": "da473837302b1d63bb5155154a224b69"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\FloatingWhatsAppButton.tsx": {
+    "mtime": 1774120500.5187805,
+    "ast_hash": "d05eec9456401a616683961d587cc3e8",
+    "semantic_hash": "d05eec9456401a616683961d587cc3e8"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\Footer.tsx": {
+    "mtime": 1779819812.2523575,
+    "ast_hash": "b08f9fdd8498ae7e141c7fcfa4441253",
+    "semantic_hash": "b08f9fdd8498ae7e141c7fcfa4441253"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\Header.tsx": {
+    "mtime": 1779406008.8036728,
+    "ast_hash": "8b533f915306402953574ed87afe1c46",
+    "semantic_hash": "8b533f915306402953574ed87afe1c46"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\layout\\LgpdBanner.tsx": {
+    "mtime": 1779541714.7510707,
+    "ast_hash": "67c6c3bca9ceaad3b1c6409adca43550",
+    "semantic_hash": "67c6c3bca9ceaad3b1c6409adca43550"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\AOSInitializer.tsx": {
+    "mtime": 1774120500.5320191,
+    "ast_hash": "2de4dd4a17bcfc4442e3bb13b0e37cf6",
+    "semantic_hash": "2de4dd4a17bcfc4442e3bb13b0e37cf6"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\AppLogo.tsx": {
+    "mtime": 1774133639.157487,
+    "ast_hash": "f51aaaa3bf2d02e03186f5ce63b91572",
+    "semantic_hash": "f51aaaa3bf2d02e03186f5ce63b91572"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\ExamResultsModal.tsx": {
+    "mtime": 1779815499.9903407,
+    "ast_hash": "2354d1d9a7f77f20a24e4ce3268212b0",
+    "semantic_hash": "2354d1d9a7f77f20a24e4ce3268212b0"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\LucideIconRenderer.tsx": {
+    "mtime": 1774120500.5420904,
+    "ast_hash": "546acf1aff469b95f6a47338fa95d411",
+    "semantic_hash": "546acf1aff469b95f6a47338fa95d411"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\SectionTitle.tsx": {
+    "mtime": 1774120500.5461552,
+    "ast_hash": "4c2e351f47ce8def87b7e479cfdff834",
+    "semantic_hash": "4c2e351f47ce8def87b7e479cfdff834"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\shared\\WhatsAppButton.tsx": {
+    "mtime": 1774131526.1201737,
+    "ast_hash": "d7f37eff10fdd1b7c4a043620afcac37",
+    "semantic_hash": "d7f37eff10fdd1b7c4a043620afcac37"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\accordion.tsx": {
+    "mtime": 1774120500.5517285,
+    "ast_hash": "561bb8af4899db592c7623851235979a",
+    "semantic_hash": "561bb8af4899db592c7623851235979a"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\avatar.tsx": {
+    "mtime": 1774120500.5564766,
+    "ast_hash": "0008445bf0b90f231d702bcd9141726c",
+    "semantic_hash": "0008445bf0b90f231d702bcd9141726c"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\badge.tsx": {
+    "mtime": 1774120500.5594912,
+    "ast_hash": "f9c097d427c421f83eb92772a4b8ec06",
+    "semantic_hash": "f9c097d427c421f83eb92772a4b8ec06"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\button.tsx": {
+    "mtime": 1774120500.5637367,
+    "ast_hash": "33f8ef5c351115f8904b2a2f3decef54",
+    "semantic_hash": "33f8ef5c351115f8904b2a2f3decef54"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\card.tsx": {
+    "mtime": 1774120500.5667486,
+    "ast_hash": "a8c37b8b2cb24a44f46cbae530c075af",
+    "semantic_hash": "a8c37b8b2cb24a44f46cbae530c075af"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\carousel.tsx": {
+    "mtime": 1774120500.57135,
+    "ast_hash": "8b579b3df0997a3ef3924099697a3670",
+    "semantic_hash": "8b579b3df0997a3ef3924099697a3670"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\dialog.tsx": {
+    "mtime": 1774120500.5744047,
+    "ast_hash": "1cee7ad259ba50554280a78f4a280f8c",
+    "semantic_hash": "1cee7ad259ba50554280a78f4a280f8c"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\form.tsx": {
+    "mtime": 1774120500.5774777,
+    "ast_hash": "1df53cf0afd884a27f799b2ce9917799",
+    "semantic_hash": "1df53cf0afd884a27f799b2ce9917799"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\input.tsx": {
+    "mtime": 1774120500.5813189,
+    "ast_hash": "c7cbc8cd45d01649277bd7107581cb36",
+    "semantic_hash": "c7cbc8cd45d01649277bd7107581cb36"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\label.tsx": {
+    "mtime": 1774120500.584834,
+    "ast_hash": "14579f07e6e3133b6ee65d3ec778b013",
+    "semantic_hash": "14579f07e6e3133b6ee65d3ec778b013"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\select.tsx": {
+    "mtime": 1774120500.5886202,
+    "ast_hash": "03ecf87b3b0eff2ad63d279e3a6b6b9f",
+    "semantic_hash": "03ecf87b3b0eff2ad63d279e3a6b6b9f"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\separator.tsx": {
+    "mtime": 1774120500.5917144,
+    "ast_hash": "85fd1a835601a122f1f226ccb31a0d67",
+    "semantic_hash": "85fd1a835601a122f1f226ccb31a0d67"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\sheet.tsx": {
+    "mtime": 1774120500.5957325,
+    "ast_hash": "9ef21bceff143bfe214ff398ec382dc5",
+    "semantic_hash": "9ef21bceff143bfe214ff398ec382dc5"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\skeleton.tsx": {
+    "mtime": 1774120500.5992448,
+    "ast_hash": "a5a4d6d5551d4c7feb8176a23e7eb07c",
+    "semantic_hash": "a5a4d6d5551d4c7feb8176a23e7eb07c"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\table.tsx": {
+    "mtime": 1774120500.602755,
+    "ast_hash": "efdbaeb9710b2f60de7c0e18bd4e3528",
+    "semantic_hash": "efdbaeb9710b2f60de7c0e18bd4e3528"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\textarea.tsx": {
+    "mtime": 1774120500.6058161,
+    "ast_hash": "b63a8a05a639e87859c69f452e11bc29",
+    "semantic_hash": "b63a8a05a639e87859c69f452e11bc29"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\toast.tsx": {
+    "mtime": 1774120500.609556,
+    "ast_hash": "76897a3e705e7de71984e7a6d6caff4c",
+    "semantic_hash": "76897a3e705e7de71984e7a6d6caff4c"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\toaster.tsx": {
+    "mtime": 1774120500.612582,
+    "ast_hash": "fcdccc15f76eb7acaa4e68813634da20",
+    "semantic_hash": "fcdccc15f76eb7acaa4e68813634da20"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\ui\\tooltip.tsx": {
+    "mtime": 1774120500.615879,
+    "ast_hash": "0b8fb484cf602fe973d2e0f2f39973fb",
+    "semantic_hash": "0b8fb484cf602fe973d2e0f2f39973fb"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\client-provider.tsx": {
+    "mtime": 1774120500.619625,
+    "ast_hash": "ed99504c1eccfdee437abe35054ac79d",
+    "semantic_hash": "ed99504c1eccfdee437abe35054ac79d"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\config.ts": {
+    "mtime": 1774120500.6222,
+    "ast_hash": "622d586ee096c2b4ed11be420e0213d2",
+    "semantic_hash": "622d586ee096c2b4ed11be420e0213d2"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\error-emitter.ts": {
+    "mtime": 1774120500.6262186,
+    "ast_hash": "96f8a95b6857ee37cb6bcdde49c6c6a1",
+    "semantic_hash": "96f8a95b6857ee37cb6bcdde49c6c6a1"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\errors.ts": {
+    "mtime": 1774120500.6297438,
+    "ast_hash": "94967ecd934145ce95461fa56ce99a01",
+    "semantic_hash": "94967ecd934145ce95461fa56ce99a01"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\index.ts": {
+    "mtime": 1774120500.6322584,
+    "ast_hash": "ded937cc6e5f7f98afb0a185df6900b4",
+    "semantic_hash": "ded937cc6e5f7f98afb0a185df6900b4"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\non-blocking-login.tsx": {
+    "mtime": 1774120500.636343,
+    "ast_hash": "5d2e5a1996ee6b195040135a0d2453a4",
+    "semantic_hash": "5d2e5a1996ee6b195040135a0d2453a4"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\non-blocking-updates.tsx": {
+    "mtime": 1774120500.6399834,
+    "ast_hash": "27b586bed672bb0a1b69eb32154490f2",
+    "semantic_hash": "27b586bed672bb0a1b69eb32154490f2"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\provider.tsx": {
+    "mtime": 1774120500.6429927,
+    "ast_hash": "a17fe2f23290ef6ba9827602e6dbc8c2",
+    "semantic_hash": "a17fe2f23290ef6ba9827602e6dbc8c2"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\server.ts": {
+    "mtime": 1774125760.1716406,
+    "ast_hash": "da677608e7b4fca83f603329d6625706",
+    "semantic_hash": "da677608e7b4fca83f603329d6625706"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\firestore\\use-collection.tsx": {
+    "mtime": 1774120500.6513393,
+    "ast_hash": "ae875866cad280c01a6a3d24956e1684",
+    "semantic_hash": "ae875866cad280c01a6a3d24956e1684"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\firebase\\firestore\\use-doc.tsx": {
+    "mtime": 1774120500.6543949,
+    "ast_hash": "b37bdbeea05d1bc767beb54ce7fdc7d5",
+    "semantic_hash": "b37bdbeea05d1bc767beb54ce7fdc7d5"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\hooks\\use-mobile.tsx": {
+    "mtime": 1774120500.658402,
+    "ast_hash": "209b5193af16624cdd89d3591480dd48",
+    "semantic_hash": "209b5193af16624cdd89d3591480dd48"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\hooks\\use-toast.ts": {
+    "mtime": 1774120500.661411,
+    "ast_hash": "8be7876e08c12ac4eea618920cd25285",
+    "semantic_hash": "8be7876e08c12ac4eea618920cd25285"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\firebase.ts": {
+    "mtime": 1774120500.677707,
+    "ast_hash": "5a1a40bd99d3746281e71c47693550e3",
+    "semantic_hash": "5a1a40bd99d3746281e71c47693550e3"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\getClinicConfig.ts": {
+    "mtime": 1779541563.8120182,
+    "ast_hash": "a5c4df1ca4c6e7338a129ffebc352f58",
+    "semantic_hash": "a5c4df1ca4c6e7338a129ffebc352f58"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\imageUtils.ts": {
+    "mtime": 1774120500.665989,
+    "ast_hash": "35967ddf65f05bae96eec9719ee8fbe7",
+    "semantic_hash": "35967ddf65f05bae96eec9719ee8fbe7"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\types.ts": {
+    "mtime": 1779541549.7673507,
+    "ast_hash": "c4ea1a1111367b0088796b6ad7f4f97e",
+    "semantic_hash": "c4ea1a1111367b0088796b6ad7f4f97e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\utils.ts": {
+    "mtime": 1774120500.6820824,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": "5a6fd53fdcf2be529e9cc0b718fde352"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\lib\\server\\firestoreData.ts": {
+    "mtime": 1779543078.5702083,
+    "ast_hash": "e3a9e38a32d43b1da6c42c9a4e22f08e",
+    "semantic_hash": "e3a9e38a32d43b1da6c42c9a4e22f08e"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\apphosting.yaml": {
+    "mtime": 1774120488.4668627,
+    "ast_hash": "66b66dcf03140222743f6d18e119e729",
+    "semantic_hash": "66b66dcf03140222743f6d18e119e729"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\CLAUDE.md": {
+    "mtime": 1779818326.6384199,
+    "ast_hash": "02c951e341d2e6e86036d0e5daed88e0",
+    "semantic_hash": "02c951e341d2e6e86036d0e5daed88e0"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\README.md": {
+    "mtime": 1774120488.5050905,
+    "ast_hash": "99274af517f764018c8ef036f82eb4ad",
+    "semantic_hash": "99274af517f764018c8ef036f82eb4ad"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\public\\robots.txt": {
+    "mtime": 1774120500.700006,
+    "ast_hash": "cbaca751336839286ad1232f77443d75",
+    "semantic_hash": "cbaca751336839286ad1232f77443d75"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\public\\lgpd.pdf": {
+    "mtime": 1774120500.6940534,
+    "ast_hash": "4376c37f25f19ace9097794320935dd8",
+    "semantic_hash": "4376c37f25f19ace9097794320935dd8"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\public\\favicon.svg": {
+    "mtime": 1779546091.934536,
+    "ast_hash": "3985c27622561b10819dcfe6f7ebee61",
+    "semantic_hash": "3985c27622561b10819dcfe6f7ebee61"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\public\\logo.svg": {
+    "mtime": 1774120500.6960695,
+    "ast_hash": "31a1c31188bd12fb7e160a6950e9179f",
+    "semantic_hash": "31a1c31188bd12fb7e160a6950e9179f"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\icon.png": {
+    "mtime": 1774133009.1386209,
+    "ast_hash": "ec6e7d63228dc48d15e8195c1416e548",
+    "semantic_hash": "ec6e7d63228dc48d15e8195c1416e548"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\components\\trabalhe-conosco\\TrabalheConoscoContent.tsx": {
+    "mtime": 1779802664.4197369,
+    "ast_hash": "0bbb0f998e3be26dc58f7419701de452",
+    "semantic_hash": "0bbb0f998e3be26dc58f7419701de452"
+  },
+  "C:\\Users\\ryzen5\\Documents\\estudos\\SiteTagis\\src\\app\\privacidade\\page.tsx": {
+    "mtime": 1779819805.8128088,
+    "ast_hash": "bfc67a7ee6c70eccabf869fb54a71800",
+    "semantic_hash": "bfc67a7ee6c70eccabf869fb54a71800"
+  }
+}

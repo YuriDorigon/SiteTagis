@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { PlusCircle, Edit3, Trash2, Loader2 } from 'lucide-react';
+import { PlusCircle, Edit3, Trash2, Loader2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
@@ -59,6 +59,22 @@ export default function ManageExams() {
     setCurrentExam({ ...exam });
     setIsEditing(true);
     setIsDialogOpen(true);
+  };
+
+  const handleToggleActive = async (exam: Exam) => {
+    if (!firestore) return;
+    const newActive = exam.active === false ? true : false;
+    const examDocRef = doc(firestore, 'exams', exam.id);
+    try {
+      await updateDoc(examDocRef, { active: newActive });
+      setExams(prev => prev.map(e => e.id === exam.id ? { ...e, active: newActive } : e));
+      toast({
+        title: newActive ? 'Exame ativado' : 'Exame desativado',
+        description: `${exam.name} foi ${newActive ? 'reativado' : 'desativado'} e não aparece no site até ser reativado.`,
+      });
+    } catch {
+      toast({ title: 'Erro ao alterar status', variant: 'destructive' });
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -146,7 +162,8 @@ export default function ManageExams() {
             <TableHead className="w-[60px]">Ícone</TableHead>
             <TableHead>Nome</TableHead>
             <TableHead>Descrição</TableHead>
-            <TableHead className="text-right w-[200px]">Ações</TableHead>
+            <TableHead className="w-[90px]">Status</TableHead>
+            <TableHead className="text-right w-[220px]">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -157,7 +174,28 @@ export default function ManageExams() {
               </TableCell>
               <TableCell className="font-medium text-lg">{exam.name}</TableCell>
               <TableCell className="text-sm text-foreground/80 truncate max-w-xs">{exam.description}</TableCell>
+              <TableCell>
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                  exam.active === false
+                    ? 'bg-amber-100 text-amber-700'
+                    : 'bg-emerald-100 text-emerald-700'
+                }`}>
+                  {exam.active === false ? 'Inativo' : 'Ativo'}
+                </span>
+              </TableCell>
               <TableCell className="text-right space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleToggleActive(exam)}
+                  disabled={isSaving}
+                  title={exam.active === false ? 'Reativar exame' : 'Desativar exame'}
+                >
+                  {exam.active === false
+                    ? <ToggleLeft className="h-4 w-4 text-amber-600" />
+                    : <ToggleRight className="h-4 w-4 text-emerald-600" />
+                  }
+                </Button>
                 <Button variant="outline" size="sm" onClick={() => openDialogForEdit(exam)} disabled={isSaving}>
                   <Edit3 className="h-4 w-4 mr-1" /> Editar
                 </Button>

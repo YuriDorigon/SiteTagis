@@ -1,12 +1,9 @@
-// src/components/admin/AdminDashboard.tsx
-"use client"; 
+'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, Users, PlusCircle, Briefcase, ClipboardList, Loader2, Quote as QuoteIcon } from "lucide-react";
-import Link from "next/link";
-import { useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import Link from 'next/link';
+import { ShieldCheck, Users, Stethoscope, ClipboardList, Quote as QuoteIcon, ArrowRight, Loader2 } from 'lucide-react';
+import { useFirestore, useUser, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { collection, getCountFromServer } from 'firebase/firestore';
 
 interface Stats {
@@ -17,8 +14,52 @@ interface Stats {
   testimonialsCount: number;
 }
 
+const sections = [
+  {
+    key: 'conveniosCount' as const,
+    label: 'Convênios',
+    icon: ShieldCheck,
+    href: '/adm/dashboard/convenios',
+    collection: 'convenios',
+    color: 'bg-blue-50 text-blue-600',
+  },
+  {
+    key: 'doctorsCount' as const,
+    label: 'Corpo Clínico',
+    icon: Users,
+    href: '/adm/dashboard/corpo-clinico',
+    collection: 'doctors',
+    color: 'bg-violet-50 text-violet-600',
+  },
+  {
+    key: 'specialtiesCount' as const,
+    label: 'Especialidades',
+    icon: Stethoscope,
+    href: '/adm/dashboard/especialidades',
+    collection: 'specialties',
+    color: 'bg-emerald-50 text-emerald-600',
+  },
+  {
+    key: 'examsCount' as const,
+    label: 'Exames',
+    icon: ClipboardList,
+    href: '/adm/dashboard/exames',
+    collection: 'exams',
+    color: 'bg-amber-50 text-amber-600',
+  },
+  {
+    key: 'testimonialsCount' as const,
+    label: 'Depoimentos',
+    icon: QuoteIcon,
+    href: '/adm/dashboard/depoimentos',
+    collection: 'testimonials',
+    color: 'bg-rose-50 text-rose-600',
+  },
+];
+
 export default function AdminDashboard() {
   const firestore = useFirestore();
+  const { user } = useUser();
   const [stats, setStats] = useState<Stats>({
     conveniosCount: 0,
     doctorsCount: 0,
@@ -30,124 +71,80 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!firestore) return;
-
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        const collectionsToCount = [
-            { name: 'convenios' as const, stateKey: 'conveniosCount' as const },
-            { name: 'doctors' as const, stateKey: 'doctorsCount' as const },
-            { name: 'specialties' as const, stateKey: 'specialtiesCount' as const },
-            { name: 'exams' as const, stateKey: 'examsCount' as const },
-            { name: 'testimonials' as const, stateKey: 'testimonialsCount' as const },
-        ];
-        
-        const counts = await Promise.all(collectionsToCount.map(c => 
-            getCountFromServer(collection(firestore, c.name)).catch(error => {
-                const contextualError = new FirestorePermissionError({ operation: 'list', path: c.name });
-                errorEmitter.emit('permission-error', contextualError);
-                return null; // Return null on error to not break Promise.all
+        const counts = await Promise.all(
+          sections.map(s =>
+            getCountFromServer(collection(firestore, s.collection)).catch(() => {
+              errorEmitter.emit('permission-error', new FirestorePermissionError({ operation: 'list', path: s.collection }));
+              return null;
             })
-        ));
-
-        const newStats = counts.reduce((acc, snapshot, index) => {
-            const { stateKey } = collectionsToCount[index];
-            if (snapshot) {
-                acc[stateKey] = snapshot.data().count;
-            }
-            return acc;
-        }, { ...stats });
-
+          )
+        );
+        const newStats = { ...stats };
+        counts.forEach((snapshot, i) => {
+          if (snapshot) newStats[sections[i].key] = snapshot.data().count;
+        });
         setStats(newStats);
-
-      } catch (error) {
-        // This outer catch is a fallback, but individual errors are handled above.
-        const contextualError = new FirestorePermissionError({ operation: 'list', path: 'dashboard-collections' });
-        errorEmitter.emit('permission-error', contextualError);
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchStats();
   }, [firestore]);
 
-  const dashboardCards = [
-    { title: "Total de Convênios", count: stats.conveniosCount, icon: ShieldCheck, link: "/adm/dashboard/convenios", description: "Convênios ativos cadastrados" },
-    { title: "Total do Corpo Clínico", count: stats.doctorsCount, icon: Users, link: "/adm/dashboard/corpo-clinico", description: "Membros cadastrados" },
-    { title: "Total de Especialidades", count: stats.specialtiesCount, icon: Briefcase, link: "/adm/dashboard/especialidades", description: "Especialidades oferecidas" },
-    { title: "Total de Exames", count: stats.examsCount, icon: ClipboardList, link: "/adm/dashboard/exames", description: "Tipos de exames realizados" },
-    { title: "Total de Depoimentos", count: stats.testimonialsCount, icon: QuoteIcon, link: "/adm/dashboard/depoimentos", description: "Depoimentos de pacientes" },
-  ];
-
-  const managementButtons = [
-    { label: "Gerenciar Convênios", href: "/adm/dashboard/convenios" },
-    { label: "Gerenciar Corpo Clínico", href: "/adm/dashboard/corpo-clinico" },
-    { label: "Gerenciar Especialidades", href: "/adm/dashboard/especialidades" },
-    { label: "Gerenciar Exames", href: "/adm/dashboard/exames" },
-    { label: "Gerenciar Depoimentos", href: "/adm/dashboard/depoimentos" },
-  ];
-
-  if (isLoading) {
-    return (
-      <div className="space-y-8">
-        <h1 className="text-4xl font-bold text-primary font-headline">Painel Administrativo</h1>
-        <div className="flex flex-wrap gap-4">
-            {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-12 bg-gray-200 rounded-md w-48 animate-pulse"></div>
-            ))}
-        </div>
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {[...Array(5)].map((_, i) => (
-                <Card key={i} className="shadow-md">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-lg font-medium h-6 bg-gray-200 rounded w-3/4 animate-pulse"></CardTitle>
-                        <div className="h-6 w-6 bg-gray-200 rounded-full animate-pulse"></div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold h-8 bg-gray-200 rounded w-1/4 animate-pulse mb-2"></div>
-                        <p className="text-xs text-muted-foreground h-4 bg-gray-200 rounded w-full animate-pulse"></p>
-                        <div className="mt-4 h-8 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
-      </div>
-    );
-  }
+  const firstName = user?.email?.split('@')[0] ?? 'Admin';
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-primary font-headline">Painel Administrativo</h1>
+    <div className="max-w-4xl">
 
-      <div className="flex flex-wrap gap-4">
-        {managementButtons.map(btn => (
-          <Button asChild size="lg" key={btn.href}>
-            <Link href={btn.href}>
-              <PlusCircle className="mr-2 h-5 w-5" /> {btn.label}
-            </Link>
-          </Button>
-        ))}
+      {/* Header */}
+      <div className="mb-8">
+        <p className="text-xs text-foreground/40 font-medium tracking-widest uppercase mb-1">
+          Bem-vindo de volta
+        </p>
+        <h1 className="text-2xl font-semibold text-primary font-headline">
+          {firstName}
+        </h1>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-        {dashboardCards.map(card => (
-          <Card className="shadow-md" key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-lg font-medium">{card.title}</CardTitle>
-              <card.icon className="h-6 w-6 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">{card.count}</div>
-              <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
-              <Button asChild size="sm" className="mt-4">
-                <Link href={card.link}>Ver Todos & Gerenciar</Link>
-              </Button>
-            </CardContent>
-          </Card>
+
+      {/* Stats grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {sections.map((section) => (
+          <Link
+            key={section.key}
+            href={section.href}
+            className="group bg-white rounded-2xl border border-primary/8 p-6 hover:border-accent/30 hover:shadow-md transition-all duration-300"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className={`p-2.5 rounded-xl ${section.color}`}>
+                <section.icon className="h-4 w-4" />
+              </div>
+              <ArrowRight className="h-4 w-4 text-foreground/20 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
+            </div>
+
+            {isLoading ? (
+              <div className="h-7 w-12 bg-gray-100 rounded-lg animate-pulse mb-1" />
+            ) : (
+              <p className="text-3xl font-semibold text-primary font-headline mb-1">
+                {stats[section.key]}
+              </p>
+            )}
+
+            <p className="text-sm text-foreground/45 font-light">
+              {section.label}
+            </p>
+          </Link>
         ))}
+
+        {/* Quick actions placeholder card */}
+        <div className="bg-primary/[0.03] border border-primary/8 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-2">
+          <p className="text-xs font-medium text-foreground/35 tracking-wide">
+            Use a barra lateral para gerenciar cada seção
+          </p>
+        </div>
       </div>
-      
     </div>
   );
 }

@@ -1,14 +1,17 @@
-// src/components/home/ConveniosCarousel.tsx
 "use client";
 
 import * as React from 'react';
-import Autoplay from "embla-carousel-autoplay";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import SectionTitle from '@/components/shared/SectionTitle';
+import Autoplay from 'embla-carousel-autoplay';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 import ConvenioCard from '@/components/convenios/ConvenioCard';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { Convenio } from '@/lib/types';
 
 interface ConveniosCarouselProps {
@@ -17,79 +20,71 @@ interface ConveniosCarouselProps {
 
 export default function ConveniosCarousel({ initialConvenios }: ConveniosCarouselProps) {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
   if (!initialConvenios || initialConvenios.length === 0) {
-    return (
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <SectionTitle
-            title="Convênios Atendidos"
-            subtitle="Aceitamos uma ampla variedade de convênios para sua comodidade."
-          />
-          <p className="text-lg text-muted-foreground glass p-10 rounded-3xl">Nenhum convênio para exibir no momento.</p>
-        </div>
-      </section>
-    );
+    return null;
   }
 
-  const itemsPerViewLg = 4; 
-  const shouldShowNavButtons = initialConvenios.length > itemsPerViewLg;
-  const shouldLoop = initialConvenios.length > itemsPerViewLg; 
+  const shouldLoop = initialConvenios.length > 4;
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      {/* Subtle Side Accents */}
-      <div className="absolute top-1/2 left-0 w-32 h-64 bg-primary/5 rounded-full blur-3xl -translate-x-1/2"></div>
-      <div className="absolute top-1/2 right-0 w-32 h-64 bg-secondary/5 rounded-full blur-3xl translate-x-1/2"></div>
+    <section className="py-24 lg:py-32 bg-[#fafbfc]">
+      <div className="container mx-auto px-6 md:px-10 lg:px-20">
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="flex flex-col items-center mb-16" data-aos="fade-up">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4 text-xs font-bold tracking-widest uppercase">
-            Parceiros de Saúde
+        {/* Header */}
+        <div
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14 lg:mb-16"
+          data-aos="fade-up"
+        >
+          <div className="max-w-xl">
+            <span className="text-accent text-[11px] font-medium tracking-[0.25em] uppercase mb-5 block">
+              Parceiros
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-light text-primary leading-[1.05]">
+              Convênios{' '}
+              <em className="italic font-normal text-accent">atendidos</em>
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
-            Convênios <span className="text-gradient">Atendidos</span>
-          </h2>
-          <p className="text-foreground/60 text-center max-w-2xl text-lg font-medium">
-            Trabalhamos com os principais planos de saúde para garantir o seu acesso ao melhor cuidado.
+          <p className="text-foreground/55 text-base font-light leading-relaxed md:text-right max-w-xs">
+            Trabalhamos com os principais planos de saúde da região.
           </p>
         </div>
 
         <Carousel
-          opts={{
-            align: "start",
-            loop: shouldLoop,
-          }}
+          opts={{ align: 'start', loop: shouldLoop }}
           plugins={[plugin.current]}
-          className="w-full max-w-6xl mx-auto"
+          className="w-full"
           onMouseEnter={plugin.current.stop}
           onMouseLeave={plugin.current.reset}
           data-aos="fade-up"
-          data-aos-delay="200"
+          data-aos-delay="100"
         >
-          <CarouselContent className="-ml-6">
+          <CarouselContent className="-ml-5">
             {initialConvenios.map((convenio) => (
-              <CarouselItem key={convenio.id} className="pl-6 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                <div className="p-2 h-full">
-                  <ConvenioCard convenio={convenio} />
-                </div>
+              <CarouselItem
+                key={convenio.id}
+                className="pl-5 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+              >
+                <ConvenioCard convenio={convenio} />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="hidden md:flex justify-center gap-4 mt-12">
-            <CarouselPrevious className="relative translate-y-0 left-0 hover:bg-primary hover:text-white border-2 border-primary/10" />
-            <CarouselNext className="relative translate-y-0 right-0 hover:bg-primary hover:text-white border-2 border-primary/10" />
+
+          <div className="flex justify-center gap-3 mt-10">
+            <CarouselPrevious className="relative translate-y-0 left-0 h-10 w-10 rounded-full border border-primary/15 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300" />
+            <CarouselNext className="relative translate-y-0 right-0 h-10 w-10 rounded-full border border-primary/15 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300" />
           </div>
         </Carousel>
 
-        <div className="mt-16 text-center" data-aos="fade-up" data-aos-delay="300">
-          <Button asChild className="btn-premium-outline">
-            <Link href="/convenios">
-              Consultar Todos <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+        <div className="mt-14 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+          <Link
+            href="/convenios"
+            className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-widest uppercase hover:gap-3 transition-all duration-300 border-b border-primary/20 hover:border-primary/40 pb-1"
+          >
+            Ver todos os convênios <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </div>
     </section>

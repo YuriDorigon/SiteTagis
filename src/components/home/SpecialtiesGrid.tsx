@@ -1,15 +1,10 @@
-// src/components/home/SpecialtiesGrid.tsx
 "use client";
 
 import React from 'react';
-import SectionTitle from '@/components/shared/SectionTitle';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import type { Specialty } from '@/lib/types';
-import { cn } from '@/lib/utils';
 
 interface SpecialtiesGridProps {
   initialSpecialties: Specialty[];
@@ -17,64 +12,68 @@ interface SpecialtiesGridProps {
 
 export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridProps) {
   return (
-    <section className="py-24 bg-white relative">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center mb-16" data-aos="fade-up">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/5 text-primary border border-primary/10 mb-4 text-xs font-bold tracking-widest uppercase">
-            Nossos Cuidados
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="container mx-auto px-6 md:px-10 lg:px-20">
+
+        {/* Header */}
+        <div
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14 lg:mb-16"
+          data-aos="fade-up"
+        >
+          <div className="max-w-xl">
+            <span className="text-accent text-[11px] font-medium tracking-[0.25em] uppercase mb-5 block">
+              Nossos cuidados
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-light text-primary leading-[1.05]">
+              Especialidades{' '}
+              <em className="italic font-normal text-accent">médicas</em>
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
-            Especialidades <span className="text-gradient">Médicas</span>
-          </h2>
-          <p className="text-foreground/60 text-center max-w-2xl text-lg font-medium">
-            Um corpo clínico completo e dedicado para atender todas as suas necessidades de saúde.
+          <p className="text-foreground/55 text-base font-light leading-relaxed md:text-right max-w-xs">
+            Corpo clínico completo para atender você e toda a sua família.
           </p>
         </div>
 
         {initialSpecialties.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/8 border border-primary/8 rounded-3xl overflow-hidden">
             {initialSpecialties.slice(0, 8).map((specialty, index) => (
-              <Card
+              <div
                 key={specialty.id}
-                className={cn(
-                  "group relative overflow-hidden border-none shadow-sm hover:shadow-2xl transition-all duration-500 rounded-[2rem] bg-background hover:-translate-y-2 hover-glow"
-                )}
+                className="group bg-white hover:bg-[#fafbfc] p-7 lg:p-9 transition-colors duration-500 cursor-default"
                 data-aos="fade-up"
                 data-aos-delay={50 * index}
               >
-                <CardHeader className="items-center pt-10 pb-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl group-hover:bg-secondary/30 transition-colors duration-500"></div>
-                    <div className="relative p-5 bg-white rounded-2xl shadow-sm border border-primary/5 group-hover:border-secondary/20 transition-all duration-500">
-                      <LucideIconRenderer name={specialty.iconName} className="h-10 w-10 text-primary group-hover:text-secondary transition-colors duration-500" />
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center pb-10">
-                  <CardTitle className="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors duration-300">
-                    {specialty.name}
-                  </CardTitle>
-                  <CardDescription className="text-sm text-foreground/60 line-clamp-3 leading-relaxed">
-                    {specialty.description}
-                  </CardDescription>
-                </CardContent>
-                {/* Decorative Element */}
-                <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                   <ArrowRight className="h-5 w-5 text-secondary" />
+                <div className="mb-6 inline-flex">
+                  <LucideIconRenderer
+                    name={specialty.iconName}
+                    className="h-7 w-7 text-primary/55 group-hover:text-accent transition-colors duration-500"
+                  />
                 </div>
-              </Card>
+
+                <h3 className="text-base font-medium text-primary mb-2 font-headline leading-snug">
+                  {specialty.name}
+                </h3>
+                <p className="text-xs text-foreground/50 font-light leading-relaxed line-clamp-2">
+                  {specialty.description}
+                </p>
+
+                <div className="mt-6">
+                  <ArrowRight className="h-4 w-4 text-primary/15 group-hover:text-accent transition-all duration-500 group-hover:translate-x-1" />
+                </div>
+              </div>
             ))}
           </div>
         ) : (
-          <p className="text-center text-lg text-muted-foreground p-20 glass rounded-3xl">Nenhuma especialidade encontrada.</p>
+          <p className="text-center text-foreground/45 py-20">Nenhuma especialidade encontrada.</p>
         )}
-        
-        <div className="mt-16 text-center" data-aos="fade-up" data-aos-delay="200">
-          <Button asChild className="btn-premium-outline">
-            <Link href="/especialidades">
-              Explorar Todas Especialidades <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+
+        <div className="mt-14 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+          <Link
+            href="/especialidades"
+            className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-widest uppercase hover:gap-3 transition-all duration-300 border-b border-primary/20 hover:border-primary/40 pb-1"
+          >
+            Ver todas as especialidades <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </div>
     </section>

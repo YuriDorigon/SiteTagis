@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const size = { width: 32, height: 32 };
+export const size = { width: 64, height: 64 };
 export const contentType = 'image/png';
 
 export default function Icon() {
@@ -13,14 +13,21 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#0a0a0a',
-          borderRadius: '50%',
-          color: '#c9a84c',
-          fontSize: 20,
-          fontWeight: 700,
+          background: '#003b4f',
+          borderRadius: '14px',
         }}
       >
-        T
+        {/* Cruz estilizada Tagis: 4 quadrantes branco/vermelho */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+          <div style={{ display: 'flex', gap: '3px' }}>
+            <div style={{ width: 22, height: 22, background: 'white', borderRadius: '3px 3px 0 3px' }} />
+            <div style={{ width: 22, height: 22, background: '#e31b23', borderRadius: '3px 3px 3px 0' }} />
+          </div>
+          <div style={{ display: 'flex', gap: '3px' }}>
+            <div style={{ width: 22, height: 22, background: '#e31b23', borderRadius: '3px 0 3px 3px' }} />
+            <div style={{ width: 22, height: 22, background: 'white', borderRadius: '0 3px 3px 3px' }} />
+          </div>
+        </div>
       </div>
     ),
     { ...size }

@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { PlusCircle, Edit3, Trash2, Loader2, Scissors, X, User } from 'lucide-react';
+import { PlusCircle, Edit3, Trash2, Loader2, Scissors, X, User, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop';
@@ -149,6 +149,22 @@ export default function ManageDoctors() {
     setIsDialogOpen(true);
   };
 
+  const handleToggleActive = async (doctor: Doctor) => {
+    if (!firestore) return;
+    const newActive = doctor.active === false ? true : false;
+    const doctorDocRef = doc(firestore, 'doctors', doctor.id);
+    try {
+      await updateDoc(doctorDocRef, { active: newActive });
+      setDoctors(prev => prev.map(d => d.id === doctor.id ? { ...d, active: newActive } : d));
+      toast({
+        title: newActive ? 'Médico ativado' : 'Médico em licença',
+        description: `${doctor.name} foi ${newActive ? 'reativado' : 'colocado em licença'} e não aparece no site até ser reativado.`,
+      });
+    } catch {
+      toast({ title: 'Erro ao alterar status', variant: 'destructive' });
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!firestore) return;
     if (confirm('Tem certeza que deseja excluir este membro do corpo clínico?')) {
@@ -261,7 +277,8 @@ export default function ManageDoctors() {
             <TableHead>Nome</TableHead>
             <TableHead>Atuação (Especialidades / Exames)</TableHead>
             <TableHead>CRM</TableHead>
-            <TableHead className="text-right w-[200px]">Ações</TableHead>
+            <TableHead className="w-[90px]">Status</TableHead>
+            <TableHead className="text-right w-[220px]">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -288,7 +305,28 @@ export default function ManageDoctors() {
                 </div>
               </TableCell>
               <TableCell>{doctor.crm}</TableCell>
+              <TableCell>
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                  doctor.active === false
+                    ? 'bg-amber-100 text-amber-700'
+                    : 'bg-emerald-100 text-emerald-700'
+                }`}>
+                  {doctor.active === false ? 'Em licença' : 'Ativo'}
+                </span>
+              </TableCell>
               <TableCell className="text-right space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleToggleActive(doctor)}
+                  disabled={isSaving}
+                  title={doctor.active === false ? 'Reativar médico' : 'Colocar em licença'}
+                >
+                  {doctor.active === false
+                    ? <ToggleLeft className="h-4 w-4 text-amber-600" />
+                    : <ToggleRight className="h-4 w-4 text-emerald-600" />
+                  }
+                </Button>
                 <Button variant="outline" size="sm" onClick={() => openDialogForEdit(doctor)} disabled={isSaving}>
                   <Edit3 className="h-4 w-4 mr-1" /> Editar
                 </Button>

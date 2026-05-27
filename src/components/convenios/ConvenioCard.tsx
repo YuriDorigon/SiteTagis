@@ -1,6 +1,4 @@
-// src/components/convenios/ConvenioCard.tsx
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
 import type { Convenio } from '@/lib/types';
 
 interface ConvenioCardProps {
@@ -9,20 +7,15 @@ interface ConvenioCardProps {
 
 export default function ConvenioCard({ convenio }: ConvenioCardProps) {
   return (
-    <Card className="group overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 rounded-3xl bg-white h-full border border-primary/5 hover:border-secondary/20">
-      <CardContent className="p-8 flex flex-col items-center justify-center h-full">
-        <div className="relative w-full h-24 mb-6 transition-transform duration-500 group-hover:scale-110">
-          <Image
-            src={convenio.logoUrl}
-            alt={`Logo ${convenio.name}`}
-            fill
-            className="object-contain"
-          />
-        </div>
-        <h3 className="text-base font-bold text-center text-primary/70 group-hover:text-primary transition-colors duration-300">
-          {convenio.name}
-        </h3>
-      </CardContent>
-    </Card>
+    <div className="group bg-white border border-primary/8 rounded-2xl p-6 h-32 flex items-center justify-center hover:border-accent/30 transition-colors duration-500">
+      <div className="relative w-full h-full transition-all duration-500 grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100">
+        <Image
+          src={convenio.logoUrl}
+          alt={`Logo ${convenio.name}`}
+          fill
+          className="object-contain"
+        />
+      </div>
+    </div>
   );
 }

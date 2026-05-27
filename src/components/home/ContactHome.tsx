@@ -1,71 +1,128 @@
-// src/components/home/ContactHome.tsx
-import SectionTitle from '@/components/shared/SectionTitle';
-import { Button } from '@/components/ui/button';
-import { Phone, MessageSquare, MapPin, ArrowRight } from 'lucide-react';
+import { Phone, MessageSquare, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
 import Link from 'next/link';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
+import { getClinicConfig } from '@/lib/server/firestoreData';
 
-export default function ContactHome() {
-  const clinicAddressShort = "Av. Ver. Walter Borges, 157 - Campinas, São José - SC";
+export default async function ContactHome() {
+  const cfg = await getClinicConfig();
+  const hours = [
+    { day: 'Segunda a Sexta', time: cfg.hoursWeekdays, open: true },
+    { day: 'Sábado', time: cfg.hoursSaturday, open: true },
+    { day: 'Domingo', time: cfg.hoursSunday, open: false },
+  ];
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="flex flex-col items-center mb-16" data-aos="fade-up">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4 text-xs font-bold tracking-widest uppercase">
-            Atendimento Humanizado
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
-            Estamos <span className="text-gradient">aqui por você</span>
-          </h2>
-          <p className="text-foreground/60 text-center max-w-2xl text-lg font-medium">
-            Tire suas dúvidas ou agende sua consulta através de nossos canais oficiais.
-          </p>
-        </div>
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="container mx-auto px-6 md:px-10 lg:px-20">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="group flex flex-col items-center p-10 rounded-[2.5rem] bg-white border border-primary/5 hover:border-secondary/20 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-            <div className="p-5 rounded-3xl bg-secondary/10 text-secondary mb-6 transition-transform duration-500 group-hover:scale-110">
-              <MessageSquare className="h-10 w-10 fill-secondary/10" />
-            </div>
-            <h3 className="text-2xl font-bold mb-2 text-primary">WhatsApp</h3>
-            <a href={`https://wa.me/5548991936045?text=${encodeURIComponent('Olá! Vim através do site e gostaria de mais informações.')}`} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-secondary hover:underline transition-all">(48) 99193-6045</a>
-          </div>
-
-          <div className="group flex flex-col items-center p-10 rounded-[2.5rem] bg-white border border-primary/5 hover:border-secondary/20 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-            <div className="p-5 rounded-3xl bg-secondary/10 text-secondary mb-6 transition-transform duration-500 group-hover:scale-110">
-              <Phone className="h-10 w-10 fill-secondary/10" />
-            </div>
-            <h3 className="text-2xl font-bold mb-2 text-primary">Telefone</h3>
-            <a href="tel:+554830353377" className="text-lg font-bold text-secondary hover:underline transition-all">(48) 3035-3377</a>
-          </div>
-
-          <div className="group flex flex-col items-center p-10 rounded-[2.5rem] bg-white border border-primary/5 hover:border-secondary/20 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-            <div className="p-5 rounded-3xl bg-secondary/10 text-secondary mb-6 transition-transform duration-500 group-hover:scale-110">
-              <MapPin className="h-10 w-10 fill-secondary/10" />
-            </div>
-            <h3 className="text-2xl font-bold mb-2 text-primary">Onde Estamos</h3>
-            <p className="text-lg font-medium text-foreground/70 text-center">{clinicAddressShort}</p>
-          </div>
-        </div>
-
-        <div 
-          className="flex flex-col items-center"
+        {/* Header */}
+        <div
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-14 lg:mb-16"
           data-aos="fade-up"
-          data-aos-delay="400"
         >
+          <div className="max-w-xl">
+            <span className="text-accent text-[11px] font-medium tracking-[0.25em] uppercase mb-5 block">
+              Atendimento
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-light text-primary leading-[1.05]">
+              Estamos aqui{' '}
+              <em className="italic font-normal text-accent">por você</em>
+            </h2>
+          </div>
           <WhatsAppButton
-            phoneNumber="5548991936045"
+            phoneNumber={cfg.whatsapp}
             message="Olá! Vim através do site e gostaria de agendar uma consulta."
-            className="btn-premium-primary text-lg px-10 py-7 mb-8"
+            className="inline-flex items-center gap-2.5 bg-primary hover:bg-primary/90 text-white font-medium py-4 px-8 rounded-full text-sm transition-all duration-300 hover:scale-[1.02] self-start md:self-end flex-shrink-0"
           >
-            <MessageSquare className="mr-2 h-6 w-6" /> Agendar Consulta Agora
+            <MessageSquare className="h-4 w-4" />
+            Agendar pelo WhatsApp
           </WhatsAppButton>
+        </div>
 
-          <Button asChild variant="link" className="text-primary/60 hover:text-primary font-bold tracking-widest uppercase text-xs">
-            <Link href="/contato" className="flex items-center gap-2">
-              Ver Localização Completa <ArrowRight className="h-4 w-4" />
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/8 border border-primary/8 rounded-3xl overflow-hidden">
+
+          {/* Horários */}
+          <div className="bg-white p-8 lg:p-10" data-aos="fade-up" data-aos-delay="100">
+            <Clock className="h-5 w-5 text-accent mb-6" />
+            <h3 className="text-primary font-medium text-base mb-5 font-headline">Horários</h3>
+            <ul className="space-y-3">
+              {hours.map((h, i) => (
+                <li key={i} className="flex justify-between items-center text-sm">
+                  <span className="text-foreground/50 font-light">{h.day}</span>
+                  <span className={h.open ? 'text-primary font-medium' : 'text-foreground/30 font-light'}>
+                    {h.time}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contato */}
+          <div className="bg-white p-8 lg:p-10" data-aos="fade-up" data-aos-delay="180">
+            <Phone className="h-5 w-5 text-accent mb-6" />
+            <h3 className="text-primary font-medium text-base mb-5 font-headline">Contato</h3>
+            <ul className="space-y-4">
+              <li>
+                <p className="text-foreground/40 text-[10px] font-medium tracking-widest uppercase mb-1">
+                  Telefone
+                </p>
+                <a
+                  href={`tel:${cfg.phone1.replace(/\D/g,'')}`}
+                  className="text-primary font-medium hover:text-accent transition-colors text-sm"
+                >
+                  {cfg.phone1}
+                </a>
+              </li>
+              <li>
+                <p className="text-foreground/40 text-[10px] font-medium tracking-widest uppercase mb-1">
+                  WhatsApp
+                </p>
+                <a
+                  href={`https://wa.me/${cfg.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary font-medium hover:text-accent transition-colors text-sm"
+                >
+                  {cfg.whatsappDisplay}
+                </a>
+              </li>
+              <li className="flex gap-2 pt-2">
+                <a
+                  href={cfg.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-primary/5 text-primary/60 hover:bg-accent/10 hover:text-accent transition-colors duration-300"
+                >
+                  <Facebook className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href={cfg.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-primary/5 text-primary/60 hover:bg-accent/10 hover:text-accent transition-colors duration-300"
+                >
+                  <Instagram className="h-3.5 w-3.5" />
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Endereço */}
+          <div className="bg-white p-8 lg:p-10" data-aos="fade-up" data-aos-delay="260">
+            <MapPin className="h-5 w-5 text-accent mb-6" />
+            <h3 className="text-primary font-medium text-base mb-5 font-headline">Endereço</h3>
+            <address className="not-italic space-y-1 mb-5">
+              <p className="text-primary font-medium text-sm">{cfg.addressStreet}</p>
+              <p className="text-foreground/55 text-sm font-light">{cfg.addressCity}</p>
+              <p className="text-foreground/55 text-sm font-light">CEP: {cfg.addressCep}</p>
+            </address>
+            <Link
+              href="/contato"
+              className="inline-flex items-center gap-1.5 text-accent text-xs font-semibold tracking-widest uppercase hover:gap-2.5 transition-all duration-300"
+            >
+              Ver no mapa →
             </Link>
-          </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -1,27 +1,20 @@
 // src/app/exames/page.tsx
+import type { Metadata } from 'next';
 import SectionTitle from '@/components/shared/SectionTitle';
+
+export const metadata: Metadata = {
+  title: 'Exames Realizados | Tagis Medicina e Diagnóstico – São José SC',
+  description: 'Mais de 50 tipos de exames laboratoriais, cardiológicos e de imagem em São José, SC. Resultados online. Agende pelo WhatsApp.',
+};
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import ExamResultsButton from '@/components/exames/ExamResultsButton';
-import type { Exam } from '@/lib/types';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getExams } from '@/lib/server/firestoreData';
 
-
-// Fetch data from the local JSON file
-async function getExamsData(): Promise<Exam[]> {
-  try {
-    const filePath = path.join(process.cwd(), 'src', 'lib', 'data', 'exams.json');
-    const jsonData = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(jsonData);
-  } catch (error) {
-    console.error("Error reading exams.json:", error);
-    return []; // Return empty array on error
-  }
-}
+export const revalidate = 60;
 
 export default async function ExamesPage() {
-  const exams = await getExamsData();
+  const exams = await getExams();
 
   return (
     <>
@@ -52,7 +45,7 @@ export default async function ExamesPage() {
             ))}
           </div>
         ) : (
-           <p className="text-center text-lg text-muted-foreground">Nenhum exame encontrado. Por favor, tente novamente mais tarde.</p>
+          <p className="text-center text-lg text-muted-foreground">Nenhum exame encontrado. Por favor, tente novamente mais tarde.</p>
         )}
       </div>
     </>

@@ -1,25 +1,19 @@
 // src/app/especialidades/page.tsx
+import type { Metadata } from 'next';
 import SectionTitle from '@/components/shared/SectionTitle';
+
+export const metadata: Metadata = {
+  title: 'Especialidades Médicas | Tagis Medicina e Diagnóstico – São José SC',
+  description: 'Mais de 30 especialidades médicas em São José, SC: Cardiologia, Ortopedia, Ginecologia, Dermatologia e muito mais. Agende sua consulta pelo WhatsApp.',
+};
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
-import type { Specialty } from '@/lib/types';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getSpecialties } from '@/lib/server/firestoreData';
 
-// Fetch data from the local JSON file
-async function getSpecialtiesData(): Promise<Specialty[]> {
-  try {
-    const filePath = path.join(process.cwd(), 'src', 'lib', 'data', 'specialties.json');
-    const jsonData = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(jsonData);
-  } catch (error) {
-    console.error("Error reading specialties.json:", error);
-    return []; // Return empty array on error
-  }
-}
+export const revalidate = 60;
 
 export default async function EspecialidadesPage() {
-  const specialties = await getSpecialtiesData();
+  const specialties = await getSpecialties();
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">

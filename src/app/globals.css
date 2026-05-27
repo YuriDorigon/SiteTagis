@@ -1,5 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap');
+/* Cormorant Garant via @import (não suportado pelo next/font nessa versão) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,73 +8,51 @@
 
 @layer base {
   :root {
-    /* New Boutique Clinic Palette - Modern, Clean, Professional */
-    --background: 210 40% 99%; /* Very subtle off-white/blue */
-    --foreground: 222 47% 11%; /* Deep navy for text */
-
+    --background: 210 40% 99%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-    
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    
-    /* Primary: Sophisticated Deep Navy */
-    --primary: 222 47% 11%; /* #001B2E equivalent */
+    --primary: 195 100% 15%;
     --primary-foreground: 180 20% 98%;
-
-    /* Secondary: Soft Teal for a calming medical feel */
-    --secondary: 184 31% 23%; /* #006D77 base, adapted */
-    --secondary-foreground: 180 20% 98%;
-
-    /* Accent: Subtle Gold for a premium touch */
-    --accent: 46 65% 52%; /* #D4AF37 equivalent */
-    --accent-foreground: 222 47% 11%;
-
+    --secondary: 358 79% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 188 91% 37%; /* #0891b2 cyan-teal */
+    --accent-foreground: 0 0% 100%;
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
-    
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-    
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 184 31% 23%;
-    
     --radius: 1rem;
-
-    /* Sidebar - Modern Slate */
     --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 46 65% 52%;    
-    --sidebar-primary-foreground: 222 47% 11%; 
-    --sidebar-accent: 222 47% 18%;     
-    --sidebar-accent-foreground: 210 40% 98%; 
-    --sidebar-border: 222 47% 15%;     
-    --sidebar-ring: 46 65% 52%;       
+    --sidebar-primary: 46 65% 52%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 47% 18%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 47% 15%;
+    --sidebar-ring: 46 65% 52%;
   }
 
   .dark {
-    --background: 222 47% 4%; 
+    --background: 222 47% 4%;
     --foreground: 210 40% 98%;
-    
     --card: 222 47% 6%;
     --card-foreground: 210 40% 98%;
-    
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    
-    --primary: 184 31% 60%; 
+    --primary: 184 31% 60%;
     --primary-foreground: 222 47% 4%;
-    
     --secondary: 222 47% 12%;
     --secondary-foreground: 210 40% 98%;
-    
     --muted: 222 47% 12%;
     --muted-foreground: 215 20% 65%;
-    
     --accent: 46 65% 52%;
     --accent-foreground: 222 47% 4%;
-    
     --border: 222 47% 15%;
     --input: 222 47% 15%;
     --ring: 184 31% 60%;
@@ -86,17 +65,24 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans), sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6, .font-headline {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-headline), sans-serif;
     @apply tracking-tight font-semibold;
   }
 }
 
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), serif;
+  }
+}
+
 @layer components {
-  /* Premium Glassmorphism */
+  /* Glassmorphism */
   .glass {
     @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
   }
@@ -104,30 +90,47 @@
     @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-xl;
   }
 
-  /* Sophisticated Gradients */
+  /* Gradient bg */
   .bg-premium-gradient {
-    background: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(184 31% 23%) 100%);
+    background: hsl(var(--primary));
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+    @apply text-primary;
   }
 
-  /* Interaction effects */
+  /* Hover glow */
   .hover-glow {
     @apply transition-all duration-500;
   }
   .hover-glow:hover {
-    @apply shadow-[0_0_20px_rgba(0,109,119,0.3)] border-secondary/50;
+    @apply shadow-[0_0_20px_rgba(0,59,79,0.2)] border-primary/50;
   }
 
+  /* Buttons */
   .btn-premium {
     @apply rounded-full px-8 py-4 transition-all duration-300 font-semibold flex items-center justify-center gap-2;
   }
   .btn-premium-primary {
-    @apply btn-premium bg-primary text-primary-foreground hover:bg-secondary hover:scale-105 active:scale-95 shadow-lg;
+    @apply btn-premium bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg;
   }
   .btn-premium-outline {
     @apply btn-premium border-2 border-primary text-primary hover:bg-primary/5 hover:scale-105 active:scale-95;
+  }
+  .btn-accent {
+    @apply btn-premium bg-accent text-white hover:bg-accent/90 hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(8,145,178,0.35)] font-bold;
+  }
+
+  /* Section tag badges */
+  .section-tag {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent/90 border border-accent/20 text-xs font-semibold tracking-[0.2em] uppercase;
+  }
+  .section-tag-primary {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/10 text-xs font-semibold tracking-[0.2em] uppercase;
+  }
+
+  /* Divider accent */
+  .section-divider {
+    @apply w-16 h-1 bg-accent rounded-full;
   }
 }

@@ -1,10 +1,10 @@
 // scripts/pre-build-data.ts
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, orderBy, getDoc, doc } from 'firebase/firestore';
 import dotenv from 'dotenv';
 import { resolve } from 'path';
 import { promises as fs } from 'fs';
-import type { Specialty, Exam, Convenio, Testimonial, Doctor } from '@/lib/types';
+import type { Specialty, Exam, Convenio, Testimonial, Doctor, ClinicConfig } from '@/lib/types';
 
 // Carrega as variáveis de ambiente do arquivo .env (sem sobrescrever vars do sistema/Vercel)
 dotenv.config({ path: resolve(process.cwd(), '.env.local'), override: false });
@@ -29,6 +29,24 @@ const app = hasFirebaseConfig ? initializeApp(firebaseConfig) : null;
 const db = app ? getFirestore(app) : null;
 
 const DATA_DIR = resolve(process.cwd(), 'src/lib/data');
+
+async function fetchSettingsAndSave(): Promise<void> {
+  console.log('Buscando configurações da clínica (settings/clinic)...');
+  const fileName = 'clinicConfig.json';
+  try {
+    if (!db) throw new Error('Firebase não disponível.');
+    const snap = await getDoc(doc(db, 'settings', 'clinic'));
+    if (snap.exists()) {
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      await fs.writeFile(resolve(DATA_DIR, fileName), JSON.stringify(snap.data(), null, 2));
+      console.log(`✅ Configurações salvas em ${fileName}.`);
+    } else {
+      console.log(`⚠️ Documento settings/clinic não encontrado no Firestore. Usando arquivo local.`);
+    }
+  } catch (error: any) {
+    console.warn(`⚠️ Aviso ao buscar settings: ${error.message}. Usando arquivo local.`);
+  }
+}
 
 async function fetchDataAndSave<T>(collectionName: string, fileName: string): Promise<T[]> {
   console.log(`Verificando dados para a coleção: ${collectionName}...`);
@@ -74,6 +92,7 @@ async function main() {
   console.log("Iniciando pré-build: buscando ou verificando dados locais...");
   
   await Promise.all([
+    fetchSettingsAndSave(),
     fetchDataAndSave<Specialty>('specialties', 'specialties.json'),
     fetchDataAndSave<Exam>('exams', 'exams.json'),
     fetchDataAndSave<Convenio>('convenios', 'convenios.json'),

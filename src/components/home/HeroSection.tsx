@@ -1,109 +1,144 @@
-// src/components/home/HeroSection.tsx
 "use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { FileText, ArrowDown } from 'lucide-react';
+import { FileText, Calendar, ArrowRight } from 'lucide-react';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 import ExamResultsModal from '@/components/shared/ExamResultsModal';
+import type { ClinicConfig } from '@/lib/types';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  cfg: ClinicConfig;
+}
+
+export default function HeroSection({ cfg }: HeroSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
-      <section
-        className="relative flex flex-col items-center justify-center text-primary-foreground min-h-[90vh] md:min-h-screen overflow-hidden"
-      >
-        <Image
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+
+        {/* Background image full-width */}
+        <div className="absolute inset-0 z-0">
+          <Image
             src="/BGSITE.avif"
-            alt="Interior premium da Clinica Tagis"
+            alt="Clínica Tagis"
             fill
             priority
             sizes="100vw"
             unoptimized
-            className="object-cover"
-            style={{
-                objectPosition: 'center',
-            }}
-        />
-        {/* Artistic Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/80 via-primary/60 to-secondary/40 z-0"></div>
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10 py-20">
-          <div className="max-w-4xl mx-auto">
-            <div 
-              className="glass p-8 md:p-12 rounded-[2rem] text-center md:text-left flex flex-col md:flex-row items-center gap-10"
-              data-aos="zoom-in-up"
-              data-aos-duration="1000"
+            className="object-cover object-right"
+          />
+          {/* Gradient overlay: mais escuro na esquerda (onde está o texto) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/75 to-primary/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-6 md:px-10 lg:px-20 relative z-10 py-24 lg:py-32">
+          <div className="max-w-2xl">
+
+            <div
+              className="flex items-center gap-3 mb-8"
+              data-aos="fade-up"
+              data-aos-duration="800"
             >
-              <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/20 text-accent border border-accent/20 mb-6 text-sm font-bold tracking-wider uppercase">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-                  </span>
-                  Excelência em Saúde
+              <div className="h-px w-10 bg-accent" />
+              <span className="text-accent text-[11px] font-medium tracking-[0.25em] uppercase">
+                Medicina &amp; Diagnóstico
+              </span>
+            </div>
+
+            <h1
+              className="font-display text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-light text-white leading-[1.02] mb-8"
+              data-aos="fade-up"
+              data-aos-delay="80"
+              data-aos-duration="900"
+            >
+              {cfg.heroHeadline}
+            </h1>
+
+            <p
+              className="text-white/65 text-base md:text-lg font-light mb-10 max-w-md leading-relaxed"
+              data-aos="fade-up"
+              data-aos-delay="160"
+              data-aos-duration="900"
+            >
+              {cfg.heroSubtext}
+            </p>
+
+            <div
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+              data-aos="fade-up"
+              data-aos-delay="240"
+              data-aos-duration="900"
+            >
+              <WhatsAppButton
+                phoneNumber="5548991936045"
+                message="Olá! Gostaria de agendar uma consulta."
+                className="inline-flex items-center justify-center gap-2.5 bg-accent hover:bg-accent/90 text-white font-semibold py-4 px-8 rounded-full text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/25"
+              >
+                <Calendar className="h-4 w-4" />
+                Agendar consulta
+              </WhatsAppButton>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-2 text-white/65 hover:text-white font-medium text-sm transition-colors duration-300 group"
+              >
+                <FileText className="h-4 w-4" />
+                Resultados de exames
+                <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div
+              className="mt-16 pt-10 border-t border-white/15 grid grid-cols-3 gap-4 max-w-md"
+              data-aos="fade-up"
+              data-aos-delay="320"
+            >
+              {[
+                { num: cfg.statSpecialties, label: 'Especialidades' },
+                { num: cfg.statExams, label: 'Tipos de exames' },
+                { num: cfg.statInsurance, label: 'Convênios' },
+              ].map((s, i) => (
+                <div key={i}>
+                  <div className="font-display text-3xl text-white font-normal leading-none mb-1.5">
+                    {s.num}
+                  </div>
+                  <div className="text-[10px] text-white/40 font-medium tracking-widest uppercase">
+                    {s.label}
+                  </div>
                 </div>
-                
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-primary !leading-[1.1]">
-                  Sua Saúde em <br />
-                  <span className="text-gradient">Primeiro Lugar</span>
-                </h1>
-                
-                <p className="text-lg md:text-xl text-foreground/80 mb-10 leading-relaxed font-medium">
-                  Atendimento humanizado, tecnologia de ponta e especialistas dedicados para cuidar de você e sua família em São José, SC.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <WhatsAppButton
-                    phoneNumber="5548991936045"
-                    message="Olá! Vim através do site e gostaria de agendar uma consulta."
-                    className="btn-premium-primary w-full sm:w-auto"
-                  >
-                    Agendar Agora
-                  </WhatsAppButton>
-                  
-                  <Button
-                    onClick={() => setIsModalOpen(true)}
-                    variant="outline"
-                    className="btn-premium-outline w-full sm:w-auto bg-white/50 backdrop-blur-sm"
-                  >
-                    <FileText className="mr-2 h-5 w-5" /> Resultados
-                  </Button>
-                </div>
-              </div>
-              
-              {/* Stats / Quick Info */}
-              <div className="hidden lg:flex flex-col gap-4 w-48">
-                <div className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/40 shadow-sm">
-                  <div className="text-3xl font-extrabold text-primary">+30</div>
-                  <div className="text-xs font-bold text-foreground/60 uppercase tracking-tighter">Especialidades</div>
-                </div>
-                <div className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/40 shadow-sm">
-                  <div className="text-3xl font-extrabold text-primary">+50</div>
-                  <div className="text-xs font-bold text-foreground/60 uppercase tracking-tighter">Tipos de Exames</div>
-                </div>
-                <div className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/40 shadow-sm">
-                  <div className="text-3xl font-extrabold text-primary">+20</div>
-                  <div className="text-xs font-bold text-foreground/60 uppercase tracking-tighter">Convênios</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:block">
-            <div className="flex flex-col items-center gap-2 text-white/60">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Descobrir</span>
-                <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">
-                  <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce"></div>
-                </div>
+        {/* Floating hours card — bottom right, hidden on very small screens */}
+        <div
+          className="hidden sm:block absolute bottom-8 right-8 md:right-16 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-xl z-10"
+          data-aos="fade-left"
+          data-aos-delay="400"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+              <Calendar className="h-5 w-5 text-accent" />
             </div>
+            <div>
+              <p className="text-[10px] font-semibold tracking-widest text-foreground/40 uppercase">
+                Hoje atendemos
+              </p>
+              <p className="text-primary text-sm font-semibold">
+                Seg – Sex · 07:30 às 18h · Sáb · 07:30 às 12h
+              </p>
+            </div>
+          </div>
         </div>
+
       </section>
+
       <ExamResultsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );

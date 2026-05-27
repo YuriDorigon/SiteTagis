@@ -1,8 +1,6 @@
-// src/components/exames/ExamResultsButton.tsx
 "use client";
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
 import ExamResultsModal from '@/components/shared/ExamResultsModal';
 
@@ -11,13 +9,13 @@ export default function ExamResultsButton() {
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setIsModalOpen(true)}
-        variant="default"
-        className="text-base px-6 py-3 sm:text-lg sm:px-8 sm:py-4 w-full max-w-xs mx-auto"
+        className="inline-flex items-center justify-center gap-2.5 bg-primary hover:bg-primary/90 text-white font-medium py-4 px-8 rounded-full text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95"
       >
-        <FileText className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Resultado de Exames
-      </Button>
+        <FileText className="h-4 w-4" />
+        Resultado de exames
+      </button>
       <ExamResultsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );

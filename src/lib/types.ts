@@ -12,6 +12,7 @@ export interface Exam {
   name: string;
   iconName: string;
   description: string;
+  active?: boolean;
 }
 
 export interface Doctor {
@@ -20,6 +21,7 @@ export interface Doctor {
   crm: string;
   imageUrl: string;
   bio: string;
+  active?: boolean;
   /** 
    * Array de IDs de documentos da coleção 'specialties'.
    * Exemplo: ['id_ortopedia_geral', 'id_ortopedia_joelho']
@@ -67,3 +69,37 @@ export interface Testimonial {
 }
 
 export type TestimonialFormData = Omit<Testimonial, 'id'>;
+
+export interface ClinicConfig {
+  // Contato
+  whatsapp: string;              // somente números: "5548991936045"
+  whatsappDisplay: string;       // formatado: "(48) 99193-6045"
+  phone1: string;                // "(48) 3035-3377"
+  phone2: string;                // "(48) 3241-1122"
+  email: string;                 // "contato@tagis.com.br"
+  privacyEmail: string;          // "privacidade@tagismd.com.br"
+  // Endereço
+  addressStreet: string;         // "Av. Ver. Walter Borges, 157"
+  addressCity: string;           // "Campinas, São José – SC"
+  addressCep: string;            // "88101-030"
+  googleMapsEmbed: string;       // URL do iframe embed
+  googleMapsLink: string;        // URL para abrir no app Maps
+  // Horários
+  hoursWeekdays: string;         // "07:30 – 18:00"
+  hoursSaturday: string;         // "07:30 – 12:00"
+  hoursSunday: string;           // "Fechado"
+  // Redes sociais
+  instagram: string;
+  facebook: string;
+  // Informações legais
+  cnpj: string;
+  companyName: string;
+  technicalResponsible: string;
+  technicalResponsibleCrm: string;
+  // Hero (página inicial)
+  heroHeadline: string;
+  heroSubtext: string;
+  statSpecialties: string;
+  statExams: string;
+  statInsurance: string;
+}

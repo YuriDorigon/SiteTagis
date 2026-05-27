@@ -1,64 +1,90 @@
+"use client";
+
 // src/components/doutores/DoctorCard.tsx
+import { useState } from 'react';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Doctor } from '@/lib/types';
-import { User, Stethoscope, Microscope } from 'lucide-react';
+import { Stethoscope, Microscope } from 'lucide-react';
 
 interface DoctorCardProps {
   doctor: Doctor;
 }
 
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('');
+}
+
 export default function DoctorCard({ doctor }: DoctorCardProps) {
+  const [imgError, setImgError] = useState(false);
+
   const hasSpecialties = doctor.specialtyNames && doctor.specialtyNames.length > 0;
   const hasExams = doctor.examNames && doctor.examNames.length > 0;
+  const showPlaceholder = !doctor.imageUrl || imgError;
+  const initials = getInitials(doctor.name);
 
   return (
-    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col text-center items-center p-6 h-full">
-      <div className="relative w-32 h-32 mb-4 rounded-full border-4 border-secondary shadow-lg flex items-center justify-center bg-muted">
-        {doctor.imageUrl ? (
+    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col text-center items-center p-6 h-full border-primary/8">
+      <div className="relative w-28 h-28 mb-4 rounded-full border-2 border-primary/15 flex items-center justify-center bg-muted overflow-hidden">
+        {!showPlaceholder ? (
           <Image
-            src={doctor.imageUrl}
+            src={doctor.imageUrl!}
             alt={`Foto de ${doctor.name}`}
             fill
-            sizes="128px"
+            sizes="112px"
             className="object-cover rounded-full"
+            onError={() => setImgError(true)}
             data-ai-hint="doctor portrait professional"
           />
         ) : (
-          <User className="h-16 w-16 text-muted-foreground" />
+          <div className="w-full h-full rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="text-2xl font-semibold text-primary font-headline select-none">
+              {initials}
+            </span>
+          </div>
         )}
       </div>
+
       <CardHeader className="p-0 items-center mb-2 w-full">
-        <CardTitle className="text-2xl font-bold text-primary mb-1 font-headline">{doctor.name}</CardTitle>
-        <p className="text-sm text-muted-foreground">CRM/SC: {doctor.crm}</p>
+        <CardTitle className="text-lg font-semibold text-primary mb-0.5 font-headline leading-snug uppercase">
+          {doctor.name}
+        </CardTitle>
+        <p className="text-xs text-foreground/40 font-medium tracking-wide">CRM/SC: {doctor.crm}</p>
       </CardHeader>
+
       <CardContent className="p-0 flex-grow w-full">
-        <div className="flex flex-col gap-3 my-3">
+        <div className="flex flex-col gap-2 my-3">
           {hasSpecialties && (
-            <div className="flex flex-wrap justify-center items-center gap-2">
-              <Stethoscope className="h-5 w-5 text-primary/70 mr-1" />
+            <div className="flex flex-wrap justify-center items-center gap-1.5">
+              <Stethoscope className="h-3.5 w-3.5 text-primary/50 mr-0.5 flex-shrink-0" />
               {(doctor.specialtyNames || []).map((name) => (
-                <Badge key={name} variant="secondary" className="py-1 px-2 text-sm">
+                <span key={name} className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/8 text-primary">
                   {name}
-                </Badge>
+                </span>
               ))}
             </div>
           )}
           {hasExams && (
-            <div className="flex flex-wrap justify-center items-center gap-2">
-               <Microscope className="h-5 w-5 text-primary/70 mr-1" />
+            <div className="flex flex-wrap justify-center items-center gap-1.5">
+              <Microscope className="h-3.5 w-3.5 text-accent/60 mr-0.5 flex-shrink-0" />
               {(doctor.examNames || []).map((name) => (
-                <Badge key={name} variant="outline" className="py-1 px-2 text-sm border-primary/50 text-primary bg-primary/5">
+                <span key={name} className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/8 text-accent">
                   {name}
-                </Badge>
+                </span>
               ))}
             </div>
           )}
         </div>
-        <CardDescription className="text-md text-foreground/80 leading-relaxed text-center mt-4">
-          {doctor.bio}
-        </CardDescription>
+        {doctor.bio && (
+          <p className="text-sm text-foreground/55 font-light leading-relaxed text-center mt-3">
+            {doctor.bio}
+          </p>
+        )}
       </CardContent>
     </Card>
   );

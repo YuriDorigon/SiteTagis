@@ -1,90 +1,151 @@
-
 // src/app/contato/page.tsx
-import SectionTitle from '@/components/shared/SectionTitle';
+import type { Metadata } from 'next';
 import MapEmbed from '@/components/contact/MapEmbed';
-import { Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Contato | Tagis Medicina e Diagnóstico – São José SC',
+  description: 'Entre em contato com a Tagis: (48) 3035-3377 | (48) 99193-6045. Av. Ver. Walter Borges, 157 – Campinas, São José SC. Seg–Sex 07:30–18h, Sáb 07:30–12h.',
+};
+import { Phone, MessageSquare, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
-// Card related imports removed as the card itself is removed
-// import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-// import { Button } from '@/components/ui/button'; 
+import { getClinicConfig } from '@/lib/server/firestoreData';
 
-export default function ContatoPage() {
-  const clinicAddress = "Av. Ver. Walter Borges, 157 - Campinas, São José - SC, 88101-030";
-  // O link do Google Maps para "Ver no mapa" continua dinâmico
-  const encodedAddress = encodeURIComponent(clinicAddress);
-  const mapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=-48.614910%2C-27.601550%2C-48.608750%2C-27.598050&layer=mapnik&marker=-27.599804,-48.612704`;
-  const googleMapsLink = `https://maps.google.com/?q=${encodedAddress}`;
+export const revalidate = 60;
 
+export default async function ContatoPage() {
+  const cfg = await getClinicConfig();
+  const WHATSAPP = cfg.whatsapp;
+  const WHATSAPP_MSG = encodeURIComponent('Olá! Vim através do site e gostaria de agendar uma consulta.');
+  const mapEmbedUrl = cfg.googleMapsEmbed;
+  const googleMapsLink = cfg.googleMapsLink;
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-      <SectionTitle
-        title="Entre em Contato"
-        subtitle="Estamos à disposição para esclarecer suas dúvidas, agendar consultas ou fornecer informações."
-      />
+    <div className="bg-[#f8fafb] min-h-screen">
 
-      <div className="grid md:grid-cols-2 gap-12 mb-16">
-        <div>
-          <h3 className="text-2xl font-semibold text-primary mb-6 font-headline">Nossas Informações</h3>
-          <div className="space-y-6 text-lg">
-            <div className="flex items-start">
-              <MapPin className="h-7 w-7 text-primary mr-4 mt-1 flex-shrink-0" />
-              <div>
-                <strong className="block">Endereço:</strong>
-                {clinicAddress}
-                <a 
-                  href={googleMapsLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="block text-sm text-primary hover:underline mt-1"
-                >
-                  Ver no Google Maps
-                </a>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <MessageSquare className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
-              <div>
-                <strong className="block">WhatsApp (Agendamentos):</strong>
-                <a href={`https://wa.me/5548991936045?text=${encodeURIComponent('Olá! Vim através do site e gostaria de mais informações.')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary">(48) 99193-6045</a>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Phone className="h-7 w-7 text-primary mr-4 flex-shrink-0" />
-              <div>
-                <strong className="block">Telefone Fixo:</strong>
-                <a href="tel:+554830353377" className="hover:text-primary">(48) 3035-3377</a>
-              </div>
-            </div>
-             <div className="flex items-start">
-              <Clock className="h-7 w-7 text-primary mr-4 mt-1 flex-shrink-0" />
-              <div>
-                <strong className="block">Horário de Atendimento:</strong>
-                Segunda a Sexta: 07:30 - 18:00 <br />
-                Sábado: 07:30 - 12:00
-              </div>
-            </div>
-          </div>
-          <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <WhatsAppButton 
-              phoneNumber="5548991936045" 
-              size="lg" 
-              message="Olá! Vim através do site e gostaria de agendar uma consulta."
-              className="text-lg px-8 py-6 w-full sm:w-auto"
-            >
-              <MessageSquare className="mr-2 h-6 w-6" /> Agendar Consulta
-            </WhatsAppButton>
-          </div>
-        </div>
-        <div>
-          <h3 className="text-2xl font-semibold text-primary mb-6 font-headline">Nossa Localização</h3>
-          <MapEmbed embedUrl={mapEmbedUrl} />
+      {/* Hero */}
+      <div className="bg-primary py-16 lg:py-20">
+        <div className="container mx-auto px-6 md:px-10 lg:px-20">
+          <span className="text-accent text-[11px] font-medium tracking-[0.25em] uppercase mb-4 block">
+            Fale conosco
+          </span>
+          <h1 className="font-display text-4xl md:text-5xl font-light text-white leading-tight">
+            Entre em{' '}
+            <em className="italic font-normal text-accent">contato</em>
+          </h1>
+          <p className="text-white/50 text-base font-light mt-3 max-w-md">
+            Estamos à disposição para esclarecer dúvidas, agendar consultas ou fornecer informações.
+          </p>
         </div>
       </div>
 
-      {/* 
-        A Card contendo o formulário de contato foi removida daqui.
-      */}
+      <div className="container mx-auto px-6 md:px-10 lg:px-20 py-12 lg:py-16">
+        <div className="grid lg:grid-cols-5 gap-8">
 
+          {/* Info panel */}
+          <div className="lg:col-span-2 space-y-4">
+
+            {/* Horários */}
+            <div className="bg-white rounded-2xl border border-primary/8 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Clock className="h-4 w-4 text-accent" />
+                <span className="text-xs font-semibold tracking-widest uppercase text-foreground/40">Horários</span>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  { day: 'Segunda a Sexta', time: cfg.hoursWeekdays, open: true },
+                  { day: 'Sábado', time: cfg.hoursSaturday, open: true },
+                  { day: 'Domingo', time: cfg.hoursSunday, open: false },
+                ].map((h, i) => (
+                  <li key={i} className="flex justify-between items-center text-sm">
+                    <span className="text-foreground/55 font-light">{h.day}</span>
+                    <span className={h.open ? 'text-primary font-medium' : 'text-foreground/30 font-light'}>
+                      {h.time}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contatos */}
+            <div className="bg-white rounded-2xl border border-primary/8 p-6 space-y-5">
+              <div className="flex items-center gap-3 mb-1">
+                <Phone className="h-4 w-4 text-accent" />
+                <span className="text-xs font-semibold tracking-widest uppercase text-foreground/40">Contato</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold tracking-widest text-foreground/35 uppercase mb-1">WhatsApp</p>
+                <a
+                  href={`https://wa.me/${WHATSAPP}?text=${WHATSAPP_MSG}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary font-medium text-sm hover:text-accent transition-colors"
+                >
+                  {cfg.whatsappDisplay}
+                </a>
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold tracking-widest text-foreground/35 uppercase mb-1">Telefone</p>
+                <a href={`tel:${cfg.phone1.replace(/\D/g,'')}`} className="text-primary font-medium text-sm hover:text-accent transition-colors">
+                  {cfg.phone1}
+                </a>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <a
+                  href={cfg.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-primary/5 text-primary/50 hover:bg-accent/10 hover:text-accent transition-colors"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+                <a
+                  href={cfg.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-primary/5 text-primary/50 hover:bg-accent/10 hover:text-accent transition-colors"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+
+            {/* Endereço */}
+            <div className="bg-white rounded-2xl border border-primary/8 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <MapPin className="h-4 w-4 text-accent" />
+                <span className="text-xs font-semibold tracking-widest uppercase text-foreground/40">Endereço</span>
+              </div>
+              <address className="not-italic text-sm text-primary font-medium leading-relaxed mb-4">
+                {cfg.addressStreet}<br />
+                {cfg.addressCity}<br />
+                <span className="text-foreground/45 font-light">CEP: {cfg.addressCep}</span>
+              </address>
+              <a
+                href={googleMapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-accent text-xs font-semibold tracking-widest uppercase hover:gap-2.5 transition-all duration-300"
+              >
+                Como chegar →
+              </a>
+            </div>
+
+            {/* CTA */}
+            <WhatsAppButton
+              phoneNumber={WHATSAPP}
+              message="Olá! Vim através do site e gostaria de agendar uma consulta."
+              className="w-full inline-flex items-center justify-center gap-2.5 bg-primary text-white font-medium py-4 px-8 rounded-2xl text-sm hover:bg-primary/90 transition-all duration-300 hover:scale-[1.01]"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Agendar pelo WhatsApp
+            </WhatsAppButton>
+          </div>
+
+          {/* Map */}
+          <div className="lg:col-span-3">
+            <MapEmbed embedUrl={mapEmbedUrl} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

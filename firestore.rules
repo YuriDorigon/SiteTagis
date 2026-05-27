@@ -36,5 +36,9 @@ service cloud.firestore {
       allow get: if true;
       allow list, write: if true; // Permissão para o painel de administração
     }
+
+    match /settings/{docId} {
+      allow read, write: if true;
+    }
   }
 }

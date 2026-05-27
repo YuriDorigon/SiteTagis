@@ -24,13 +24,12 @@ const nextConfig: NextConfig = {
    */
   images: {
     unoptimized: false,
-    formats: ['image/webp'],
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-      },
+      { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
     ],
+    minimumCacheTTL: 3600,
   },
   
   /**

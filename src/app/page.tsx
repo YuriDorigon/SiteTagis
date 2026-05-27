@@ -1,63 +1,83 @@
 // src/app/page.tsx
 import HeroSection from '@/components/home/HeroSection';
-import PromotionalBanner from '@/components/home/PromotionalBanner';
+import QuickAccessCards from '@/components/home/QuickAccessCards';
 import PatientJourney from '@/components/home/PatientJourney';
 import AboutClinic from '@/components/home/AboutClinic';
 import SpecialtiesGrid from '@/components/home/SpecialtiesGrid';
 import ExamsSection from '@/components/home/ExamsSection';
+import AppointmentCTA from '@/components/home/AppointmentCTA';
 import ConveniosCarousel from '@/components/home/ConveniosCarousel';
 import TestimonialsCarousel from '@/components/home/TestimonialsCarousel';
+import FAQSection from '@/components/home/FAQSection';
 import ContactHome from '@/components/home/ContactHome';
+import { getSpecialties, getExams, getConvenios, getTestimonials, getClinicConfig } from '@/lib/server/firestoreData';
 
-import type { Specialty, Exam, Convenio, Testimonial } from '@/lib/types';
-import { promises as fs } from 'fs';
-import path from 'path';
+export const revalidate = 60;
 
-// A busca de dados agora lê os ficheiros JSON gerados no pre-build
 async function getData() {
-  try {
-    const dataDir = path.join(process.cwd(), 'src', 'lib', 'data');
-    
-    const [specialtiesData, examsData, conveniosData, testimonialsData] = await Promise.all([
-      fs.readFile(path.join(dataDir, 'specialties.json'), 'utf8'),
-      fs.readFile(path.join(dataDir, 'exams.json'), 'utf8'),
-      fs.readFile(path.join(dataDir, 'convenios.json'), 'utf8'),
-      fs.readFile(path.join(dataDir, 'testimonials.json'), 'utf8'),
-    ]);
-
-    const specialties: Specialty[] = JSON.parse(specialtiesData);
-    const exams: Exam[] = JSON.parse(examsData);
-    const convenios: Convenio[] = JSON.parse(conveniosData);
-    const testimonials: Testimonial[] = JSON.parse(testimonialsData);
-
-    // Retorna apenas os primeiros itens para a homepage, como antes
-    return { 
-      specialties: specialties.slice(0, 3), 
-      exams: exams.slice(0, 3), 
-      convenios: convenios.slice(0, 10), 
-      testimonials, 
-    };
-  } catch (error) {
-    console.error("Error reading pre-build data for homepage:", error);
-    // Em caso de erro, retorne arrays vazios para não quebrar a página
-    return { specialties: [], exams: [], convenios: [], testimonials: [] };
-  }
+  const [specialties, exams, convenios, testimonials, cfg] = await Promise.all([
+    getSpecialties(),
+    getExams(),
+    getConvenios(),
+    getTestimonials(),
+    getClinicConfig(),
+  ]);
+  return {
+    specialties: specialties.slice(0, 4),
+    exams: exams.slice(0, 3),
+    convenios: convenios.slice(0, 10),
+    testimonials,
+    cfg,
+  };
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalClinic',
+  name: 'Tagis Medicina e Diagnóstico',
+  url: 'https://www.tagismd.com.br',
+  logo: 'https://www.tagismd.com.br/favicon.png',
+  image: 'https://www.tagismd.com.br/og-image.png',
+  description: 'Clínica médica com mais de 30 especialidades, 50 tipos de exames e 20 convênios em São José, SC.',
+  telephone: '+554830353377',
+  email: 'contato@tagis.com.br',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Av. Ver. Walter Borges, 157',
+    addressLocality: 'São José',
+    addressRegion: 'SC',
+    postalCode: '88101-030',
+    addressCountry: 'BR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -27.5969,
+    longitude: -48.6277,
+  },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '07:30', closes: '18:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '07:30', closes: '12:00' },
+  ],
+  priceRange: '$$',
+  medicalSpecialty: ['Cardiology','Orthopedics','Gynecology','Dermatology','Ophthalmology'],
+};
 
 export default async function HomePage() {
-  const { specialties, exams, convenios, testimonials } = await getData();
+  const { specialties, exams, convenios, testimonials, cfg } = await getData();
 
   return (
     <>
-      <HeroSection />
-      <PromotionalBanner />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <HeroSection cfg={cfg} />
+      <QuickAccessCards />
       <PatientJourney />
       <AboutClinic />
       <SpecialtiesGrid initialSpecialties={specialties} />
       <ExamsSection initialExams={exams} />
+      <AppointmentCTA />
       <ConveniosCarousel initialConvenios={convenios} />
       <TestimonialsCarousel initialTestimonials={testimonials} />
+      <FAQSection cfg={cfg} conveniosCount={convenios.length} />
       <ContactHome />
     </>
   );
