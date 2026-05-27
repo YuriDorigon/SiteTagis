@@ -22,7 +22,7 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 const siteTitle = 'Tagis Medicina e Diagnóstico - São José - SC | Consultas e Exames';
 const siteDescription =
   'Consultas e Exames em um Só Lugar! +30 Especialidades | +50 Tipos de Exames | +20 Convênios. Agende fácil pelo WhatsApp. Fones: (48) 3035-3377 / (48) 99193-6045.';

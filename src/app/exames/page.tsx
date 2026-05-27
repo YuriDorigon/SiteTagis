@@ -16,7 +16,7 @@ import { getExams } from '@/lib/server/firestoreData';
 
 export const revalidate = 60;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',

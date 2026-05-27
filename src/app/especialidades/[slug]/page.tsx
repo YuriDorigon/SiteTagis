@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const specialties = await getSpecialties();
   const specialty = specialties.find((s) => slugify(s.name) === slug);
   if (!specialty) return {};
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
   return {
     title: `${specialty.name} em São José SC | Tagis Medicina e Diagnóstico`,
     description: `${specialty.name} em São José, SC. ${specialty.description} Agende pelo WhatsApp: (48) 99193-6045.`,
@@ -43,7 +43,7 @@ export default async function EspecialidadePage({ params }: { params: Promise<{ 
   if (!specialty) notFound();
 
   const relatedDoctors = doctors.filter((d) => d.specialtyIds?.includes(specialty.id));
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
   const specialtyLd = {
     '@context': 'https://schema.org',

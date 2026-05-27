@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const doctors = await getDoctors();
   const doctor = doctors.find((d) => slugify(d.name) === slug);
   if (!doctor) return {};
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
   return {
     title: `${doctor.name} | Tagis Medicina e Diagnóstico – São José SC`,
     description: `${doctor.name}, CRM/SC ${doctor.crm}. ${doctor.bio ? doctor.bio.slice(0, 150) + '...' : 'Médico especialista na Tagis Medicina e Diagnóstico em São José, SC.'}`,
@@ -44,7 +44,7 @@ export default async function DoctorPage({ params }: { params: Promise<{ slug: s
 
   const doctorSpecialties = specialties.filter((s) => doctor.specialtyIds?.includes(s.id));
   const doctorExams = exams.filter((e) => doctor.examIds?.includes(e.id));
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
   const physicianLd = {
     '@context': 'https://schema.org',

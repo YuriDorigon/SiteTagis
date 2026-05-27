@@ -18,7 +18,7 @@ export default async function ContatoPage() {
   const WHATSAPP_MSG = encodeURIComponent('Olá! Vim através do site e gostaria de agendar uma consulta.');
   const mapEmbedUrl = cfg.googleMapsEmbed;
   const googleMapsLink = cfg.googleMapsLink;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
   const localBusinessLd = {
     '@context': 'https://schema.org',

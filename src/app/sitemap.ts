@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getDoctors, getSpecialties, getExams } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [doctors, specialties, exams] = await Promise.all([getDoctors(), getSpecialties(), getExams()]);
