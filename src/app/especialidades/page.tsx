@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
+import { ArrowRight } from 'lucide-react';
 import { getSpecialties } from '@/lib/server/firestoreData';
 
 export const revalidate = 60;
@@ -31,10 +32,18 @@ export default async function EspecialidadesPage() {
                 </div>
                 <CardTitle className="text-2xl font-semibold font-headline">{specialty.name}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <CardDescription className="text-lg text-foreground/80">
+              <CardContent className="flex-grow flex flex-col items-center">
+                <CardDescription className="text-lg text-foreground/80 mb-4">
                   {specialty.description}
                 </CardDescription>
+                <a
+                  href={`https://wa.me/5548991936045?text=${encodeURIComponent(`Olá! Gostaria de agendar uma consulta de ${specialty.name}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:text-accent/70 transition-colors uppercase tracking-wider mt-auto"
+                >
+                  Agendar pelo WhatsApp <ArrowRight className="h-3 w-3" />
+                </a>
               </CardContent>
             </Card>
           ))}
