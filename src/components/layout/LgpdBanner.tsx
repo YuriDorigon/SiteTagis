@@ -32,26 +32,34 @@ export default function LgpdBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full bg-secondary text-secondary-foreground p-4 shadow-lg z-50 border-t border-border">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex-grow text-sm md:text-base">
-          <div className="flex items-center mb-2">
-            <ShieldCheck className="h-6 w-6 mr-2 text-primary" />
-            <h3 className="text-lg font-semibold font-headline text-primary">LGPD - Sua Privacidade</h3>
+    <div
+      className="fixed bottom-0 left-0 right-0 bg-primary/95 backdrop-blur-sm text-white shadow-[0_-4px_24px_rgba(0,0,0,0.15)] z-50 border-t border-white/10"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
+      <div className="container mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-4">
+        <div className="flex items-start gap-3 min-w-0">
+          <ShieldCheck className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-white mb-0.5">LGPD — Sua Privacidade</p>
+            <p className="text-xs text-white/75 leading-relaxed">
+              Requisições relacionadas à LGPD? Fale com o Encarregado de Dados pelo e-mail{' '}
+              <a href="mailto:privacidade@tagismd.com.br" className="text-accent hover:text-accent/80 underline underline-offset-2 font-medium">
+                privacidade@tagismd.com.br
+              </a>
+              {' '}— veja nossa{' '}
+              <Link href="/politica-de-privacidade" className="text-accent hover:text-accent/80 underline underline-offset-2 font-medium" onClick={() => setIsVisible(false)}>
+                política de privacidade
+              </Link>
+              .
+            </p>
           </div>
-          <p className="text-foreground/80">
-            Requisições relacionadas à Lei Geral de Proteção de Dados (LGPD)? Entre em contato com o Encarregado de Dados da Tagis Medicina & Diagnóstico pelo e-mail:{' '}
-            <a href="mailto:privacidade@tagismd.com.br" className="font-medium text-primary hover:underline">
-              privacidade@tagismd.com.br
-            </a>{' '}
-            - veja nossa política ao{' '}
-            <Link href="/politica-de-privacidade" className="font-medium text-primary hover:underline" onClick={() => setIsVisible(false)}>
-              clicar aqui!
-            </Link>
-          </p>
         </div>
-        <Button onClick={handleAccept} size="lg" className="w-full md:w-auto flex-shrink-0">
-          Estou ciente e aceito!
+        <Button
+          onClick={handleAccept}
+          size="sm"
+          className="flex-shrink-0 bg-white text-primary hover:bg-white/90 font-semibold px-5 w-full sm:w-auto"
+        >
+          Estou ciente e aceito
         </Button>
       </div>
     </div>
