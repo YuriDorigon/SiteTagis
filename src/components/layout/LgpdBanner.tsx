@@ -29,8 +29,11 @@ export default function LgpdBanner({ privacyEmail = 'privacidade@tagismd.com.br'
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full bg-primary/95 text-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 border-t border-white/10 backdrop-blur-md overflow-hidden">
-      <div className="container mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <div
+      className="fixed bottom-0 left-0 right-0 w-full bg-primary/95 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 border-t border-white/10 backdrop-blur-md overflow-hidden"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
+      <div className="container mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4">
         <div className="flex items-start min-w-0 w-full">
           <ShieldCheck className="h-6 w-6 sm:h-8 sm:w-8 text-white/80 mr-3 flex-shrink-0 mt-0.5" />
           <p className="text-xs sm:text-sm text-white/80 min-w-0">
