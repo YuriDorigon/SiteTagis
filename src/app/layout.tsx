@@ -1,11 +1,26 @@
-
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
-import AppLayout from '@/components/layout/AppLayout'; // Importar o novo componente de cliente
+import AppLayout from '@/components/layout/AppLayout';
+import { getClinicConfig } from '@/lib/server/firestoreData';
+import { Outfit, DM_Sans } from 'next/font/google';
 import 'aos/dist/aos.css';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-headline',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
 const siteTitle = 'Tagis Medicina e Diagnóstico - São José - SC | Consultas e Exames';
@@ -41,14 +56,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     url: siteUrl,
     siteName: 'Clinica Tagis',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Imagem da Clinica Tagis',
-      },
-    ],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Imagem da Clinica Tagis' }],
     locale: 'pt_BR',
     type: 'website',
   },
@@ -59,27 +67,28 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
     apple: '/apple-touch-icon.png',
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#003049',
+  themeColor: '#003b4f',
   colorScheme: 'light',
 };
 
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cfg = await getClinicConfig();
   return (
-    <html lang="pt-BR" className={cn('scroll-smooth')}>
-      <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background")}>
-        <AppLayout>{children}</AppLayout>
+    <html lang="pt-BR" className={cn('scroll-smooth', outfit.variable, dmSans.variable)}>
+      <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background overflow-x-hidden")}>
+        <AppLayout config={cfg}>{children}</AppLayout>
         <Toaster />
       </body>
     </html>
