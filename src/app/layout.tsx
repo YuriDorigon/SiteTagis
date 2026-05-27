@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Clinica Tagis', url: siteUrl }],
   creator: 'Clinica Tagis',
   publisher: 'Clinica Tagis',
+  verification: {
+    google: 'Iq1ygzRY5AGA_K70tIsLsp-S1M7CpE_TjtSDTuUWIGE',
+  },
   robots: {
     index: true,
     follow: true,
