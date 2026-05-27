@@ -66,7 +66,7 @@ export default function ExamResultsModal({ isOpen, onClose }: ExamResultsModalPr
             <div className="flex items-center space-x-3 mb-3">
               <Droplets className="h-7 w-7 text-primary flex-shrink-0" />
               <span className="text-lg font-medium text-foreground">
-                🩸 Exames de Sangue <span className="text-sm font-normal text-foreground/60">(Lab. Menino Deus)</span>
+                Exames de Sangue <span className="text-sm font-normal text-foreground/60">(Lab. Menino Deus)</span>
               </span>
             </div>
             <p className="text-sm text-foreground/60 mb-3">
@@ -97,7 +97,7 @@ export default function ExamResultsModal({ isOpen, onClose }: ExamResultsModalPr
             <div className="flex items-center space-x-3 mb-3">
               <FlaskConical className="h-7 w-7 text-primary flex-shrink-0" />
               <span className="text-lg font-medium text-foreground">
-                🧪 Biópsia <span className="text-sm font-normal text-foreground/60">(IDAP — Anatomopatológico)</span>
+                Biópsia <span className="text-sm font-normal text-foreground/60">(IDAP — Anatomopatológico)</span>
               </span>
             </div>
             <p className="text-sm text-foreground/60">
