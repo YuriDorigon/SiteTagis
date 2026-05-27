@@ -45,7 +45,7 @@ export default function Header() {
             <span className="font-medium text-xl tracking-tight text-primary font-headline">
               TAGIS
             </span>
-            <span className="text-[9px] font-medium tracking-[0.22em] text-foreground/40 uppercase leading-none">
+            <span className="text-[9px] font-medium tracking-[0.22em] text-foreground/55 uppercase leading-none">
               Medicina e Diagnóstico
             </span>
           </div>

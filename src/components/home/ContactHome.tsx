@@ -63,7 +63,7 @@ export default async function ContactHome() {
             <h3 className="text-primary font-medium text-base mb-5 font-headline">Contato</h3>
             <ul className="space-y-4">
               <li>
-                <p className="text-foreground/40 text-[10px] font-medium tracking-widest uppercase mb-1">
+                <p className="text-foreground/55 text-[10px] font-medium tracking-widest uppercase mb-1">
                   Telefone
                 </p>
                 <a
@@ -74,7 +74,7 @@ export default async function ContactHome() {
                 </a>
               </li>
               <li>
-                <p className="text-foreground/40 text-[10px] font-medium tracking-widest uppercase mb-1">
+                <p className="text-foreground/55 text-[10px] font-medium tracking-widest uppercase mb-1">
                   WhatsApp
                 </p>
                 <a
@@ -91,17 +91,19 @@ export default async function ContactHome() {
                   href={cfg.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Facebook da Tagis Medicina e Diagnóstico"
                   className="p-2 rounded-lg bg-primary/5 text-primary/60 hover:bg-accent/10 hover:text-accent transition-colors duration-300"
                 >
-                  <Facebook className="h-3.5 w-3.5" />
+                  <Facebook className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
                 <a
                   href={cfg.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Instagram da Tagis Medicina e Diagnóstico"
                   className="p-2 rounded-lg bg-primary/5 text-primary/60 hover:bg-accent/10 hover:text-accent transition-colors duration-300"
                 >
-                  <Instagram className="h-3.5 w-3.5" />
+                  <Instagram className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               </li>
             </ul>

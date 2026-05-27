@@ -1,7 +1,4 @@
 
-/* Cormorant Garant — não disponível via next/font nesta versão */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,7 +74,7 @@
 
 @layer utilities {
   .font-display {
-    font-family: var(--font-display), serif;
+    font-family: 'Cormorant Variable', serif;
   }
 }
 

@@ -17,7 +17,7 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
               <AppLogo className="h-12 w-auto transition-transform group-hover:scale-105" />
               <div className="flex flex-col items-start border-l border-white/20 pl-4">
                 <span className="font-bold text-2xl tracking-tight font-headline">TAGIS</span>
-                <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 uppercase leading-none">Medicina e Diagnóstico</span>
+                <span className="text-[10px] font-bold tracking-[0.2em] text-white/65 uppercase leading-none">Medicina e Diagnóstico</span>
               </div>
             </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-8">
@@ -73,7 +73,7 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
 
           <div>
             <h3 className="text-lg font-bold mb-8 font-headline text-white uppercase tracking-widest">Informações</h3>
-            <div className="space-y-4 text-sm text-white/50 font-medium">
+            <div className="space-y-4 text-sm text-white/65 font-medium">
               <p>CNPJ: {cfg.cnpj}</p>
               <p>{cfg.companyName}</p>
               <p className="pt-4 border-t border-white/5">Resp. Técnico:<br /><span className="text-white/70">{cfg.technicalResponsible}<br />CRM/SC {cfg.technicalResponsibleCrm}</span></p>

@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import AppLayout from '@/components/layout/AppLayout';
 import { getClinicConfig } from '@/lib/server/firestoreData';
 import { Outfit, DM_Sans } from 'next/font/google';
+import '@fontsource-variable/cormorant';
+import '@fontsource-variable/cormorant/wght-italic.css';
 
 const outfit = Outfit({
   subsets: ['latin'],
