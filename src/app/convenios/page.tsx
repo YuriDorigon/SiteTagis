@@ -11,10 +11,22 @@ import { getConvenios, getClinicConfig } from '@/lib/server/firestoreData';
 
 export const revalidate = 60;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Convênios', item: `${siteUrl}/convenios` },
+  ],
+};
+
 export default async function ConveniosPage() {
   const [convenios, cfg] = await Promise.all([getConvenios(), getClinicConfig()]);
 
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
       <SectionTitle
         title="Convênios Atendidos"
@@ -46,5 +58,6 @@ export default async function ConveniosPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -10,15 +10,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import ExamResultsButton from '@/components/exames/ExamResultsButton';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { slugify } from '@/lib/utils/slug';
 import { getExams } from '@/lib/server/firestoreData';
 
 export const revalidate = 60;
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Exames', item: `${siteUrl}/exames` },
+  ],
+};
 
 export default async function ExamesPage() {
   const exams = await getExams();
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
         <SectionTitle
           title="Exames Realizados"
@@ -30,7 +43,8 @@ export default async function ExamesPage() {
         {exams.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {exams.map((exam) => (
-              <Card key={exam.id} className="flex flex-col text-center items-center shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
+              <Link key={exam.id} href={`/exames/${slugify(exam.name)}`}>
+              <Card className="flex flex-col text-center items-center shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1 h-full">
                 <CardHeader className="items-center">
                   <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <LucideIconRenderer name={exam.iconName} className="h-12 w-12 text-primary" />
@@ -51,6 +65,7 @@ export default async function ExamesPage() {
                   </a>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         ) : (

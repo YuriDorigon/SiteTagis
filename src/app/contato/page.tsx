@@ -18,7 +18,47 @@ export default async function ContatoPage() {
   const WHATSAPP_MSG = encodeURIComponent('Olá! Vim através do site e gostaria de agendar uma consulta.');
   const mapEmbedUrl = cfg.googleMapsEmbed;
   const googleMapsLink = cfg.googleMapsLink;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+
+  const localBusinessLd = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalClinic',
+    name: 'Tagis Medicina e Diagnóstico',
+    url: siteUrl,
+    telephone: `+55${cfg.phone1.replace(/\D/g, '')}`,
+    image: `${siteUrl}/og-image.png`,
+    logo: `${siteUrl}/favicon.svg`,
+    description: 'Clínica médica com mais de 30 especialidades, 50 tipos de exames e 20 convênios em São José, SC.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: cfg.addressStreet,
+      addressLocality: 'São José',
+      addressRegion: 'SC',
+      postalCode: cfg.addressCep,
+      addressCountry: 'BR',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: -27.5969, longitude: -48.6277 },
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '07:30', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '07:30', closes: '12:00' },
+    ],
+    sameAs: [cfg.instagram, cfg.facebook].filter(Boolean),
+    priceRange: '$$',
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Contato', item: `${siteUrl}/contato` },
+    ],
+  };
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
     <div className="bg-[#f8fafb] min-h-screen">
 
       {/* Hero */}
@@ -147,5 +187,6 @@ export default async function ContatoPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

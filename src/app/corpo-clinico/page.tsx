@@ -11,6 +11,16 @@ import { getDoctors, getSpecialties, getExams } from '@/lib/server/firestoreData
 
 export const revalidate = 60;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismd.com.br';
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Corpo Clínico', item: `${siteUrl}/corpo-clinico` },
+  ],
+};
+
 export default async function CorpoClinicoPage() {
   const [doctors, specialties, exams] = await Promise.all([
     getDoctors(),
@@ -19,6 +29,8 @@ export default async function CorpoClinicoPage() {
   ]);
 
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
       <SectionTitle
         title="Corpo Clínico"
@@ -36,5 +48,6 @@ export default async function CorpoClinicoPage() {
         />
       )}
     </div>
+    </>
   );
 }
