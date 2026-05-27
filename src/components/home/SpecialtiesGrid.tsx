@@ -55,7 +55,7 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
                 <h3 className="text-base font-medium text-primary mb-2 font-headline leading-snug">
                   {specialty.name}
                 </h3>
-                <p className="text-xs text-foreground/50 font-light leading-relaxed line-clamp-2">
+                <p className="text-xs text-foreground/65 font-light leading-relaxed line-clamp-2">
                   {specialty.description}
                 </p>
 

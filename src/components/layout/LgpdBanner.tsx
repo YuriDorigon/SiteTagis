@@ -8,7 +8,8 @@ import { ShieldCheck } from 'lucide-react';
 
 const LGPD_CONSENT_KEY = 'tagisClinicLgpdConsentAccepted';
 
-export default function LgpdBanner() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function LgpdBanner({ privacyEmail }: { privacyEmail?: string }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

@@ -107,7 +107,7 @@ export default function HeroSection({ cfg }: HeroSectionProps) {
                   <div className="font-display text-3xl text-white font-normal leading-none mb-1.5">
                     {s.num}
                   </div>
-                  <div className="text-[10px] text-white/40 font-medium tracking-widest uppercase">
+                  <div className="text-[10px] text-white/60 font-medium tracking-widest uppercase">
                     {s.label}
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export default function HeroSection({ cfg }: HeroSectionProps) {
               <Calendar className="h-5 w-5 text-accent" />
             </div>
             <div>
-              <p className="text-[10px] font-semibold tracking-widest text-foreground/40 uppercase">
+              <p className="text-[10px] font-semibold tracking-widest text-foreground/55 uppercase">
                 Hoje atendemos
               </p>
               <p className="text-primary text-sm font-semibold">

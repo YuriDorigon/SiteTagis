@@ -49,7 +49,8 @@ export default async function QuickAccessCards() {
   ];
 
   return (
-    <section className="bg-[#f8fafb] border-b border-primary/8">
+    <section className="bg-[#f8fafb] border-b border-primary/8" aria-label="Acesso rápido">
+      <h2 className="sr-only">Acesso Rápido</h2>
       <div className="container mx-auto px-6 md:px-10 lg:px-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/8">
           {cards.map((card, i) => {
@@ -101,11 +102,12 @@ export default async function QuickAccessCards() {
 
                   <p
                     className={`text-xs font-light leading-relaxed mb-6 ${
-                      card.featured ? 'text-white/65' : 'text-foreground/50'
+                      card.featured ? 'text-white/75' : 'text-foreground/65'
                     }`}
                   >
                     {card.description}
                   </p>
+                  {/* Texto com contraste adequado — não usar opacity < 60 em fundos claros */}
 
                   <span
                     className={`inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase transition-all duration-300 group-hover:gap-2.5 ${

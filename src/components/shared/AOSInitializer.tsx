@@ -2,15 +2,26 @@
 "use client";
 
 import { useEffect } from 'react';
-import AOS from 'aos';
 
 export default function AOSInitializer() {
   useEffect(() => {
-    AOS.init({
-      duration: 800, // values from 0 to 3000, with step 50ms
-      easing: 'ease-in-out', // default easing for AOS animations
-      once: true, // whether animation should happen only once - while scrolling down
-      mirror: false, // whether elements should animate out while scrolling past them
+    // Carrega o CSS do AOS de forma assíncrona (não bloqueia a renderização)
+    if (!document.getElementById('aos-styles')) {
+      const link = document.createElement('link');
+      link.id = 'aos-styles';
+      link.rel = 'stylesheet';
+      link.href = '/aos.css';
+      document.head.appendChild(link);
+    }
+
+    // Importa e inicializa o AOS dinamicamente
+    import('aos').then((mod) => {
+      mod.default.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false,
+      });
     });
   }, []);
 

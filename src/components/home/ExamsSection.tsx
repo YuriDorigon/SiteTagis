@@ -51,7 +51,7 @@ export default function ExamsSection({ initialExams }: ExamsSectionProps) {
                     <h3 className="text-base font-medium text-primary mb-3 font-headline">
                       {exam.name}
                     </h3>
-                    <p className="text-foreground/50 text-sm font-light leading-relaxed mb-4">
+                    <p className="text-foreground/65 text-sm font-light leading-relaxed mb-4">
                       {exam.description}
                     </p>
                     <a

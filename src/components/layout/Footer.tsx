@@ -24,11 +24,11 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
               Comprometidos com a excelência em medicina diagnóstica e atendimento humanizado. Sua saúde é nossa maior prioridade.
             </p>
             <div className="flex space-x-4">
-              <Link href={cfg.facebook} target="_blank" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 hover:text-white transition-all duration-300">
-                <Facebook className="h-5 w-5" />
+              <Link href={cfg.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook da Tagis Medicina e Diagnóstico" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 hover:text-white transition-colors duration-300">
+                <Facebook className="h-5 w-5" aria-hidden="true" />
               </Link>
-              <Link href={cfg.instagram} target="_blank" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 hover:text-white transition-all duration-300">
-                <Instagram className="h-5 w-5" />
+              <Link href={cfg.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram da Tagis Medicina e Diagnóstico" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 hover:text-white transition-colors duration-300">
+                <Instagram className="h-5 w-5" aria-hidden="true" />
               </Link>
             </div>
           </div>
@@ -36,11 +36,11 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
           <div>
             <h3 className="text-lg font-bold mb-8 font-headline text-white uppercase tracking-widest">Acesso Rápido</h3>
             <ul className="space-y-4">
-              <li><Link href="/especialidades" className="text-white/60 hover:text-white hover:translate-x-2 transition-all duration-300 inline-block font-medium">Especialidades</Link></li>
-              <li><Link href="/exames" className="text-white/60 hover:text-white hover:translate-x-2 transition-all duration-300 inline-block font-medium">Exames</Link></li>
-              <li><Link href="/convenios" className="text-white/60 hover:text-white hover:translate-x-2 transition-all duration-300 inline-block font-medium">Convênios</Link></li>
-              <li><Link href="/corpo-clinico" className="text-white/60 hover:text-white hover:translate-x-2 transition-all duration-300 inline-block font-medium">Corpo Clínico</Link></li>
-              <li><Link href="/contato" className="text-white/60 hover:text-white hover:translate-x-2 transition-all duration-300 inline-block font-medium">Contato</Link></li>
+              <li><Link href="/especialidades" className="text-white/70 hover:text-white hover:translate-x-2 transition-[color,transform] duration-300 inline-block font-medium">Especialidades</Link></li>
+              <li><Link href="/exames" className="text-white/70 hover:text-white hover:translate-x-2 transition-[color,transform] duration-300 inline-block font-medium">Exames</Link></li>
+              <li><Link href="/convenios" className="text-white/70 hover:text-white hover:translate-x-2 transition-[color,transform] duration-300 inline-block font-medium">Convênios</Link></li>
+              <li><Link href="/corpo-clinico" className="text-white/70 hover:text-white hover:translate-x-2 transition-[color,transform] duration-300 inline-block font-medium">Corpo Clínico</Link></li>
+              <li><Link href="/contato" className="text-white/70 hover:text-white hover:translate-x-2 transition-[color,transform] duration-300 inline-block font-medium">Contato</Link></li>
             </ul>
           </div>
 
@@ -82,12 +82,11 @@ export default function Footer({ cfg }: { cfg: ClinicConfig }) {
         </div>
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-white/40 text-xs font-bold uppercase tracking-widest">
+          <p className="text-white/55 text-xs font-bold uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Clinica Tagis. Todos os direitos reservados.
           </p>
           <div className="flex gap-8">
-            <Link href="/privacidade" className="text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors">Termos</Link>
-            <Link href="/privacidade" className="text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors">Privacidade</Link>
+            <Link href="/privacidade" className="text-white/55 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors">Política de Privacidade</Link>
           </div>
         </div>
       </div>
