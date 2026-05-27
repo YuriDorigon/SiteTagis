@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 import type { Specialty } from '@/lib/types';
+import { slugify } from '@/lib/utils/slug';
 
 interface SpecialtiesGridProps {
   initialSpecialties: Specialty[];
@@ -37,9 +38,10 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
         {initialSpecialties.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/8 border border-primary/8 rounded-3xl overflow-hidden">
             {initialSpecialties.slice(0, 8).map((specialty, index) => (
-              <div
+              <Link
                 key={specialty.id}
-                className="group bg-white hover:bg-[#fafbfc] p-7 lg:p-9 transition-colors duration-500 cursor-default"
+                href={`/especialidades/${slugify(specialty.name)}`}
+                className="group bg-white hover:bg-[#fafbfc] p-7 lg:p-9 transition-colors duration-500"
                 data-aos="fade-up"
                 data-aos-delay={50 * index}
               >
@@ -67,7 +69,7 @@ export default function SpecialtiesGrid({ initialSpecialties }: SpecialtiesGridP
                     Agendar <ArrowRight className="h-3 w-3" />
                   </a>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

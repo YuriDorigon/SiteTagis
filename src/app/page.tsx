@@ -65,9 +65,29 @@ const jsonLd = {
 export default async function HomePage() {
   const { specialties, exams, convenios, testimonials, cfg } = await getData();
 
+  const whatsapp = cfg.whatsappDisplay ?? '(48) 99193-6045';
+  const phone = cfg.phone1 ?? '(48) 3035-3377';
+  const hoursWeek = cfg.hoursWeekdays ?? '07:30 – 18:00';
+  const hoursSat = cfg.hoursSaturday ?? '07:30 – 12:00';
+  const numConvenios = convenios.length > 0 ? convenios.length : 20;
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Como faço para agendar uma consulta?', acceptedAnswer: { '@type': 'Answer', text: `Pelo WhatsApp ${whatsapp} ou telefone ${phone}. Atendemos de segunda a sexta das ${hoursWeek} e sábados das ${hoursSat}.` } },
+      { '@type': 'Question', name: 'Quais convênios a Tagis aceita?', acceptedAnswer: { '@type': 'Answer', text: `Trabalhamos com mais de ${numConvenios} convênios, incluindo os principais planos de saúde da região.` } },
+      { '@type': 'Question', name: 'Preciso de pedido médico para realizar exames?', acceptedAnswer: { '@type': 'Answer', text: 'Para a maioria dos exames laboratoriais e de imagem é necessário pedido médico. Consulte nossa equipe para verificar quais exames podem ser realizados sem encaminhamento.' } },
+      { '@type': 'Question', name: 'Quanto tempo leva para os resultados ficarem prontos?', acceptedAnswer: { '@type': 'Answer', text: 'Exames de imagem ficam prontos em 1 a 3 dias úteis; exames laboratoriais em 3 a 5 dias úteis.' } },
+      { '@type': 'Question', name: 'Como posso acessar os resultados dos meus exames?', acceptedAnswer: { '@type': 'Answer', text: 'Exames de imagem ficam disponíveis online pelo portal de resultados. Exames de sangue (Lab. Menino Deus) podem ser retirados na recepção ou pelo laboratório.' } },
+      { '@type': 'Question', name: 'A clínica atende urgências ou apenas consultas agendadas?', acceptedAnswer: { '@type': 'Answer', text: 'O atendimento é preferencialmente por agendamento. Para urgências, entre em contato pelo WhatsApp ou telefone para verificar disponibilidade imediata.' } },
+    ],
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <HeroSection cfg={cfg} />
       <QuickAccessCards />
       <PatientJourney />

@@ -3,9 +3,11 @@
 // src/components/doutores/DoctorCard.tsx
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Doctor } from '@/lib/types';
-import { Stethoscope, Microscope } from 'lucide-react';
+import { Stethoscope, Microscope, ArrowRight } from 'lucide-react';
+import { slugify } from '@/lib/utils/slug';
 
 interface DoctorCardProps {
   doctor: Doctor;
@@ -29,7 +31,7 @@ export default function DoctorCard({ doctor }: DoctorCardProps) {
   const initials = getInitials(doctor.name);
 
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col text-center items-center p-6 h-full border-primary/8">
+    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col text-center items-center p-6 h-full border-primary/8 group">
       <div className="relative w-28 h-28 mb-4 rounded-full border-2 border-primary/15 flex items-center justify-center bg-muted overflow-hidden">
         {!showPlaceholder ? (
           <Image
@@ -81,10 +83,16 @@ export default function DoctorCard({ doctor }: DoctorCardProps) {
           )}
         </div>
         {doctor.bio && (
-          <p className="text-sm text-foreground/55 font-light leading-relaxed text-center mt-3">
+          <p className="text-sm text-foreground/55 font-light leading-relaxed text-center mt-3 line-clamp-3">
             {doctor.bio}
           </p>
         )}
+        <Link
+          href={`/corpo-clinico/${slugify(doctor.name)}`}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary/30 group-hover:text-accent transition-colors uppercase tracking-wider mt-4"
+        >
+          Ver perfil <ArrowRight className="h-3 w-3" />
+        </Link>
       </CardContent>
     </Card>
   );
