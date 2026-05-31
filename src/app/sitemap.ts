@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
-import { getDoctors, getSpecialties, getExams } from '@/lib/server/firestoreData';
+import { getDoctors, getSpecialties, getExams, getConvenios } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [doctors, specialties, exams] = await Promise.all([getDoctors(), getSpecialties(), getExams()]);
+  const [doctors, specialties, exams, convenios] = await Promise.all([getDoctors(), getSpecialties(), getExams(), getConvenios()]);
 
   const doctorUrls: MetadataRoute.Sitemap = doctors.map((d) => ({
     url: `${siteUrl}/corpo-clinico/${slugify(d.name)}`,
@@ -28,6 +28,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const convenioUrls: MetadataRoute.Sitemap = convenios.map((c) => ({
+    url: `${siteUrl}/convenios/${slugify(c.name)}`,
+    lastModified: new Date(),
+    changeFrequency: 'yearly',
+    priority: 0.6,
+  }));
+
   return [
     { url: siteUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${siteUrl}/especialidades`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
@@ -39,5 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...specialtyUrls,
     ...examUrls,
     ...doctorUrls,
+    ...convenioUrls,
   ];
 }

@@ -2,4 +2,4 @@
 User-agent: *
 Disallow: /adm/
 
-Sitemap: https://www.tagismd.com.br/sitemap.xml
+Sitemap: https://www.tagismedicina.com.br/sitemap.xml

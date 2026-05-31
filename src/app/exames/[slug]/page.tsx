@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, UserRound } from 'lucide-react';
-import { getExams, getDoctors } from '@/lib/server/firestoreData';
+import { getExams, getDoctors, getClinicConfig } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 
@@ -17,17 +17,20 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const exams = await getExams();
+  const [exams, cfg] = await Promise.all([getExams(), getClinicConfig()]);
   const exam = exams.find((e) => slugify(e.name) === slug);
   if (!exam) return {};
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
+  const phone = cfg.whatsappDisplay ?? '(48) 99193-6045';
+  const desc = `Realize ${exam.name} em São José, SC — Tagis Medicina e Diagnóstico. ${exam.description} Atendemos convênios. Agende: ${phone} ou ${cfg.phone1}.`;
   return {
     title: `${exam.name} em São José SC | Tagis Medicina e Diagnóstico`,
-    description: `Realize ${exam.name} em São José, SC. ${exam.description} Agende pelo WhatsApp: (48) 99193-6045.`,
+    description: desc.slice(0, 160),
     alternates: { canonical: `${siteUrl}/exames/${slug}` },
     openGraph: {
-      title: `${exam.name} | Tagis`,
+      title: `${exam.name} em São José SC | Tagis`,
       description: exam.description,
+      url: `${siteUrl}/exames/${slug}`,
     },
   };
 }

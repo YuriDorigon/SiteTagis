@@ -102,4 +102,7 @@ export interface ClinicConfig {
   statSpecialties: string;
   statExams: string;
   statInsurance: string;
+  // Google Reviews — setar no Firestore settings/clinic para ativar AggregateRating no schema
+  googleRating?: number;       // ex: 4.8
+  googleReviewCount?: number;  // ex: 180
 }

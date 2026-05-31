@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Stethoscope } from 'lucide-react';
-import { getSpecialties, getDoctors } from '@/lib/server/firestoreData';
+import { getSpecialties, getDoctors, getClinicConfig } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 
@@ -17,17 +17,20 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const specialties = await getSpecialties();
+  const [specialties, cfg] = await Promise.all([getSpecialties(), getClinicConfig()]);
   const specialty = specialties.find((s) => slugify(s.name) === slug);
   if (!specialty) return {};
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
+  const phone = cfg.whatsappDisplay ?? '(48) 99193-6045';
+  const desc = `${specialty.name} em São José, SC — Tagis Medicina e Diagnóstico. ${specialty.description} Atendemos convênios. Agende sua consulta: ${phone} ou ${cfg.phone1}.`;
   return {
     title: `${specialty.name} em São José SC | Tagis Medicina e Diagnóstico`,
-    description: `${specialty.name} em São José, SC. ${specialty.description} Agende pelo WhatsApp: (48) 99193-6045.`,
+    description: desc.slice(0, 160),
     alternates: { canonical: `${siteUrl}/especialidades/${slug}` },
     openGraph: {
-      title: `${specialty.name} | Tagis`,
+      title: `${specialty.name} em São José SC | Tagis`,
       description: specialty.description,
+      url: `${siteUrl}/especialidades/${slug}`,
     },
   };
 }

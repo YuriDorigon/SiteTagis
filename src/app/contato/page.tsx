@@ -20,7 +20,7 @@ export default async function ContatoPage() {
   const googleMapsLink = cfg.googleMapsLink;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
-  const localBusinessLd = {
+  const localBusinessLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'MedicalClinic',
     name: 'Tagis Medicina e Diagnóstico',
@@ -28,7 +28,7 @@ export default async function ContatoPage() {
     telephone: `+55${cfg.phone1.replace(/\D/g, '')}`,
     image: `${siteUrl}/og-image.png`,
     logo: `${siteUrl}/favicon.svg`,
-    description: 'Clínica médica com mais de 30 especialidades, 50 tipos de exames e 20 convênios em São José, SC.',
+    description: 'Clínica médica com mais de 30 especialidades, 50 tipos de exames e convênios em São José, SC.',
     address: {
       '@type': 'PostalAddress',
       streetAddress: cfg.addressStreet,
@@ -42,9 +42,19 @@ export default async function ContatoPage() {
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '07:30', closes: '18:00' },
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '07:30', closes: '12:00' },
     ],
-    sameAs: [cfg.instagram, cfg.facebook].filter(Boolean),
+    sameAs: [cfg.instagram, cfg.facebook, googleMapsLink].filter(Boolean),
     priceRange: '$$',
   };
+
+  if (cfg.googleRating && cfg.googleReviewCount) {
+    localBusinessLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: cfg.googleRating,
+      reviewCount: cfg.googleReviewCount,
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',

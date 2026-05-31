@@ -15,7 +15,7 @@ import { getSpecialties, getExams, getConvenios, getTestimonials, getClinicConfi
 export const revalidate = 60;
 
 async function getData() {
-  const [specialties, exams, convenios, testimonials, cfg] = await Promise.all([
+  const [specialties, exams, allConvenios, testimonials, cfg] = await Promise.all([
     getSpecialties(),
     getExams(),
     getConvenios(),
@@ -25,7 +25,8 @@ async function getData() {
   return {
     specialties: specialties.slice(0, 4),
     exams: exams.slice(0, 3),
-    convenios: convenios.slice(0, 10),
+    convenios: allConvenios.slice(0, 10),
+    conveniosCount: allConvenios.length,
     testimonials,
     cfg,
   };
@@ -33,45 +34,55 @@ async function getData() {
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MedicalClinic',
-  name: 'Tagis Medicina e Diagnóstico',
-  url: siteUrl,
-  logo: `${siteUrl}/favicon.png`,
-  image: `${siteUrl}/og-image.png`,
-  description: 'Clínica médica com mais de 30 especialidades, 50 tipos de exames e 20 convênios em São José, SC.',
-  telephone: '+554830353377',
-  email: 'contato@tagis.com.br',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Av. Ver. Walter Borges, 157',
-    addressLocality: 'São José',
-    addressRegion: 'SC',
-    postalCode: '88101-030',
-    addressCountry: 'BR',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: -27.5969,
-    longitude: -48.6277,
-  },
-  openingHoursSpecification: [
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '07:30', closes: '18:00' },
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '07:30', closes: '12:00' },
-  ],
-  priceRange: '$$',
-  medicalSpecialty: ['Cardiology','Orthopedics','Gynecology','Dermatology','Ophthalmology'],
-};
-
 export default async function HomePage() {
-  const { specialties, exams, convenios, testimonials, cfg } = await getData();
+  const { specialties, exams, convenios, conveniosCount, testimonials, cfg } = await getData();
 
   const whatsapp = cfg.whatsappDisplay ?? '(48) 99193-6045';
   const phone = cfg.phone1 ?? '(48) 3035-3377';
   const hoursWeek = cfg.hoursWeekdays ?? '07:30 – 18:00';
   const hoursSat = cfg.hoursSaturday ?? '07:30 – 12:00';
-  const numConvenios = convenios.length > 0 ? convenios.length : 20;
+  const numConvenios = conveniosCount > 0 ? conveniosCount : 20;
+
+  const jsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalClinic',
+    name: 'Tagis Medicina e Diagnóstico',
+    url: siteUrl,
+    logo: `${siteUrl}/favicon.svg`,
+    image: `${siteUrl}/og-image.png`,
+    description: `Clínica médica com mais de 30 especialidades, ${numConvenios} convênios e 50 tipos de exames em São José, SC.`,
+    telephone: `+55${cfg.phone1.replace(/\D/g, '')}`,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: cfg.addressStreet,
+      addressLocality: 'São José',
+      addressRegion: 'SC',
+      postalCode: cfg.addressCep,
+      addressCountry: 'BR',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: -27.5969, longitude: -48.6277 },
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '07:30', closes: hoursWeek.split('–')[1]?.trim().replace('h','') ?? '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '07:30', closes: hoursSat.split('–')[1]?.trim().replace('h','') ?? '12:00' },
+    ],
+    priceRange: '$$',
+    medicalSpecialty: ['Cardiologia','Ortopedia','Ginecologia','Dermatologia','Oftalmologia','Pediatria','Clínica Médica'],
+    sameAs: [
+      cfg.instagram,
+      cfg.facebook,
+      cfg.googleMapsLink,
+    ].filter(Boolean),
+  };
+
+  if (cfg.googleRating && cfg.googleReviewCount) {
+    jsonLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: cfg.googleRating,
+      reviewCount: cfg.googleReviewCount,
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
 
   const faqLd = {
     '@context': 'https://schema.org',
@@ -99,7 +110,7 @@ export default async function HomePage() {
       <AppointmentCTA />
       <ConveniosCarousel initialConvenios={convenios} />
       <TestimonialsCarousel initialTestimonials={testimonials} />
-      <FAQSection cfg={cfg} conveniosCount={convenios.length} />
+      <FAQSection cfg={cfg} conveniosCount={conveniosCount} />
       <ContactHome />
     </>
   );

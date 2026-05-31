@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
@@ -41,6 +42,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Clinica Tagis', url: siteUrl }],
   creator: 'Clinica Tagis',
   publisher: 'Clinica Tagis',
+  alternates: {
+    canonical: siteUrl,
+  },
   verification: {
     google: 'Iq1ygzRY5AGA_K70tIsLsp-S1M7CpE_TjtSDTuUWIGE',
   },
@@ -74,7 +78,6 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -94,6 +97,7 @@ export default async function RootLayout({
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background overflow-x-hidden")}>
         <AppLayout config={cfg}>{children}</AppLayout>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
