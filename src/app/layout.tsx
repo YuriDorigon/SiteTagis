@@ -6,9 +6,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
 import AppLayout from '@/components/layout/AppLayout';
 import { getClinicConfig } from '@/lib/server/firestoreData';
-import { Outfit, DM_Sans } from 'next/font/google';
-import '@fontsource-variable/cormorant';
-import '@fontsource-variable/cormorant/wght-italic.css';
+import { Outfit, DM_Sans, Cormorant } from 'next/font/google';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -21,6 +19,14 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-sans',
+  display: 'swap',
+});
+
+const cormorant = Cormorant({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
   display: 'swap',
 });
 
@@ -93,7 +99,7 @@ export default async function RootLayout({
 }>) {
   const cfg = await getClinicConfig();
   return (
-    <html lang="pt-BR" className={cn('scroll-smooth overflow-x-hidden', outfit.variable, dmSans.variable)}>
+    <html lang="pt-BR" className={cn('scroll-smooth overflow-x-hidden', outfit.variable, dmSans.variable, cormorant.variable)}>
       <body className={cn("font-sans antialiased flex flex-col min-h-screen bg-background overflow-x-hidden")}>
         <AppLayout config={cfg}>{children}</AppLayout>
         <Toaster />

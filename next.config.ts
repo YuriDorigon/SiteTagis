@@ -2,26 +2,12 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /**
-   * Em ambientes de desenvolvimento como o Firebase Studio, pode ser necessário
-   * permitir origens específicas para que o hot-reloading e outras funcionalidades
-   * funcionem corretamente.
-   */
   experimental: {
     allowedDevOrigins: [
-        "https://6000-firebase-studio-1749147247329.cluster-m7tpz3bmgjgoqrktlvd4ykrc2m.cloudworkstations.dev"
+      "https://6000-firebase-studio-1749147247329.cluster-m7tpz3bmgjgoqrktlvd4ykrc2m.cloudworkstations.dev"
     ]
   },
 
-  /**
-   * O modo 'output: "export"' foi removido para permitir o uso de API Routes,
-   * que são necessárias para o backend de envio de emails.
-   */
-
-  /**
-   * A otimização de imagens do Next.js é reativada, pois não estamos mais
-   * no modo de exportação estática pura.
-   */
   images: {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'],
@@ -29,12 +15,26 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'placehold.co' },
       { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
     ],
-    minimumCacheTTL: 3600,
+    minimumCacheTTL: 86400,
   },
-  
-  /**
-   * Ignora erros de TypeScript e ESLint durante o build para focar na funcionalidade.
-   */
+
+  async headers() {
+    return [
+      {
+        source: '/_next/static/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/(.*)\\.(svg|png|jpg|jpeg|gif|webp|avif|ico|woff2|woff|ttf)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/lgpd.pdf',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400' }],
+      },
+    ];
+  },
+
   typescript: {
     ignoreBuildErrors: true,
   },
