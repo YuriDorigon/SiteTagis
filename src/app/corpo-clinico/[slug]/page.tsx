@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight, Stethoscope, Microscope } from 'lucide-react';
 import { getDoctors, getSpecialties, getExams } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const doctors = await getDoctors();

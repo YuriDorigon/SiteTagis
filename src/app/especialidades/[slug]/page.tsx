@@ -8,7 +8,7 @@ import { getSpecialties, getDoctors, getClinicConfig } from '@/lib/server/firest
 import { slugify } from '@/lib/utils/slug';
 import LucideIconRenderer from '@/components/shared/LucideIconRenderer';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const specialties = await getSpecialties();
