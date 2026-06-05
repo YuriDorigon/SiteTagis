@@ -70,7 +70,6 @@ export const metadata: Metadata = {
     description: siteDescription,
     url: siteUrl,
     siteName: 'Clinica Tagis',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Imagem da Clinica Tagis' }],
     locale: 'pt_BR',
     type: 'website',
   },
@@ -78,7 +77,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteTitle,
     description: siteDescription,
-    images: ['/og-image.png'],
   },
   icons: {
     icon: [
