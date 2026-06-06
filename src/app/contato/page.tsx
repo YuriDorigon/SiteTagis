@@ -10,7 +10,7 @@ import { Phone, MessageSquare, MapPin, Clock, Instagram, Facebook } from 'lucide
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 import { getClinicConfig } from '@/lib/server/firestoreData';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function ContatoPage() {
   const cfg = await getClinicConfig();

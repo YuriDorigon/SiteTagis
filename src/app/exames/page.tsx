@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { slugify } from '@/lib/utils/slug';
 import { getExams } from '@/lib/server/firestoreData';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 const breadcrumbLd = {

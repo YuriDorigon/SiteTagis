@@ -12,7 +12,7 @@ import FAQSection from '@/components/home/FAQSection';
 import ContactHome from '@/components/home/ContactHome';
 import { getSpecialties, getExams, getConvenios, getTestimonials, getClinicConfig } from '@/lib/server/firestoreData';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 async function getData() {
   const [specialties, exams, allConvenios, testimonials, cfg] = await Promise.all([

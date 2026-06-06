@@ -7,7 +7,7 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { getConvenios, getClinicConfig } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const convenios = await getConvenios();

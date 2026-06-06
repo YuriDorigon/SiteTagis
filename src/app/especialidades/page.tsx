@@ -13,7 +13,7 @@ import { ArrowRight } from 'lucide-react';
 import { getSpecialties } from '@/lib/server/firestoreData';
 import { slugify } from '@/lib/utils/slug';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.tagismedicina.com.br';
 
